@@ -52,7 +52,7 @@ The **Club Management System** is a one-stop solution for managing technical clu
    cd club-management-system
    ```
 
-2. **Install Dependencies**:
+2. **Install Dependencies**:  
 For the backend:
 ```bash
 cd server
@@ -71,7 +71,7 @@ MONGO_URI=your-mongo-db-uri
 JWT_SECRET=your-secret-key
 ```
 
-4. **Run the project**
+4. **Run the project**  
 Backend:
 ```bash
 cd server
