@@ -58,7 +58,7 @@ For the backend:
 cd server
 npm install
 ```
-    For the frontend:
+&nbsp;&nbsp;&nbsp;&nbsp;For the frontend:
 ```bash
 cd server
 npm install
@@ -76,7 +76,7 @@ Backend:
 cd server
 npm run dev
 ```
-   Frontend:
+&nbsp;&nbsp;&nbsp;&nbsp;Frontend:
 ```bash
 cd client
 npm start
