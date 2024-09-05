@@ -130,10 +130,11 @@ The application should now be running locally on `http://localhost:3000` for the
 - **User Documentation**: Provide user guides to help navigate the system.
 - **Handover**: A detailed handover document should be prepared if the project is transitioned to another team.
 
-## Overview Presentation
+## Resources
+### Overview Presentation
 [![CMS](https://i.imgur.com/HVhO2ls.png)](https://prezi.com/p/wyq-gzrvle5m/?present=1)
 
-## WorkFlow
+### WorkFlow
 [![WorkFlow](https://i.imgur.com/mlmKBVE.png)](https://apricot-jsandye-83.tiiny.site)
 
 ## License
