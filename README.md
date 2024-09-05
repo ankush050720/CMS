@@ -130,16 +130,13 @@ The application should now be running locally on `http://localhost:3000` for the
 - **User Documentation**: Provide user guides to help navigate the system.
 - **Handover**: A detailed handover document should be prepared if the project is transitioned to another team.
 
+## Resources
+### Overview Presentation
+[![CMS](https://i.imgur.com/HVhO2ls.png)](https://prezi.com/p/wyq-gzrvle5m/?present=1)
+
+### WorkFlow
+[![WorkFlow](https://i.imgur.com/mlmKBVE.png)](https://apricot-jsandye-83.tiiny.site)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) file for details
-
-### Key Sections Breakdown:
-- **Features**: Includes the core functionalities like user management, event management, and resource allocation.
-- **Tech Stack**: Lists the technology stack used, highlighting frontend and backend tools.
-- **Getting Started**: Provides step-by-step installation instructions to run the project locally.
-- **Backend and Frontend**: Explains how each part of the application is structured and developed.
-- **Testing and Security**: Outlines the steps for writing tests and implementing security measures.
-- **Deployment and CI/CD**: Guides the deployment process and continuous integration pipeline setup.
-- **Future Enhancements**: Lists possible improvements for the future.
+This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) file for details.
