@@ -65,7 +65,7 @@ cd server
 npm install
 ```
 
-3. **Set up environment variables: Create a .env file in the /server directory and add your configuration:**
+3. **Set up environment variables: Create a .env file in the /server directory and add your configuration**
 ```bash
 MONGO_URI=your-mongo-db-uri
 JWT_SECRET=your-secret-key
@@ -75,7 +75,8 @@ JWT_SECRET=your-secret-key
 Backend:
 ```bash
 cd server
-npm run dev```
+npm run dev
+```
 
 Frontend:
 ```bash
