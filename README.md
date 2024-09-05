@@ -58,7 +58,6 @@ For the backend:
 cd server
 npm install
 ```
-
 For the frontend:
 ```bash
 cd server
@@ -77,7 +76,6 @@ Backend:
 cd server
 npm run dev
 ```
-
 Frontend:
 ```bash
 cd client
