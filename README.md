@@ -53,12 +53,12 @@ The **Club Management System** is a one-stop solution for managing technical clu
    ```
 
 2. **Install Dependencies**:  
-For the backend:
+- For the backend:
 ```bash
 cd server
 npm install
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For the frontend:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- For the frontend:
 ```bash
 cd server
 npm install
@@ -71,12 +71,12 @@ JWT_SECRET=your-secret-key
 ```
 
 4. **Run the project**  
-Backend:
+- Backend:
 ```bash
 cd server
 npm run dev
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Frontend:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Frontend:
 ```bash
 cd client
 npm start
