@@ -58,7 +58,7 @@ The **Club Management System** is a one-stop solution for managing technical clu
 cd server
 npm install
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- For the frontend:
+- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For the frontend:
 ```bash
 cd server
 npm install
