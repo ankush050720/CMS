@@ -60,7 +60,7 @@ npm install
 ```
 - For the frontend:
 ```bash
-cd server
+cd client
 npm install
 ```
 
