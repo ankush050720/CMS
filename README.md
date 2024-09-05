@@ -58,7 +58,7 @@ For the backend:
 cd server
 npm install
 ```
-   For the frontend:
+    For the frontend:
 ```bash
 cd server
 npm install
