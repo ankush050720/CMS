@@ -133,7 +133,7 @@ The application should now be running locally on `http://localhost:3000` for the
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](#https://opensource.org/licenses/MIT) file for details
+This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) file for details
 
 ### Key Sections Breakdown:
 - **Features**: Includes the core functionalities like user management, event management, and resource allocation.
