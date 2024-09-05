@@ -131,7 +131,7 @@ The application should now be running locally on `http://localhost:3000` for the
 - **Handover**: A detailed handover document should be prepared if the project is transitioned to another team.
 
 ## Overview Presentation
-![CMS](https://imgur.com/a/Y7i6kWh)  
+![CMS]([https://imgur.com/a/Y7i6kWh](https://i.imgur.com/HVhO2ls.png))  
 [View the presentation](https://prezi.com/p/wyq-gzrvle5m/?present=1)
 
 ## License
