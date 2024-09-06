@@ -2,6 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const sendEmail = require('../utils/sendEmail');
 
 // Register a new user
 exports.register = async (req, res) => {
@@ -50,7 +51,17 @@ exports.forgotPassword = async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
     await user.save();
 
-    res.json({ msg: 'Password reset link has been sent.', token: resetToken });
+    // Send email
+    const resetURL = `http://localhost:3000/reset-password?token=${resetToken}`;
+    const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to the following link to reset your password: \n\n ${resetURL}`;
+
+    await sendEmail({
+      email: user.email,
+      subject: 'Password Reset Request',
+      message,
+    });
+
+    res.json({ msg: 'Password reset link has been sent to your email.' });
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
   }
