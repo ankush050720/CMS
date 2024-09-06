@@ -109,11 +109,6 @@ The application should now be running locally on `http://localhost:3000` for the
 - **Database**: MongoDB Atlas is recommended for hosting the database.
 - **CI/CD**: Set up CI/CD pipelines using GitHub Actions or Jenkins for continuous integration and deployment.
 
-- **Backend**: The Node.js server can be deployed on platforms like Heroku, AWS, or DigitalOcean.
-- **Frontend**: The React app can be hosted on platforms like Netlify or Vercel.
-- **Database**: MongoDB Atlas is recommended for hosting the database.
-- **CI/CD**: Set up CI/CD pipelines using GitHub Actions or Jenkins for continuous integration and deployment.
-
 ## Monitoring and Maintenance
 - **Logging**: Server logs are maintained using Winston.
 - **Monitoring**: Application performance can be monitored using New Relic or Datadog.
