@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginPage from './Pages/LoginPage/LoginPage';
-import RegisterPage from './Pages/RegisterPage/RegisterPage';
-import ForgotPasswordPage from './Pages/LoginPage/ForgotPasswordPage/ForgotPasswordPage';
-import ResetPasswordPage from './Pages/ResetPasswordPage/ResetPasswordPage';
-import Home from './Pages/Home/Home';
+import LoginPage from './pages/LoginPage/LoginPage';
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
+import Home from './pages/Home/Home';
 
 const App = () => {
   return (
