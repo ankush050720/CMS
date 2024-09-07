@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import axios from 'axios';
-import { API_URL } from '../../config';
+import { register } from '../../services/registerService';
 
-const Register = () => {
+const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('guest');
@@ -10,7 +9,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_URL}/api/auth/register`, { email, password, role });
+      await register(email, password, role);
       alert('User registered successfully');
     } catch (err) {
       console.error(err);
@@ -22,11 +21,21 @@ const Register = () => {
     <form onSubmit={handleRegister}>
       <div>
         <label>Email</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
       </div>
       <div>
         <label>Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
       </div>
       <div>
         <label>Role</label>
@@ -40,4 +49,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterForm;

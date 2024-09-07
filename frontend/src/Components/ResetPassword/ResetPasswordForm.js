@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import axios from 'axios';
-import { API_URL } from '../../config';
+import { resetPassword } from '../../services/resetPasswordService';
 
-const ResetPassword = () => {
+const ResetPasswordForm = () => {
   const [password, setPassword] = useState('');
   const [token] = useState(new URLSearchParams(window.location.search).get('token'));
   const [message, setMessage] = useState('');
@@ -10,13 +9,10 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${API_URL}/api/auth/reset-password`, {
-        token,
-        newPassword: password,
-      });
-      setMessage(res.data.msg);
+      const res = await resetPassword(token, password);
+      setMessage(res.msg);
     } catch (err) {
-      setMessage(err.response?.data?.msg || 'Server error');
+      setMessage(err.message || 'Server error');
     }
   };
 
@@ -38,4 +34,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordForm;
