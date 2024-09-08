@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/dbConfig');
 const authRoute = require('./routes/authRoute');
+const clubRoute = require('./routes/clubRoute');
 const cors = require('cors');
 
 // Load environment variables
@@ -19,6 +20,7 @@ connectDB();
 
 // Routes
 app.use('/api/auth', authRoute);
+app.use('/api', clubRoute); 
 
 
 // Listen on a port
