@@ -76,7 +76,7 @@ const Home = () => {
 
       {/* Club Cards Carousel */}
       <div className='carousel'>
-        <h1>Explore Our Clubs</h1>
+        <h1>Explore Our Clubs ...</h1>
         <div className="club-carousel">
           <Slider {...settings}>
             {clubs.map((club, index) => (
