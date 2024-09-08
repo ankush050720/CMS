@@ -13,6 +13,10 @@
   background-color: #f0f0f0;
 }
 
+.intro-header p {
+  margin-bottom: 30px;
+}
+
 .button-container {
   margin-top: 20px;
 }
@@ -92,16 +96,16 @@
 .slick-prev, .slick-next {
   width: 40px;
   height: 40px;
-  background-color: rgba(226, 253, 255, 0.5); /* Default background color */
+  background-color: rgba(226, 253, 255, 0.5);
   border-radius: 50%;
   color: #fff;
   z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: none; /* Ensure no border is applied */
-  outline: none; /* Remove any default focus outline */
-  transition: background-color 0.3s ease; /* Smooth transition for background color */
+  border: none;
+  outline: none;
+  transition: background-color 0.3s ease;
 }
 
 .slick-prev {
@@ -113,12 +117,11 @@
 }
 
 .slick-prev:hover, .slick-next:hover {
-  background-color: rgba(233, 236, 248, 0.8); /* Darker shade on hover */
+  background-color: rgba(233, 236, 248, 0.8);
 }
 
-/* Maintain consistent color on active state */
 .slick-prev:active, .slick-next:active {
-  background-color: rgba(205, 222, 255, 0.5); /* Same shade as default */
+  background-color: rgba(205, 222, 255, 0.5);
 }
 
 /* Ensure icons remain visible */

@@ -3,7 +3,6 @@ import ForgotPasswordForm from '../../components/ForgotPassword/ForgotPasswordFo
 const ForgotPasswordPage = () => {
   return (
     <div>
-      <h1>Forgot Password</h1>
       <ForgotPasswordForm />
     </div>
   );

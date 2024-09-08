@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { resetPassword } from '../../services/resetPasswordService';
+import './ResetPasswordForm.css'; // Import the corresponding CSS file
 
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState('');
@@ -17,20 +18,27 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>New Password</label>
-        <input
-          type="password"
-          placeholder="Enter your new password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+    <div className="reset-password-container">
+      <div className="reset-password-box">
+        {/* Add your logo if needed */}
+        <img src="https://via.placeholder.com/150" alt="Logo Placeholder" />
+        <h2>Reset Password</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>New Password</label>
+            <input
+              type="password"
+              placeholder="Enter your new password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">Submit</button>
+          {message && <p className="message">{message}</p>}
+        </form>
       </div>
-      <button type="submit">Submit</button>
-      {message && <p>{message}</p>}
-    </form>
+    </div>
   );
 };
 

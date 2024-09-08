@@ -8,7 +8,7 @@ import './Home.css';
 const Home = () => {
   const [clubs, setClubs] = useState([]);
   const [selectedClub, setSelectedClub] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);  // New state to track if modal is open
 
   useEffect(() => {
     const fetchClubs = async () => {
@@ -20,20 +20,12 @@ const Home = () => {
 
   const openModal = (club) => {
     setSelectedClub(club);
-    setIsModalOpen(true);
+    setIsModalOpen(true);  // Set modal open
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
     setSelectedClub(null);
-  };
-
-  // Calculate the URL for the Read More button
-  const getReadMoreUrl = () => {
-    if (selectedClub) {
-      return `/${selectedClub.name.replace(/\s+/g, '-').toLowerCase()}`;
-    }
-    return '#';
+    setIsModalOpen(false);  // Set modal closed
   };
 
   // Carousel settings
@@ -98,23 +90,15 @@ const Home = () => {
           </Slider>
         </div>
       </div>
+
       {/* Club Modal */}
-      <div className={`modal-overlay ${isModalOpen ? 'open' : ''}`}>
-        <div className={`modal-content ${isModalOpen ? 'open' : ''}`}>
-          <button className="close-button" onClick={closeModal}>×</button>
-          <div className="modal-header">
-            <img src={selectedClub?.logo} alt={`${selectedClub?.name} logo`} className="club-logo" />
-            <h2>{selectedClub?.name}</h2>
-          </div>
-          <div className="modal-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.</p>
-          </div>
-          <div className="modal-footer">
-            <button className="read-more-button" onClick={() => window.location.href = getReadMoreUrl()}>Read More</button>
-            <button className="close-modal-button" onClick={closeModal}>Close</button>
-          </div>
-        </div>
-      </div>
+      {selectedClub && (
+        <ClubModal 
+          club={selectedClub} 
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+        />
+      )}
     </div>
   );
 };
