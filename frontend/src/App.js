@@ -4,6 +4,7 @@ import RegisterPage from './pages/RegisterPage/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
 import Home from './pages/Home/Home';
+import ClubPage from './pages/ClubPage/ClubPage';
 
 const App = () => {
   return (
@@ -15,6 +16,9 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          
+          {/* Dynamic club page route */}
+          <Route path="/:clubName" element={<ClubPage />} />
         </Routes>
       </div>
     </Router>

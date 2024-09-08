@@ -1,0 +1,28 @@
+.club-card {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .club-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .club-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  
+  .club-name {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
