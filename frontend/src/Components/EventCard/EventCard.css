@@ -1,0 +1,43 @@
+/* EventCard.css */
+.event-card {
+  background-color: #2196F3; /* Blue background */
+  color: #fff; /* White text */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center; /* Center the content */
+  max-width: 200px; /* Set a fixed width similar to the card in the image */
+  margin: 10px; /* Add some space around the card */
+}
+
+.event-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.event-card h3 {
+  margin-bottom: 20px; /* Add some space between the title and the details */
+  font-size: 18px; /* Adjust the font size */
+  font-weight: 500; /* Slightly bolder font */
+}
+
+.event-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Wrap content */
+  font-size: 16px; /* Adjust font size */
+}
+
+.event-details span {
+  margin: 10px 0;
+  display: block; /* Block display to ensure spacing */
+}
+
+.event-details .icon {
+  font-size: 20px; /* Adjust icon size */
+  margin-right: 5px;
+}
+

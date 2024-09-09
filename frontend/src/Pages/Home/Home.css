@@ -138,3 +138,43 @@
 .slick-dots li.slick-active button:before {
   color: #007bff;
 }
+
+/* Home.css */
+.events-section {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0;
+}
+
+.events-section h1 {
+  margin :40px auto ;
+}
+
+.event-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  width: 100%;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.show-more-button {
+  margin-top: 30px;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.show-more-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}

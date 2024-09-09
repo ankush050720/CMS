@@ -1,0 +1,70 @@
+/* EventModal.css */
+.event-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.event-modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  position: relative; /* Added to position the close button */
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.event-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.event-modal-content.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.event-poster img {
+  max-width: 200px;
+  margin-right: 20px;
+}
+
+.event-info {
+  max-width: 400px;
+}
+
+.event-extra-info span {
+  display: block;
+  margin: 10px 0;
+}
+
+.close-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-icon:hover {
+  color: #dc3545; /* Changes to red on hover */
+}
+
+.payment-button {
+  background-color: #28a745;
+}
