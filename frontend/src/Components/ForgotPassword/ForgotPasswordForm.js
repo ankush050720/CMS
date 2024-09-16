@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { sendForgotPasswordLink } from '../../services/forgotPasswordService';
-import './ForgotPasswordForm.css'; // Import the corresponding CSS file
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState('');
@@ -17,28 +17,38 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <div className="forgot-password-container">
-      <div className="forgot-password-box">
-        {/* Add your logo if needed */}
-        <img src="https://via.placeholder.com/150" alt="Logo Placeholder" />
-        <h2>Forgot Password</h2>
+    <Container maxWidth="xs">
+      <Box sx={{ mt: 8, boxShadow: 3, p: 4, borderRadius: 2 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Forgot Password
+        </Typography>
         <form onSubmit={handleForgotPassword}>
-          <div>
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit">Send Reset Link</button>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Email"
+            variant="outlined"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{ mt: 2 }}
+          >
+            Send Reset Link
+          </Button>
         </form>
-        <div className="create-account">
-          <a href="/login">Back to Login</a>
-        </div>
-      </div>
-    </div>
+        <Box sx={{ mt: 2, textAlign: 'center' }}>
+          <Typography variant="body2">
+            <a href="/login">Back to Login</a>
+          </Typography>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 

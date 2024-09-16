@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { resetPassword } from '../../services/resetPasswordService';
-import './ResetPasswordForm.css'; // Import the corresponding CSS file
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState('');
@@ -18,27 +18,35 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <div className="reset-password-container">
-      <div className="reset-password-box">
-        {/* Add your logo if needed */}
-        <img src="https://via.placeholder.com/150" alt="Logo Placeholder" />
-        <h2>Reset Password</h2>
+    <Container maxWidth="xs">
+      <Box sx={{ mt: 8, boxShadow: 3, p: 4, borderRadius: 2 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Reset Password
+        </Typography>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label>New Password</label>
-            <input
-              type="password"
-              placeholder="Enter your new password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit">Submit</button>
-          {message && <p className="message">{message}</p>}
+          <TextField
+            fullWidth
+            margin="normal"
+            label="New Password"
+            type="password"
+            variant="outlined"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{ mt: 2 }}
+          >
+            Submit
+          </Button>
+          {message && <Typography color="error" sx={{ mt: 2 }}>{message}</Typography>}
         </form>
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 };
 

@@ -4,7 +4,12 @@ const connectDB = require('./config/dbConfig');
 const authRoute = require('./routes/authRoute');
 const clubRoute = require('./routes/clubRoute');
 const eventRoutes = require('./routes/eventRoute');
+const paymentRoute = require('./routes/paymentRoute');
+const userRoute = require('./routes/userRoute');
+const proposeRoutes = require('./routes/proposeRoute');
+const memberRoute = require('./routes/memberRoute');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 // Load environment variables
 dotenv.config();
@@ -12,9 +17,14 @@ dotenv.config();
 // Initialize Express
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 //Init cross-origin request handlers
-app.use(cors({ origin: 'http://localhost:3000' }));
+// Update your CORS configuration
+app.use(cors({
+    origin: 'http://localhost:3000', 
+    credentials: true, // Allow credentials (cookies)
+  }));
 
 // Connect to Database
 connectDB();
@@ -23,7 +33,10 @@ connectDB();
 app.use('/api/auth', authRoute);
 app.use('/api', clubRoute); 
 app.use('/api/events', eventRoutes);
-
+app.use('/api', paymentRoute);
+app.use('/user', userRoute);
+app.use('/api/propose', proposeRoutes);
+app.use('/api/members', memberRoute);
 
 // Listen on a port
 const PORT = process.env.PORT || 5000;

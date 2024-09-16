@@ -2,42 +2,52 @@
 .event-card {
   background-color: #2196F3; /* Blue background */
   color: #fff; /* White text */
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px; /* Slightly more rounded corners */
+  padding: 25px; /* Increased padding for better spacing */
+  box-shadow: 10px 10px 16px rgba(0, 0, 0, 0.327); /* Enhanced shadow */
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center; /* Center the content */
-  max-width: 200px; /* Set a fixed width similar to the card in the image */
-  margin: 10px; /* Add some space around the card */
+  text-align: center;
+  max-width: 220px; /* Increased width for more space */
+  margin: 15px; /* More space between cards */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Professional font */
 }
 
 .event-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  transform: scale(1.08); /* Increased scale on hover */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Deeper shadow on hover */
 }
 
 .event-card h3 {
-  margin-bottom: 20px; /* Add some space between the title and the details */
-  font-size: 18px; /* Adjust the font size */
-  font-weight: 500; /* Slightly bolder font */
+  margin-bottom: 15px; /* Space between title and details */
+  font-size: 20px; /* Larger font size */
+  font-weight: 600; /* Bolder font */
+  transition: font-size 0.3s ease; /* Smooth transition for font size change */
+}
+
+.event-card:hover h3 {
+  font-size: 24px; /* Larger font size on hover */
 }
 
 .event-details {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column; /* Stack details vertically */
   align-items: center;
-  flex-wrap: wrap; /* Wrap content */
-  font-size: 16px; /* Adjust font size */
+  font-size: 16px; /* Consistent font size */
+  line-height: 1.5; /* Improved readability */
+  transition: font-size 0.3s ease; /* Smooth transition for font size change */
+}
+
+.event-card:hover .event-details {
+  font-size: 14px; /* Smaller font size on hover */
 }
 
 .event-details span {
-  margin: 10px 0;
-  display: block; /* Block display to ensure spacing */
+  margin: 8px 0; /* Vertical spacing */
+  display: block; /* Block display for spacing */
 }
 
 .event-details .icon {
-  font-size: 20px; /* Adjust icon size */
-  margin-right: 5px;
+  font-size: 24px; /* Larger icon size */
+  margin-right: 8px; /* Spacing between icon and text */
 }
-

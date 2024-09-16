@@ -44,7 +44,7 @@ const eventSchema = new mongoose.Schema({
   club: {
     type: String, // Accepts club name directly as a string
     required: true,
-  }
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Event', eventSchema);

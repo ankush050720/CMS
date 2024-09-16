@@ -1,0 +1,42 @@
+/* Container for the entire page */
+.club-page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Club title */
+.club-page-container h2 {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Club description */
+.club-page-container p {
+  font-size: 1.2em;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+/* Committee headings */
+.club-page-container h4 {
+  font-size: 1.8em;
+  color: #444;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* Committee lists */
+.club-page-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.club-page-container ul li {
+  font-size: 1.1em;
+  color: #555;
+  margin-bottom: 10px;
+}

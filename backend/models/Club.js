@@ -4,6 +4,7 @@ const clubSchema = new mongoose.Schema({
   name: { type: String, required: true },
   logo: { type: String, required: true },
   about: { type: String, required: true }, // Info shown in modal
+  type: { type: String, required: true }, // chapter or club
   description: { type: String, required: true }, // Info shown on the club page
   executiveCommittee: {
     chairperson: { type: String, required: true },

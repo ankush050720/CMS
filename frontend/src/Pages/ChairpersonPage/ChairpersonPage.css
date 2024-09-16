@@ -1,0 +1,187 @@
+/* Main Container for the Chairperson Page */
+.chairperson-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh; /* Take full height of viewport */
+  }
+  
+  /* Style for headings */
+  h1, h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #333;
+  }
+  
+  /* Style for subheadings */
+  h2 {
+    font-size: 2rem;
+    color: #007bff; /* Add color for subheadings */
+  }
+  
+  /* Centralized card style */
+  .card {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content inside cards */
+    justify-content: center;
+    text-align: center; /* Center text */
+  }
+  
+  /* Centralized forms inside cards */
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  /* Centralized input and select elements */
+  input, select, textarea {
+    width: 80%; /* Ensure input fields are consistently wide */
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  
+  /* Styling for the buttons */
+  button {
+    width: 80%; /* Button width consistent with input fields */
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  /* Dropdowns and select styling */
+  select {
+    appearance: none;
+    background-color: #f0f0f0;
+  }
+  
+  /* Styling for text areas */
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  /* Margin for each section */
+  .section {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Ensure elements stack vertically */
+    text-align: center; /* Center text within sections */
+    width: 100%;
+  }
+  
+  /* Specific styles for the selector buttons (Propose Events, Add Member, etc.) */
+  .selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  
+  .selector-button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .selector-button.active {
+    background-color: #28a745; /* Highlight the selected button */
+  }
+  
+  .selector-button:hover {
+    transform: scale(1.05);
+  }
+  
+  .selector-button:not(.active):hover {
+    background-color: #0056b3; /* Hover effect for non-selected buttons */
+  }
+  
+  /* Modal styling */
+  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    width: 80%;
+    max-width: 700px;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+  
+  /* Event Propose Form Specific */
+  .propose-form h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  /* Add Member Section */
+  .add-member {
+    text-align: center;
+  }
+  
+  /* Change Roles Section */
+  .change-roles {
+    text-align: center;
+  }
+  
+  /* Close Registration & Close Events */
+  .close-registration,
+  .close-events {
+    text-align: center;
+  }
+  
+  .close-registration select,
+  .close-events select {
+    width: 60%;
+  }
+  

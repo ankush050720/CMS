@@ -27,7 +27,7 @@ const sampleEvents = [
     fee: 100,
     logo: 'https://via.placeholder.com/150',
     members: '1-2', // Range of participants
-    club: 'Coding Club',
+    club: 'Coding Chapter',
   },
   {
     name: 'Coding Hackathon',
@@ -38,7 +38,7 @@ const sampleEvents = [
     fee: 100,
     logo: 'https://via.placeholder.com/150',
     members: '1-2', // Range of participants
-    club: 'Coding Club',
+    club: 'Cybersecurity Chapter',
   },
   {
     name: 'Coding Hackathon',
@@ -49,7 +49,7 @@ const sampleEvents = [
     fee: 100,
     logo: 'https://via.placeholder.com/150',
     members: '1-2', // Range of participants
-    club: 'Coding Club',
+    club: 'Cybersecurity Club',
   },
   {
     name: 'Coding Hackathon',
@@ -60,7 +60,7 @@ const sampleEvents = [
     fee: 100,
     logo: 'https://via.placeholder.com/150',
     members: '1-2', // Range of participants
-    club: 'Coding Club',
+    club: 'Sankhya Chapter',
   },
   {
     name: 'Robotics Workshop',
@@ -71,7 +71,7 @@ const sampleEvents = [
     fee: 50,
     logo: 'https://via.placeholder.com/150',
     members: '3', // Fixed number of participants
-    club: 'Robotics Club',
+    club: 'Sankhya Club',
   }
 ];
 
