@@ -658,9 +658,14 @@ const ChairpersonPage = () => {
                         <Typography variant="body1">
                           Grand Total: {proposal.grandTotal}
                         </Typography>
-                        <Typography variant="body1">
-                          Comment: {proposal.comment}
-                        </Typography>
+                        {
+                          proposal.comment ? 
+                          (<Typography variant="body1" mt ={2}>
+                          <b>Comment:</b> {proposal.comment}
+                        </Typography>) :
+                        (""
+              )}
+                        
                       </Box>
                     </Collapse>
                   </CardContent>
