@@ -99,11 +99,30 @@ const removeMember = async (req, res) => {
   }
 };
 
+const changeRole = async (req, res) => {
+  try {
+    const { email, role } = req.body;
+    const member = await User.findOne({ email, club: req.user.club });
+    if (!member) {
+      return res.status(404).json({ message: 'Member not found' });
+    }
+
+    // Update the member's role
+    member.role = role;
+    await member.save();
+
+    res.status(200).json({ message: 'Role updated successfully' });
+  } catch (error) {
+    console.error('Error changing role:', error);
+    res.status(500).json({ message: 'Failed to change role', error });
+  }
+};
 
 module.exports = {
   getClubMembers,
   showUsers,
   addMember,
   showRemovableMembers,
-  removeMember
+  removeMember, 
+  changeRole
 };

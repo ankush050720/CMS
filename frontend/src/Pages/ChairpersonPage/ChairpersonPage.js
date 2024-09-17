@@ -26,6 +26,7 @@ import {
   addMember,
   getRemovableMembers,
   removeMember,
+  changeRole
 } from "../../services/memberService";
 
 const ChairpersonPage = () => {
@@ -59,6 +60,8 @@ const ChairpersonPage = () => {
   const [selectedUser, setSelectedUser] = useState("");
   const [removableMembers, setRemovableMembers] = useState([]);
   const [selectedMember, setSelectedMember] = useState("");
+  const [selectMember, setSelectMember] = useState('');
+  const [selectedRole, setSelectedRole] = useState('');
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -243,6 +246,17 @@ const ChairpersonPage = () => {
     }
   };
 
+  const handleRoleChangeSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await changeRole(selectMember, selectedRole);
+      alert("Role changed successfully");
+    } catch (error) {
+      console.error("Error changing role:", error);
+      alert("Failed to change role");
+    }
+  };
+
   return (
     <Container maxWidth="md" className="page-container">
       <Header email={email} />
@@ -283,7 +297,7 @@ const ChairpersonPage = () => {
 
       <Box className="card-container">
         {selectedAction === "proposeEvent" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Propose Event
@@ -506,7 +520,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "viewProposals" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 View All Proposals
@@ -516,7 +530,7 @@ const ChairpersonPage = () => {
                   elevation={3}
                   className="action-card"
                   key={proposal._id}
-                  style={{ margin: "10px 0" }}
+                  style={{ margin: "10px 0" , width: '100%', maxWidth: 1000, mb: 2 }}
                 >
                   <CardContent>
                     <Box
@@ -644,6 +658,9 @@ const ChairpersonPage = () => {
                         <Typography variant="body1">
                           Grand Total: {proposal.grandTotal}
                         </Typography>
+                        <Typography variant="body1">
+                          Comment: {proposal.comment}
+                        </Typography>
                       </Box>
                     </Collapse>
                   </CardContent>
@@ -654,7 +671,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "viewMember" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 <u>Club Members</u>
@@ -680,7 +697,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "addMember" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Add Member
@@ -714,7 +731,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "removeMember" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Remove Member
@@ -733,9 +750,7 @@ const ChairpersonPage = () => {
                         </MenuItem>
                       ))
                     ) : (
-                      <MenuItem disabled>
-                        No members available
-                      </MenuItem>
+                      <MenuItem disabled>No members available</MenuItem>
                     )}
                   </Select>
                 </FormControl>
@@ -754,17 +769,66 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "changeRoles" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Change Roles
               </Typography>
+              <form onSubmit={handleRoleChangeSubmit}>
+                <FormControl fullWidth sx= {{mb:2}}>
+                  <InputLabel>Select Member</InputLabel>
+                  <Select
+                    value={selectMember}
+                    onChange={(e) => setSelectMember(e.target.value)}
+                  >
+                    {removableMembers.length > 0 ? (
+                      removableMembers.map((member) => (
+                        <MenuItem key={member._id} value={member.email}>
+                          {member.email} - {member.role}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem disabled>No members available</MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
+
+                <FormControl fullWidth sx = {{mb:3}}>
+                  <InputLabel>Select New Role</InputLabel>
+                  <Select
+                    value={selectedRole}
+                    onChange={(e) => setSelectedRole(e.target.value)}
+                  >
+                    <MenuItem value="secretary">Secretary</MenuItem>
+                    <MenuItem value="treasurer">Treasurer</MenuItem>
+                    <MenuItem value="marketing & pr secretary">
+                      Marketing & PR Secretary
+                    </MenuItem>
+                    <MenuItem value="web master">Web Master</MenuItem>
+                    <MenuItem value="membership chair">
+                      Membership Chair
+                    </MenuItem>
+                    <MenuItem value="management head">Management Head</MenuItem>
+                    <MenuItem value="content & creative head">
+                      Content & Creative Head
+                    </MenuItem>
+                    <MenuItem value="digital & social media head">
+                      Digital & Social Media Head
+                    </MenuItem>
+                    <MenuItem value="member">Member</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <Button type="submit" variant="contained" color="primary">
+                  Submit
+                </Button>
+              </form>
             </CardContent>
           </Card>
         )}
 
         {selectedAction === "changeClubData" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Change Club Data
@@ -774,7 +838,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "addEvent" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Add New Event
@@ -784,7 +848,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "registerInEvent" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Register For Event
@@ -795,7 +859,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "closeRegistration" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Close Registration
@@ -805,7 +869,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "closeEvent" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Mark Event as Complete

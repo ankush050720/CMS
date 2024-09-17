@@ -9,5 +9,6 @@ router.get('/show-users', authMiddleware, memberController.showUsers);
 router.post('/add-member', authMiddleware, memberController.addMember);
 router.get('/removable-members', authMiddleware, memberController.showRemovableMembers);
 router.post('/remove-member', authMiddleware, memberController.removeMember);
+router.post('/change-role', authMiddleware, memberController.changeRole) ;
 
 module.exports = router;

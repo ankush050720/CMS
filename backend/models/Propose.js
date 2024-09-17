@@ -37,7 +37,8 @@ const ProposeSchema = new mongoose.Schema({
   equipmentTotal: Number,
   travelTotal: Number,
   grandTotal: Number,
-  club: { type: mongoose.Schema.Types.ObjectId, ref: 'Club', required: true } 
+  comment: String,
+  club: { type: mongoose.Schema.Types.ObjectId, ref: 'Club', required: true }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Propose', ProposeSchema);

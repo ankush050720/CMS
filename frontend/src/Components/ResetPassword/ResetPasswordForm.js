@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { resetPassword } from '../../services/resetPasswordService';
-import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import { TextField, Button, Typography, Box } from '@mui/material';
+import './ResetPasswordForm.css'; // Assuming the CSS for background image
 
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState('');
@@ -18,9 +19,18 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <Container maxWidth="xs">
-      <Box sx={{ mt: 8, boxShadow: 3, p: 4, borderRadius: 2 }}>
-        <Typography variant="h4" align="center" gutterBottom>
+    <div className='container'> 
+    <Box
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'flex-start', // Align form to the left
+        alignItems: 'center', // Center vertically
+        paddingLeft: '5%', // Space from the left
+      }}
+    >
+      <Box sx={{ maxWidth: 400 }}> {/* Restrict form width */}
+        <Typography variant="h4" gutterBottom>
           Reset Password
         </Typography>
         <form onSubmit={handleSubmit}>
@@ -33,6 +43,8 @@ const ResetPasswordForm = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            autoComplete="off"
+            size="small" // Compact field size
           />
           <Button
             fullWidth
@@ -43,10 +55,16 @@ const ResetPasswordForm = () => {
           >
             Submit
           </Button>
-          {message && <Typography color="error" sx={{ mt: 2 }}>{message}</Typography>}
+
+          {message && (
+            <Typography color="error" sx={{ mt: 2 }}>
+              {message}
+            </Typography>
+          )}
         </form>
       </Box>
-    </Container>
+    </Box>
+    </div>
   );
 };
 

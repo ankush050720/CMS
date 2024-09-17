@@ -1,0 +1,19 @@
+.faculty-mentor-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  .mentor-card {
+    width: 60%;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .action-card {
+    width: 60%;
+    margin-top: 20px;
+  }
+
+    

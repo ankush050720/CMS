@@ -1,86 +1,9 @@
-/* Register Form container */
-.register-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-  }
-  
-  .register-box {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    text-align: center;
-  }
-  
-  .register-box img {
-    width: 100px;
-    margin-bottom: 20px;
-  }
-  
-  .register-box h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
-  }
-  
-  .register-box form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .register-box label {
-    font-size: 14px;
-    text-align: left;
-    color: #555;
-  }
-  
-  .register-box input,
-  .register-box select {
-    padding: 12px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    outline: none;
-    width: 100%;
-  }
-  
-  .register-box input:focus,
-  .register-box select:focus {
-    border-color: #6200ea;
-  }
-  
-  .register-box button {
-    background-color: #6200ea;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .register-box button:hover {
-    background-color: #4b00b0;
-  }
-  
-  .create-account {
-    margin-top: 10px;
-  }
-  
-  .create-account a {
-    font-size: 12px;
-    text-decoration: none;
-    color: #6200ea;
-    cursor: pointer;
-  }
-  
-  .create-account a:hover {
-    text-decoration: underline;
-  }
-  
+.container {
+  background-image: url('/public/bgimg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  height:100vh;
+}
