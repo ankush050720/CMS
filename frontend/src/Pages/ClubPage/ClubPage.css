@@ -40,3 +40,11 @@
   color: #555;
   margin-bottom: 10px;
 }
+
+.info-overlay {
+  transform: translateY(100%); /* Hidden by default */
+}
+
+.MuiBox-root:hover .info-overlay {
+  transform: translateY(0); /* Slide up on hover */
+}

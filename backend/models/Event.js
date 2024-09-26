@@ -45,6 +45,11 @@ const eventSchema = new mongoose.Schema({
     type: String, // Accepts club name directly as a string
     required: true,
   },
+  status: {
+    type: String,
+    enum: ['upcoming', 'ongoing', 'completed' , 'feedbackClosed'],
+    default: 'upcoming', 
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Event', eventSchema);

@@ -15,24 +15,40 @@ exports.getAllEvents = async (req, res) => {
   }
 };
 
-// Get event by ID
-exports.getEventById = async (req, res) => {
+exports.checkVenue = async (req, res) => {
   try {
-    const event = await Event.findById(req.params.id).populate('club');
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
-    }
-    res.status(200).json(event);
+    const events = await Event.find().populate('club');  // Populate to include club info
+    res.status(200).json(events);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching event', error });
+    res.status(500).json({ message: 'Error fetching events', error });
   }
 };
+
+// Get event by ID
+exports.getClubEvents = async (req, res) => {
+  try {
+    const clubId = req.user.club.name;  // Assuming req.user.club is the club ID
+    const events = await Event.find({ club: clubId });  // Find all events associated with the clubId
+    if (!events || events.length === 0) {
+      return res.status(404).json({ message: 'No events found for this club' });
+    }
+    res.status(200).json(events);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching events', error });
+  }
+};
+
 
 // Create a new event
 exports.createEvent = async (req, res) => {
   try {
-    const { name, description, date, time, venue, fee, club, logo, members } = req.body;
+    // Extract fields from the request body
+    const { name, description, date, time, venue, fee, logo, members } = req.body;
 
+    // Extract club from req.user.club
+    const club = req.user.club.name;
+
+    // Create the event object
     const event = new Event({
       name,
       description,
@@ -40,43 +56,104 @@ exports.createEvent = async (req, res) => {
       time,
       venue,
       fee,
-      club,
+      club, // Automatically assigned from req.user.club
       logo,
-      members
+      members, // Add members to the event object
     });
 
+    // Save the event to the database
     await event.save();
+
+    // Get the faculty mentor and admin emails
+    const facultyMentor = await User.findOne({ club: req.user.club._id, role: 'faculty mentor' });
+    const admin = await User.findOne({ role: 'admin' });
+
+    // Prepare the email content
+    const emailContent = `A new event has been added:
+      Name: ${name}
+      Description: ${description}
+      Date: ${date}
+      Time: ${time}
+      Venue: ${venue}
+      Fee: ${fee}
+      Club: ${club}
+    `;
+
+    // Send email to both faculty mentor and admin
+    if (facultyMentor) {
+      await sendEmail({
+        email: facultyMentor.email,
+        subject: 'New Event Added',
+        message: emailContent,
+      });
+    }
+    if (admin) {
+      await sendEmail({
+        email: admin.email,
+        subject: 'New Event Added',
+        message: emailContent,
+      });
+    }
+
+    // Return success response
     res.status(201).json({ message: 'Event created successfully', event });
   } catch (error) {
+    // Handle errors and return failure response
     res.status(500).json({ message: 'Error creating event', error });
   }
 };
 
-// Update event
-exports.updateEvent = async (req, res) => {
+
+// Delete event
+exports.removeEvent = async (req, res) => {
   try {
-    const event = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const { eventId } = req.body;
+    
+    // Find and remove the event by ID
+    const event = await Event.findByIdAndDelete(eventId);
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
-    res.status(200).json({ message: 'Event updated successfully', event });
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating event', error });
+
+    // Get the faculty mentor and admin emails
+    const facultyMentor = await User.findOne({ club: req.user.club._id, role: 'faculty mentor' });
+    const admin = await User.findOne({ role: 'admin' });
+
+    // Prepare the email content
+    const emailContent = `The following event has been removed:
+      Name: ${event.name}
+      Description: ${event.description}
+      Date: ${event.date}
+      Time: ${event.time}
+      Venue: ${event.venue}
+      Fee: ${event.fee}
+      Club: ${event.club}
+    `;
+
+    // Send email to both faculty mentor and admin
+    if (facultyMentor) {
+      await sendEmail({
+        email: facultyMentor.email,
+        subject: 'Event Removed',
+        message: emailContent,
+      });
+      
+      if (admin) {
+      await sendEmail({
+        email: admin.email,
+        subject: 'Event Removed',
+        message: emailContent,
+      });
+    }
+
+    // Return success response
+    res.status(200).json({ message: 'Event removed successfully' });
+  }} catch (error) {
+    // Handle errors and return failure response
+    res.status(500).json({ message: 'Error removing event', error });
   }
 };
 
-// Delete event
-exports.deleteEvent = async (req, res) => {
-  try {
-    const event = await Event.findByIdAndDelete(req.params.id);
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
-    }
-    res.status(200).json({ message: 'Event deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error deleting event', error });
-  }
-};
 
 // Get all events a user is registered for
 exports.getRegisteredEvents = async (req, res) => {
@@ -350,5 +427,195 @@ exports.getTeamByEmail = async (req, res) => {
   } catch (err) {
     console.error('Error fetching team by email:', err.message);
     res.status(500).json({ message: 'Error fetching team' });
+  }
+};
+
+exports.getUpcomingEvents = async(req, res) => {
+  try {
+    const club = req.user.club;
+    const upcomingEvents = await Event.find({  status:'upcoming' , club:club.name });
+    res.status(200).json(upcomingEvents);
+  } catch (e) {
+    console.error('Error fetching upcoming events:', e.message);
+    res.status(500).json({ message: 'Error fetching upcoming events' });
+  }
+};
+
+exports.getOngoingEvents = async(req, res) => {
+  try {
+    const club = req.user.club;
+    const upcomingEvents = await Event.find({  status:'ongoing' , club:club.name });
+    res.status(200).json(upcomingEvents);
+  } catch (e) {
+    console.error('Error fetching upcoming events:', e.message);
+    res.status(500).json({ message: 'Error fetching upcoming events' });
+  }
+};
+
+exports.getClosedEvents = async(req, res) => {
+  try {
+    const club = req.user.club;
+    const upcomingEvents = await Event.find({  status:'completed' , club:club.name });
+    res.status(200).json(upcomingEvents);
+  } catch (e) {
+    console.error('Error fetching upcoming events:', e.message);
+    res.status(500).json({ message: 'Error fetching upcoming events' });
+  }
+};
+
+
+exports.closeRegistration = async (req, res) => {
+  try {
+    const eventId = req.body.eventId;
+    const event = await Event.findById(eventId);
+    
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Update event status to 'ongoing'
+    event.status = 'ongoing';
+    await event.save();
+
+    // Retrieve faculty mentor and admin details
+    const facultyMentor = await User.findOne({ club: req.user.club._id, role: 'faculty mentor' });
+    const admin = await User.findOne({ role: 'admin' });
+
+    // Prepare the email content
+    const emailContent = `The registration for the following event has been closed:
+      Name: ${event.name}
+      Description: ${event.description}
+      Date: ${event.date}
+      Time: ${event.time}
+      Venue: ${event.venue}
+      Fee: ${event.fee}
+      Club: ${event.club.name}
+    `;
+
+    // Send email to both faculty mentor and admin
+    if (facultyMentor) {
+      await sendEmail({
+        email: facultyMentor.email,
+        subject: 'Event Registration Closed',
+        message: emailContent,
+      });
+    }
+
+    if (admin) {
+      await sendEmail({
+        email: admin.email,
+        subject: 'Event Registration Closed',
+        message: emailContent,
+      });
+    }
+
+    res.status(200).json({ message: 'Event registration closed and emails sent' });
+  } catch (error) {
+    console.error('Error closing registration:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.closeEvent = async (req, res) => {
+  try {
+    const eventId = req.body.eventId;
+    const event = await Event.findById(eventId);
+    
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Update event status to 'completed'
+    event.status = 'completed';
+    await event.save();
+
+    // Retrieve faculty mentor and admin details
+    const facultyMentor = await User.findOne({ club: req.user.club._id, role: 'faculty mentor' });
+    const admin = await User.findOne({ role: 'admin' });
+
+    // Prepare the email content
+    const emailContent = `The following event has been marked as completed:
+      Name: ${event.name}
+      Description: ${event.description}
+      Date: ${event.date}
+      Time: ${event.time}
+      Venue: ${event.venue}
+      Fee: ${event.fee}
+      Club: ${event.club.name}
+    `;
+
+    // Send email to both faculty mentor and admin
+    if (facultyMentor) {
+      await sendEmail({
+        email: facultyMentor.email,
+        subject: 'Event Completed',
+        message: emailContent,
+      });
+    }
+
+    if (admin) {
+      await sendEmail({
+        email: admin.email,
+        subject: 'Event Completed',
+        message: emailContent,
+      });
+    }
+
+    res.status(200).json({ message: 'Event marked as completed and emails sent' });
+  } catch (error) {
+    console.error('Error closing event:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.closeFeedback = async (req, res) => {
+  try {
+    const eventId = req.body.eventId;
+    const event = await Event.findById(eventId);
+    
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Update event status to 'feedbackClosed'
+    event.status = 'feedbackClosed';
+    await event.save();
+
+    // Retrieve faculty mentor and admin details
+    const facultyMentor = await User.findOne({ club: req.user.club._id, role: 'faculty mentor' });
+    const admin = await User.findOne({ role: 'admin' });
+
+    // Prepare the email content
+    const emailContent = `The feedback for the following event has been closed:
+      Name: ${event.name}
+      Description: ${event.description}
+      Date: ${event.date}
+      Time: ${event.time}
+      Venue: ${event.venue}
+      Fee: ${event.fee}
+      Club: ${event.club.name}
+    `;
+
+    // Send email to both faculty mentor and admin
+    if (facultyMentor) {
+      await sendEmail({
+        email: facultyMentor.email,
+        subject: 'Event Feedback Closed',
+        message: emailContent,
+      });
+    }
+
+    if (admin) {
+      await sendEmail({
+        email: admin.email,
+        subject: 'Event Feedback Closed',
+        message: emailContent,
+      });
+    }
+
+    res.status(200).json({ message: 'Feedback closed and emails sent' });
+  } catch (error) {
+    console.error('Error closing feedback:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };

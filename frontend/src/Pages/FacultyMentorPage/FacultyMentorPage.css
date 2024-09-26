@@ -2,9 +2,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
   }
   
+  Header {
+    width: 60% !important;
+    margin-bottom: 30px;
+  }
+
   .mentor-card {
     width: 60%;
     margin-bottom: 20px;

@@ -84,12 +84,13 @@ const updateProposalStatus = async (req, res) => {
   }
 };
 
+
 const addChairperson = async (req, res) => {
   const { role, memberId } = req.body;
   const user = req.user; // faculty mentor making the request
 
   try {
-    // Check if chairperson or vicechairperson already exists
+    // Check if chairperson or vice-chairperson already exists
     const existingChair = await User.findOne({ club: user.club, role: 'chairperson' });
     const existingViceChair = await User.findOne({ club: user.club, role: 'vicechairperson' });
 
@@ -97,12 +98,23 @@ const addChairperson = async (req, res) => {
       return res.status(400).json({ error: `${role} already exists.` });
     }
 
-    // Update selected member's role
+    // Update the selected member's role
     const member = await User.findById(memberId);
+    if (!member) {
+      return res.status(404).json({ message: 'Member not found' });
+    }
+
     member.role = role;
     await member.save();
 
-    return res.status(200).json({ message: `${role} added successfully.` });
+    // Send an email to the new chairperson/vice-chairperson
+    await sendEmail({
+      email: member.email,
+      subject: `Appointment as ${role}`,
+      message: `Congratulations! You have been appointed as the ${role} of the club ${user.club.name}.`
+    });
+
+    return res.status(200).json({ message: `${role} added successfully and email notification sent to ${member.email}.` });
   } catch (error) {
     console.error("Error adding chairperson:", error);
     return res.status(500).json({ error: "Server error" });
@@ -129,8 +141,53 @@ const getClubMembers = async (req, res) => {
   }
 };
 
+const getClubLeaders = async (req, res) => {
+  try {
+    const clubId = req.user.club;
+    const chairperson = await User.findOne({ club: clubId, role: 'chairperson' });
+    const viceChairperson = await User.findOne({ club: clubId, role: 'vicechairperson' });
+    res.status(200).json({ chairperson, viceChairperson });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching club leaders' });
+  }
+};
+
+
+const removeClubLeader = async (req, res) => {
+  const { userId, role } = req.body;
+  const clubName = req.user.club.name; // Assuming the faculty mentor is logged in
+
+  try {
+    // Find and update the user's role
+    const user = await User.findByIdAndUpdate(userId, { role: 'member' }, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Construct the email subject and message
+    const subject = `Role Change Notification`;
+    const message = `Dear ${user.email},\n\nYou have been removed from the position of ${role} at ${clubName}. Your role has been updated to 'member'.\n\nBest regards,\nThe Club Team`;
+
+    // Send the email
+    await sendEmail({
+      email: user.email,
+      subject: subject,
+      message: message,
+    });
+
+    res.status(200).json({ message: `${role} removed successfully and notification sent` });
+  } catch (error) {
+    console.error('Error removing club leader:', error);
+    res.status(500).json({ message: 'Error removing club leader' });
+  }
+};
+
+
 module.exports = {
   updateProposalStatus,
   addChairperson, 
-  getClubMembers
+  getClubMembers,
+  getClubLeaders,
+  removeClubLeader,  // Function to remove club leader
 };

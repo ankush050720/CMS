@@ -23,6 +23,9 @@
 }
 
 .club-name {
+  font-weight: bolder;
+  font-family:cursive;
   margin-top: 90px;
   text-align: center;
+  font-size: larger;
 }

@@ -7,6 +7,7 @@ import EventModal from "../../components/EventModal/EventModal";
 import { getAllClubs } from "../../services/clubService";
 import { getAllEvents } from "../../services/eventService";
 import Header from "../../components/HomeHeader/HomeHeader";
+import Footer from "../../components/Footer";
 import "./Home.css";
 
 const Home = () => {
@@ -25,7 +26,6 @@ const Home = () => {
     "/homeImg/sr2.png",
     "/homeImg/sr3.png",
     "/homeImg/sr4.png",
-    "/homeImg/sr5.png",
   ];
   const introRef = useRef();
   const carouselRef = useRef();
@@ -249,12 +249,12 @@ const Home = () => {
           <div className="club-carousel">
             <Slider {...settings}>
               {clubs
-                .filter((club) => club.type === selectedType)
+                .filter((club) => club.type && club.type === selectedType)
                 .map((club, index) => (
                   <ClubCard
                     key={index}
                     name={club.name}
-                    logo={club.logo}
+                    logo={club.clubLogo}
                     onClick={() => openClubModal(club)}
                   />
                 ))}
@@ -266,13 +266,16 @@ const Home = () => {
         <div className="events-section" ref={eventSectionRef}>
           <h1>Upcoming Events</h1>
           <div className="event-cards">
-            {events.map((event, index) => (
-              <EventCard
-                key={index}
-                event={event}
-                onClick={() => openEventModal(event)}
-              />
-            ))}
+            {events
+              .filter((event) => event.status === "upcoming") // Filter for upcoming events
+              .slice(0, 6) // Limit to a maximum of 6 events
+              .map((event, index) => (
+                <EventCard
+                  key={index}
+                  event={event}
+                  onClick={() => openEventModal(event)}
+                />
+              ))}
           </div>
           <button
             className="button show-more-button"
@@ -280,6 +283,7 @@ const Home = () => {
           >
             Show More
           </button>
+          <Footer />
         </div>
 
         {/* Modals */}

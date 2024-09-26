@@ -13,21 +13,42 @@ import {
   CardContent,
   IconButton,
   Collapse,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
 } from "@mui/material";
+import ImageUpload from "../../utils/ImageUpload";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { getUserInfo } from "../../services/userService";
 import Header from "../../components/Header/Header";
 import { submitProposal, getProposal } from "../../services/proposeService";
-import EventPage from "../EventPage/EventPage";
 import {
   fetchClubMembers,
   getUsers,
   addMember,
   getRemovableMembers,
   removeMember,
-  changeRole
+  changeRole,
 } from "../../services/memberService";
+import {
+  postClubData,
+  getClubName,
+  getClubMembers,
+  updateMember,
+  deleteMember,
+  postClubEvents,
+  updateEvent,
+  deleteEvent,
+  getClubEvents,
+} from "../../services/clubService";
+import { Add as AddIcon } from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { uploadImageToCloudinary } from "../../utils/cloudinaryUpload";
+import ActionCards from "../../components/eventActionCard"; // Adjust the import path as needed
+import BookedVenues from "../../components/bookedVenues";
+import "./ChairpersonPage.css";
 
 const ChairpersonPage = () => {
   const [selectedAction, setSelectedAction] = useState("");
@@ -60,8 +81,57 @@ const ChairpersonPage = () => {
   const [selectedUser, setSelectedUser] = useState("");
   const [removableMembers, setRemovableMembers] = useState([]);
   const [selectedMember, setSelectedMember] = useState("");
-  const [selectMember, setSelectMember] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
+  const [selectMember, setSelectMember] = useState("");
+  const [selectedRole, setSelectedRole] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [facultyCoordinator, setFacultyCoordinator] = useState("");
+  const [studentChair, setStudentChair] = useState("");
+  const [studentCoChair, setStudentCoChair] = useState("");
+  const [officialMembers, setOfficialMembers] = useState("");
+  const [clubLogo, setClubLogo] = useState("");
+  const [clubWebsite, setClubWebsite] = useState("");
+  const [clubEmail, setClubEmail] = useState("");
+  const [instagramHandle, setInstagramHandle] = useState("");
+  const [linkedinHandle, setLinkedinHandle] = useState("");
+  const [facebookHandle, setFacebookHandle] = useState("");
+  const [twitterHandle, setTwitterHandle] = useState("");
+  const [officialPics, setOfficialPics] = useState("");
+  const [chapterBrief, setChapterBrief] = useState("");
+  const [mission, setMission] = useState("");
+  const [vision, setVision] = useState("");
+  const [addMembers, setAddMembers] = useState([]);
+  const [type, setType] = useState(""); // for single choice 'Club' or 'Chapter'
+  const [tentativeDate, setTentativeDate] = useState(""); // for date input
+  const [clubName, setClubName] = useState("");
+  const [memberName, setMemberName] = useState([]);
+  const [editedMembers, setEditedMembers] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [newEvents, setNewEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const data = await getClubMembers();
+        setMemberName(data);
+      } catch (error) {
+        console.error("Error fetching members:", error);
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
+  useEffect(() => {
+    const fetchClubName = async () => {
+      try {
+        const res = await getClubName();
+        setClubName(res);
+      } catch (error) {
+        console.error("Error fetching club name:", error);
+      }
+    };
+    fetchClubName();
+  }, []);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -257,17 +327,283 @@ const ChairpersonPage = () => {
     }
   };
 
-  return (
-    <Container maxWidth="md" className="page-container">
-      <Header email={email} />
+  const filteredMembers = members.filter(
+    (member) =>
+      member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member.role.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
+  const handleAddMember = () => {
+    setAddMembers([
+      ...addMembers,
+      { name: "", enrollmentId: "", email: "", position: "", photo: "" }, // changed to enrollmentId
+    ]);
+  };
+
+  // Handle member field change
+  const handleMemberChange = (e, index, field) => {
+    const newMembers = [...addMembers];
+    newMembers[index][field] = e.target.value;
+    setAddMembers(newMembers);
+  };
+
+  const handleImageUploadForMember = async (file, index) => {
+    try {
+      const uploadedUrl = await uploadImageToCloudinary(file);
+      const newMembers = [...addMembers];
+      newMembers[index].photo = uploadedUrl;
+      setAddMembers(newMembers);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchClubEvents();
+  }, []);
+
+  const fetchClubEvents = async () => {
+    try {
+      const fetchedEvents = await getClubEvents();
+      setEvents(fetchedEvents);
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    }
+  };
+
+  const handleAddEvent = () => {
+    setNewEvents([
+      ...newEvents,
+      {
+        date: "",
+        eventName: "",
+        internalExternal: "",
+        nationalInternational: "",
+      },
+    ]);
+  };
+
+  const handleNewEventChange = (e, index, field) => {
+    const updatedNewEvents = newEvents.map((event, i) => {
+      if (i === index) {
+        return { ...event, [field]: e.target.value }; // Update the specific field
+      }
+      return event; // Leave other events unchanged
+    });
+    setNewEvents(updatedNewEvents);
+  };
+
+  const handleEventChange = (e, index, field) => {
+    const updatedEvents = events.map((event, i) => {
+      if (i === index) {
+        return { ...event, [field]: e.target.value }; // Update the specific field
+      }
+      return event; // Leave other events unchanged
+    });
+    setEvents(updatedEvents);
+  };
+
+  const handleRemoveNewEvent = (index) => {
+    const updatedNewEvents = newEvents.filter((_, i) => i !== index);
+    setNewEvents(updatedNewEvents);
+  };
+
+  const handleEditEvent = (index) => {
+    const updatedEvents = events.map((event, i) => {
+      if (i === index) {
+        return { ...event, isEditing: true }; // Update the specific event's isEditing flag
+      }
+      return event; // Leave other events unchanged
+    });
+    setEvents(updatedEvents);
+  };
+
+  const handleSaveEditEvent = async (index) => {
+    const event = events[index];
+    const updatedEvent = {
+      date: new Date(event.date).toISOString(),
+      eventName: event.eventName,
+      internalExternal: event.internalExternal,
+      nationalInternational: event.nationalInternational,
+    };
+
+    console.log(updatedEvent);
+    console.log(event._id); // Make sure _id is defined here
+
+    if (!event._id) {
+      console.error("No _id found for the event.");
+      return; // Stop if _id is undefined
+    }
+
+    await updateEvent(event._id, updatedEvent); // Ensure updateEvent is working
+    fetchClubEvents(); // Refresh the list of events
+  };
+
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      console.log(eventId);
+      await deleteEvent(eventId);
+      // Update the events state to remove the deleted event
+      setEvents(events.filter((event) => event._id !== eventId));
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
+  };
+
+  const handleRemoveData = (index) => {
+    const updatedMembers = [...addMembers];
+    updatedMembers.splice(index, 1);
+    setAddMembers(updatedMembers);
+  };
+
+  const handleClear = () => {
+    // Clear all form fields
+    setFacultyCoordinator("");
+    setStudentChair("");
+    setStudentCoChair("");
+    setOfficialMembers("");
+    setClubLogo("");
+    setClubWebsite("");
+    setClubEmail("");
+    setInstagramHandle("");
+    setLinkedinHandle("");
+    setFacebookHandle("");
+    setTwitterHandle("");
+    setOfficialPics("");
+    setChapterBrief("");
+    setMission("");
+    setVision("");
+    setAddMembers([]);
+    setEvents([]);
+    setType("");
+    setTentativeDate("");
+    setNewEvents([]);
+  };
+
+  const handleEditMember = (member) => {
+    const isAlreadyEdited = editedMembers.some((m) => m.email === member.email);
+    if (!isAlreadyEdited) {
+      setEditedMembers([...editedMembers, { ...member }]); // Add member to edited list
+    }
+  };
+
+  const handleDeleteMember = (member) => {
+    const confirmDelete = window.confirm(
+      "You want to delete this member, the action can't be undone"
+    );
+    if (confirmDelete) {
+      // Call deleteMember API
+      deleteMember(member);
+
+      // Update the UI by removing the member from the members array
+      setMemberName((prevMembers) =>
+        prevMembers.filter((m) => m.email !== member.email)
+      );
+
+      alert("Member deleted successfully.");
+    }
+  };
+
+  const handleSubmitData = async (e) => {
+    e.preventDefault();
+
+    const clubData = {
+      name: clubName.clubName,
+      facultyCoordinator,
+      studentChair,
+      studentCoChair,
+      officialMembers,
+      clubLogo,
+      clubWebsite,
+      clubEmail,
+      instagramHandle,
+      linkedinHandle,
+      facebookHandle,
+      twitterHandle,
+      officialPics,
+      chapterBrief,
+      mission,
+      vision,
+      addMembers: addMembers.map((member) => ({
+        name: member.name,
+        email: member.email,
+        enrollmentId: member.enrollmentId,
+        position: member.position,
+        photo: member.photo,
+      })),
+      events: [
+        ...newEvents,
+        ...events.map((event) => ({
+          date: new Date(event.date).toISOString(), // Convert to ISO string
+          eventName: event.eventName,
+          internalExternal: event.internalExternal,
+          nationalInternational: event.nationalInternational,
+        })),
+      ],
+      type, // Add the type field
+      tentativeDate, // Add the tentative date field
+    };
+
+    const result = await postClubData(clubData);
+    handleClear();
+
+    for (const editedMember of editedMembers) {
+      await updateMember(editedMember.email, editedMember);
+    }
+
+    // Clear states after submission
+    setEditedMembers([]);
+  };
+
+  const handleImageUploadForEditedMember = async (file, email) => {
+    try {
+      console.log(file);
+      const uploadedUrl = await uploadImageToCloudinary(file); // Upload the file
+      handleFieldChange(email, "photo", uploadedUrl); // Update the photo field for the specific member
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
+  const handleFieldChange = (email, field, value) => {
+    const memberIndex = editedMembers.findIndex(
+      (member) => member.email === email
+    );
+
+    if (memberIndex !== -1) {
+      const updatedMember = { ...editedMembers[memberIndex], [field]: value };
+      const updatedEditedMembers = [...editedMembers];
+      updatedEditedMembers[memberIndex] = updatedMember;
+      setEditedMembers(updatedEditedMembers);
+    } else {
+      const originalMember = memberName.find(
+        (member) => member.email === email
+      );
+      const newEditedMember = { ...originalMember, [field]: value };
+      setEditedMembers([...editedMembers, newEditedMember]);
+    }
+  };
+
+  const handleImageUpload = async (file) => {
+    try {
+      console.log(file);
+      const uploadedUrl = await uploadImageToCloudinary(file);
+      setClubLogo(uploadedUrl); // Store the URL in state
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  return (
+    <div className="page-container">
+      <Header email={email} />
       <Box textAlign="center" py={4}>
         <Typography variant="h4" gutterBottom>
           Welcome, Chairperson!
         </Typography>
       </Box>
 
-      <Box textAlign="center" mb={4}>
+      <Box textAlign="center" mb={4} className="mentor-card">
         <FormControl fullWidth variant="outlined">
           <InputLabel id="action-label">Select an action</InputLabel>
           <Select
@@ -282,22 +618,25 @@ const ChairpersonPage = () => {
             </MenuItem>
             <MenuItem value="proposeEvent">Propose Event</MenuItem>
             <MenuItem value="viewProposals">View All Proposals</MenuItem>
+            <MenuItem value="checkBookedVenues">Check Booked Venues</MenuItem>
             <MenuItem value="viewMember">View Members</MenuItem>
             <MenuItem value="addMember">Add Member</MenuItem>
             <MenuItem value="removeMember">Remove Member</MenuItem>
             <MenuItem value="changeRoles">Change Roles</MenuItem>
             <MenuItem value="changeClubData">Change Club Data</MenuItem>
-            <MenuItem value="addEvent">Add New Event</MenuItem>
             <MenuItem value="registerInEvent">Register For Event</MenuItem>
+            <MenuItem value="addEvent">Add New Event</MenuItem>
+            <MenuItem value="removeEvent">Remove Event</MenuItem>
             <MenuItem value="closeRegistration">Close Registration</MenuItem>
             <MenuItem value="closeEvent">Mark Event as Complete</MenuItem>
+            <MenuItem value="closeFeedback">Close Feedback Collection</MenuItem>
           </Select>
         </FormControl>
       </Box>
 
       <Box className="card-container">
         {selectedAction === "proposeEvent" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
+          <Card elevation={3} className="action-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Propose Event
@@ -501,7 +840,7 @@ const ChairpersonPage = () => {
                     Total for Travel & Miscellaneous: Rs.
                     {calculateTravelTotal().toFixed(2)}
                   </Typography>
-                  <Typography variant="h5" mt={2}>
+                  <Typography variant="h5" mt={2} mb={2}>
                     Grand Total: Rs.{calculateGrandTotal().toFixed(2)}
                   </Typography>
                 </Box>
@@ -520,7 +859,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "viewProposals" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
+          <Card elevation={3} className="action-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 View All Proposals
@@ -530,7 +869,12 @@ const ChairpersonPage = () => {
                   elevation={3}
                   className="action-card"
                   key={proposal._id}
-                  style={{ margin: "10px 0" , width: '100%', maxWidth: 1000, mb: 2 }}
+                  style={{
+                    margin: "10px 0",
+                    width: "100%",
+                    maxWidth: 1000,
+                    mb: 2,
+                  }}
                 >
                   <CardContent>
                     <Box
@@ -658,14 +1002,13 @@ const ChairpersonPage = () => {
                         <Typography variant="body1">
                           Grand Total: {proposal.grandTotal}
                         </Typography>
-                        {
-                          proposal.comment ? 
-                          (<Typography variant="body1" mt ={2}>
-                          <b>Comment:</b> {proposal.comment}
-                        </Typography>) :
-                        (""
-              )}
-                        
+                        {proposal.comment ? (
+                          <Typography variant="body1" mt={2}>
+                            <b>Comment:</b> {proposal.comment}
+                          </Typography>
+                        ) : (
+                          ""
+                        )}
                       </Box>
                     </Collapse>
                   </CardContent>
@@ -676,14 +1019,24 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "viewMember" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
+          <Card elevation={3} className="action-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 <u>Club Members</u>
               </Typography>
 
+              {/* Search Bar */}
+              <TextField
+                fullWidth
+                label="Search by Email or Role"
+                variant="outlined"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                margin="normal"
+              />
+
               <Box>
-                {members.map((member, index) => (
+                {filteredMembers.map((member, index) => (
                   <Box key={index} marginBottom="1rem">
                     <Typography
                       variant="h6"
@@ -702,7 +1055,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "addMember" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
+          <Card elevation={3} className="action-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Add Member
@@ -736,7 +1089,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "removeMember" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
+          <Card elevation={3} className="action-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Remove Member
@@ -774,13 +1127,13 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "changeRoles" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
+          <Card elevation={3} className="action-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Change Roles
               </Typography>
               <form onSubmit={handleRoleChangeSubmit}>
-                <FormControl fullWidth sx= {{mb:2}}>
+                <FormControl fullWidth sx={{ mb: 2 }}>
                   <InputLabel>Select Member</InputLabel>
                   <Select
                     value={selectMember}
@@ -798,7 +1151,7 @@ const ChairpersonPage = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl fullWidth sx = {{mb:3}}>
+                <FormControl fullWidth sx={{ mb: 3 }}>
                   <InputLabel>Select New Role</InputLabel>
                   <Select
                     value={selectedRole}
@@ -833,57 +1186,540 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "changeClubData" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
+          <Card elevation={3} className="action-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Change Club Data
               </Typography>
-            </CardContent>
-          </Card>
-        )}
 
-        {selectedAction === "addEvent" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Add New Event
-              </Typography>
-            </CardContent>
-          </Card>
-        )}
+              <form>
+                {/* Student Club/Chapter Name () */}
+                <TextField
+                  fullWidth
+                  label="Student Club/Chapter Name"
+                  margin="normal"
+                  value={clubName.clubName}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
 
-        {selectedAction === "registerInEvent" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Register For Event
-              </Typography>
-              <EventPage />
-            </CardContent>
-          </Card>
-        )}
+                <Box mt={4}>
+                  <Typography variant="h6" gutterBottom>
+                    Type
+                  </Typography>
+                  <FormControl component="fieldset">
+                    <RadioGroup
+                      row
+                      value={type}
+                      onChange={(e) => setType(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="club"
+                        control={<Radio />}
+                        label="Club"
+                      />
+                      <FormControlLabel
+                        value="chapter"
+                        control={<Radio />}
+                        label="Chapter"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </Box>
 
-        {selectedAction === "closeRegistration" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Close Registration
-              </Typography>
-            </CardContent>
-          </Card>
-        )}
+                <TextField
+                  fullWidth
+                  label="Faculty Coordinator Name"
+                  margin="normal"
+                  value={facultyCoordinator}
+                  onChange={(e) => setFacultyCoordinator(e.target.value)}
+                />
 
-        {selectedAction === "closeEvent" && (
-          <Card elevation={3} className="action-card" sx={{ width: '100%', maxWidth: 1000, mb: 2 }}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Mark Event as Complete
-              </Typography>
+                <TextField
+                  fullWidth
+                  label="Student Chair"
+                  margin="normal"
+                  value={studentChair}
+                  onChange={(e) => setStudentChair(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Student Co-Chair"
+                  margin="normal"
+                  value={studentCoChair}
+                  onChange={(e) => setStudentCoChair(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="No. of Official Members"
+                  margin="normal"
+                  type="number"
+                  value={officialMembers}
+                  onChange={(e) => setOfficialMembers(e.target.value)}
+                />
+
+                <Typography>Club Logo</Typography>
+                <ImageUpload onImageUpload={handleImageUpload} />
+
+                <TextField
+                  fullWidth
+                  label="Club Website"
+                  margin="normal"
+                  value={clubWebsite}
+                  onChange={(e) => setClubWebsite(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Club Email ID"
+                  margin="normal"
+                  value={clubEmail}
+                  onChange={(e) => setClubEmail(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Instagram Handle"
+                  margin="normal"
+                  value={instagramHandle}
+                  onChange={(e) => setInstagramHandle(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="LinkedIn Handle"
+                  margin="normal"
+                  value={linkedinHandle}
+                  onChange={(e) => setLinkedinHandle(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Facebook Handle"
+                  margin="normal"
+                  value={facebookHandle}
+                  onChange={(e) => setFacebookHandle(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Twitter Handle"
+                  margin="normal"
+                  value={twitterHandle}
+                  onChange={(e) => setTwitterHandle(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Club Official's Pics, name, designation one PPTs/Pic/Poster"
+                  margin="normal"
+                  helperText="Provide a drive link"
+                  value={officialPics}
+                  onChange={(e) => setOfficialPics(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Club/Chapter Brief"
+                  margin="normal"
+                  multiline
+                  rows={3}
+                  value={chapterBrief}
+                  onChange={(e) => setChapterBrief(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Mission"
+                  margin="normal"
+                  multiline
+                  rows={3}
+                  value={mission}
+                  onChange={(e) => setMission(e.target.value)}
+                />
+
+                <TextField
+                  fullWidth
+                  label="Vision"
+                  margin="normal"
+                  multiline
+                  rows={3}
+                  value={vision}
+                  onChange={(e) => setVision(e.target.value)}
+                />
+
+                <Box mt={4}>
+                  <Typography variant="h6" gutterBottom>
+                    Edit Members
+                  </Typography>
+                  {/* Existing Members from DB */}
+                  <Typography variant="h6" gutterBottom>
+                    Existing Members
+                  </Typography>
+                  {memberName.map((member, index) => {
+                    const isEditing = editedMembers.some(
+                      (m) => m.email === member.email
+                    );
+
+                    return (
+                      <Box key={index} sx={{ mb: 2, position: "relative" }}>
+                        <Typography variant="subtitle1">
+                          {member.name} - {member.position}
+                        </Typography>
+
+                        <TextField
+                          fullWidth
+                          label="Name"
+                          margin="normal"
+                          value={
+                            isEditing
+                              ? editedMembers.find(
+                                  (m) => m.email === member.email
+                                )?.name || member.name
+                              : member.name
+                          }
+                          onChange={(e) =>
+                            handleFieldChange(
+                              member.email,
+                              "name",
+                              e.target.value
+                            )
+                          }
+                          disabled={!isEditing}
+                        />
+
+                        <TextField
+                          fullWidth
+                          label="Enrolment Number"
+                          margin="normal"
+                          value={
+                            isEditing
+                              ? editedMembers.find(
+                                  (m) => m.email === member.email
+                                )?.enrollmentId || member.enrollmentId // use enrollmentId here
+                              : member.enrollmentId
+                          }
+                          onChange={(e) =>
+                            handleFieldChange(
+                              member.email,
+                              "enrollmentId", // change to "enrollmentId"
+                              e.target.value
+                            )
+                          }
+                          disabled={!isEditing}
+                        />
+
+                        <TextField
+                          fullWidth
+                          label="Email ID"
+                          margin="normal"
+                          value={member.email}
+                          disabled
+                        />
+
+                        <TextField
+                          fullWidth
+                          label="Position"
+                          margin="normal"
+                          value={
+                            isEditing
+                              ? editedMembers.find(
+                                  (m) => m.email === member.email
+                                )?.position || member.position
+                              : member.position
+                          }
+                          onChange={(e) =>
+                            handleFieldChange(
+                              member.email,
+                              "position",
+                              e.target.value
+                            )
+                          }
+                          disabled={!isEditing}
+                        />
+
+                        {isEditing ? (
+                          <ImageUpload
+                            onImageUpload={(file) =>
+                              handleImageUploadForEditedMember(
+                                file,
+                                member.email
+                              )
+                            }
+                          />
+                        ) : (
+                          <>
+                            <Typography
+                              style={{ // Apply blur effect here
+                                
+                                color: "#b0b0b0", // Optional, to give a more subtle effect
+                              }}
+                            >
+                              Uploaded Photo
+                            </Typography>
+                            {member.photo && (
+                              <div>
+                                <img
+                                  src={member.photo}
+                                  alt="Member"
+                                  style={{
+                                    maxWidth: "200px",
+                                    marginTop: "10px",
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </>
+                        )}
+
+                        <IconButton onClick={() => handleEditMember(member)}>
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton onClick={() => handleDeleteMember(member)}>
+                          <DeleteIcon color="secondary" />
+                        </IconButton>
+                      </Box>
+                    );
+                  })}
+
+                  {addMembers.map((member, index) => (
+                    <Box key={index} sx={{ mb: 2, position: "relative" }}>
+                      <Typography variant="subtitle1">
+                        Member {index + 1}
+                      </Typography>
+                      <TextField
+                        fullWidth
+                        label="Name"
+                        margin="normal"
+                        value={member.name}
+                        onChange={(e) => handleMemberChange(e, index, "name")}
+                      />
+                      <TextField
+                        fullWidth
+                        label="Enrolment Number"
+                        margin="normal"
+                        value={member.enrollmentId} // changed to enrollmentId
+                        onChange={
+                          (e) => handleMemberChange(e, index, "enrollmentId") // changed to enrollmentId
+                        }
+                      />
+                      <TextField
+                        fullWidth
+                        label="Email ID"
+                        margin="normal"
+                        value={member.email}
+                        onChange={(e) => handleMemberChange(e, index, "email")}
+                      />
+                      <TextField
+                        fullWidth
+                        label="Position"
+                        margin="normal"
+                        value={member.position}
+                        onChange={(e) =>
+                          handleMemberChange(e, index, "position")
+                        }
+                      />
+                      <Typography>Member's Pic</Typography>
+                      <ImageUpload
+                        onImageUpload={(file) =>
+                          handleImageUploadForMember(file, index)
+                        }
+                      />
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleRemoveData(index)}
+                        sx={{ position: "absolute", top: 0, right: 0 }}
+                      >
+                        Remove Member
+                      </Button>
+                    </Box>
+                  ))}
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={handleAddMember}
+                    startIcon={<AddIcon />}
+                  >
+                    Add Member
+                  </Button>
+                </Box>
+
+                <Box mt={4}>
+                  <Typography variant="h6" gutterBottom>
+                    Existing Events
+                  </Typography>
+                  {events.map((event, index) => (
+                    <Box key={event._id} sx={{ mb: 2, position: "relative" }}>
+                      <Typography variant="subtitle1">
+                        {event.eventName}
+                      </Typography>
+
+                      <TextField
+                        fullWidth
+                        label="Date"
+                        type="date"
+                        InputLabelProps={{ shrink: true }}
+                        margin="normal"
+                        value={event.date && event.date.split("T")[0]} // Ensure this is properly formatted
+                        onChange={(e) => handleEventChange(e, index, "date")}
+                        disabled={!event.isEditing} // Disable if not editing
+                      />
+
+                      <TextField
+                        fullWidth
+                        label="Name of Event"
+                        margin="normal"
+                        value={event.eventName}
+                        onChange={(e) =>
+                          handleEventChange(e, index, "eventName")
+                        }
+                        disabled={!event.isEditing} // Disable if not editing
+                      />
+
+                      <TextField
+                        fullWidth
+                        label="Internal/External"
+                        margin="normal"
+                        value={event.internalExternal}
+                        onChange={(e) =>
+                          handleEventChange(e, index, "internalExternal")
+                        }
+                        disabled={!event.isEditing} // Disable if not editing
+                      />
+
+                      <TextField
+                        fullWidth
+                        label="National/International"
+                        margin="normal"
+                        value={event.nationalInternational}
+                        onChange={(e) =>
+                          handleEventChange(e, index, "nationalInternational")
+                        }
+                        disabled={!event.isEditing} // Disable if not editing
+                      />
+
+                      <IconButton onClick={() => handleEditEvent(index)}>
+                        <EditIcon />
+                      </IconButton>
+
+                      <IconButton onClick={() => handleDeleteEvent(event._id)}>
+                        <DeleteIcon color="secondary" />
+                      </IconButton>
+
+                      {event.isEditing && (
+                        <Button onClick={() => handleSaveEditEvent(index)}>
+                          Save
+                        </Button>
+                      )}
+                    </Box>
+                  ))}
+
+                  <Typography variant="h6" gutterBottom>
+                    Add Events
+                  </Typography>
+                  {newEvents.map((event, index) => (
+                    <Box key={index} sx={{ mb: 2, position: "relative" }}>
+                      <TextField
+                        fullWidth
+                        label="Date"
+                        type="date"
+                        InputLabelProps={{ shrink: true }}
+                        margin="normal"
+                        value={event.date}
+                        onChange={(e) => handleNewEventChange(e, index, "date")}
+                      />
+                      <TextField
+                        fullWidth
+                        label="Name of Event"
+                        margin="normal"
+                        value={event.eventName}
+                        onChange={(e) =>
+                          handleNewEventChange(e, index, "eventName")
+                        }
+                      />
+                      <TextField
+                        fullWidth
+                        label="Internal/External"
+                        margin="normal"
+                        value={event.internalExternal}
+                        onChange={(e) =>
+                          handleNewEventChange(e, index, "internalExternal")
+                        }
+                      />
+                      <TextField
+                        fullWidth
+                        label="National/International"
+                        margin="normal"
+                        value={event.nationalInternational}
+                        onChange={(e) =>
+                          handleNewEventChange(
+                            e,
+                            index,
+                            "nationalInternational"
+                          )
+                        }
+                      />
+                      <Button onClick={() => handleRemoveNewEvent(index)}>
+                        Remove Event
+                      </Button>
+                    </Box>
+                  ))}
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={handleAddEvent}
+                    startIcon={<AddIcon />}
+                  >
+                    Add Event
+                  </Button>
+                </Box>
+
+                <Box mt={4}>
+                  <Typography variant="h6" gutterBottom>
+                    Proposed event tentatively scheduled on
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    label="Proposed Date"
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
+                    margin="normal"
+                    value={tentativeDate}
+                    onChange={(e) => setTentativeDate(e.target.value)}
+                  />
+                </Box>
+
+                <Box
+                  mt={4}
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={handleClear}
+                  >
+                    Clear
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmitData}
+                  >
+                    Submit
+                  </Button>
+                </Box>
+              </form>
             </CardContent>
           </Card>
         )}
+        <ActionCards selectedAction={selectedAction} />
+        <BookedVenues selectedAction={selectedAction}/>
       </Box>
-    </Container>
+    </div>
   );
 };
 

@@ -1,9 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Typography, Button, Divider, Slide } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { getUserInfo } from '../../services/userService';
-import PaymentService from '../../services/paymentService';
-import EventRegService from '../../services/eventRegService';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  Typography,
+  Button,
+  Divider,
+  Slide,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { getUserInfo } from "../../services/userService";
+import PaymentService from "../../services/paymentService";
+import EventRegService from "../../services/eventRegService";
+import { getScore } from "../../services/scoreService"; // Import the getScore function
+import { PieChart, Pie, Cell, Tooltip } from "recharts"; // Import the pie chart components
 
 // Create a Slide transition component
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -11,7 +24,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const EventModal = ({ event, isOpen, onRequestClose }) => {
+  const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const [role, setRole] = useState("");
+  const [scores, setScores] = useState(null); // State to hold score data
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const userInfo = await getUserInfo();
+        setRole(userInfo.role);
+      } catch (error) {
+        console.error("Failed to fetch user info:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -21,36 +51,131 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
     }
   }, [isOpen]);
 
+  const fetchScores = async () => {
+    try {
+      const scoreData = await getScore(event._id);
+      setScores(scoreData); // Assuming scoreData has the required structure
+    } catch (error) {
+      console.error("Error fetching scores:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (feedbackModalOpen) {
+      fetchScores(); // Fetch scores when feedback modal is opened
+    }
+  }, [feedbackModalOpen]);
+
+  const renderFeedbackContent = () => {
+    if (!scores) {
+      return <Typography>Loading scores...</Typography>; // Loading state
+    }
+  
+    const data = [
+      {
+        name: "Guest",
+        value: scores.guest
+          ? scores.guest.reduce((a, b) => a + b, 0) / scores.guest.length
+          : 0,
+      },
+      { name: "Faculty Mentor", value: scores.faculty || 0 },
+      { name: "Dean", value: scores.admin || 0 },
+    ];
+  
+    // Filter out entries where the value is zero to avoid overlapping legends
+    const filteredData = data.filter((entry) => entry.value > 0);
+  
+    return (
+      <>
+        <Typography variant="h6">Average Scores</Typography>
+        <PieChart width={500} height={500}> {/* Increased size */}
+          <Pie
+            data={filteredData}
+            cx={290}  // Centering X
+            cy={250}  // Centering Y
+            outerRadius={120}  // Increased outer radius
+            fill="#8884d8"
+            dataKey="value"
+            label={({ name, value }) => `${name}: ${value.toFixed(1)}`}
+            paddingAngle={5}  // Adding space between slices
+          >
+            {filteredData.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={["#0088FE", "#00C49F", "#FFBB28"][index]}
+              />
+            ))}
+          </Pie>
+  
+          {/* Tooltip for displaying additional info */}
+          <Tooltip
+            formatter={(value, name) => [`${value.toFixed(1)}`, `${name}`]}
+            wrapperStyle={{ fontSize: "14px", whiteSpace: "nowrap" }}
+          />
+        </PieChart>
+      </>
+    );
+  };
+  
+  
   const handlePayment = async () => {
     try {
       const userInfo = await getUserInfo();
       if (!userInfo) {
-        window.location.replace('/login');
+        window.location.replace("/login");
         return;
       }
 
-      const paymentSuccess = await PaymentService.processPayment(event.fee);
+      const paymentSuccess = await PaymentService.processPayment(
+        event.fee,
+        userInfo.email
+      );
       if (paymentSuccess) {
-        const registrationResult = await EventRegService.registerTeamForEvent(event._id, userInfo.email);
+        const registrationResult = await EventRegService.registerTeamForEvent(
+          event._id,
+          userInfo.email
+        );
 
         if (registrationResult.alreadyRegistered) {
-          alert('Team is already registered for this event.');
+          alert("Team is already registered for this event.");
           return;
         }
 
-        alert('Registration successful!');
+        alert("Registration successful!");
         onRequestClose();
       } else {
-        alert('Payment failed. Please try again.');
+        alert("Payment failed. Please try again.");
       }
     } catch (error) {
-      if (error.message === 'Unauthorized') {
-        window.location.replace('/login');
+      if (error.message === "Unauthorized") {
+        window.location.replace("/login");
       } else {
-        console.error('Payment or registration error:', error);
-        alert('An error occurred. Please try again.');
+        console.error("Payment or registration error:", error);
+        alert("An error occurred. Please try again.");
       }
     }
+  };
+
+  const handleFeedback = async () => {
+    try {
+      const userInfo = await getUserInfo();
+      if (!userInfo) {
+        window.location.replace("/login");
+        return;
+      }
+      navigate(`/feedback/${event._id}`); // Include the event ID in the URL
+    } catch (error) {
+      if (error.message === "Unauthorized") {
+        window.location.replace("/login");
+      } else {
+        console.error("An Error occurred ", error);
+        alert("An error occurred. Please try again.");
+      }
+    }
+  };
+
+  const handleShowFeedback = () => {
+    setFeedbackModalOpen(true); // Open the feedback modal
   };
 
   const formatDate = (dateString) => {
@@ -58,60 +183,123 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
     return date.toLocaleDateString();
   };
 
+  const renderButton = () => {
+    switch (event.status) {
+      case "upcoming":
+        return (
+          <Button onClick={handlePayment} variant="contained" color="primary">
+            Register Now
+          </Button>
+        );
+      case "ongoing":
+        return (
+          <Button disabled variant="contained" color="primary">
+            Registration Closed
+          </Button>
+        );
+      case "completed":
+        return (
+          <Button onClick={handleFeedback} variant="contained" color="primary">
+            Give Feedback
+          </Button>
+        );
+      case "feedbackClosed":
+        return (
+          <Button
+            onClick={handleShowFeedback}
+            variant="contained"
+            color="secondary"
+          >
+            Show Feedback
+          </Button>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onRequestClose}
-      maxWidth="sm"
-      fullWidth
-      TransitionComponent={Transition} // Apply the Slide transition
-      TransitionProps={{ onEntered: () => setIsActive(true) }}
-    >
-      <DialogTitle sx={{ position: 'relative', fontWeight: 700 }}>
-        {event.name}
-        <IconButton
-          edge="end"
-          color="inherit"
-          onClick={onRequestClose}
-          aria-label="close"
-          sx={{ position: 'absolute', right: '20px', top: 8, color: (theme) => theme.palette.grey[500] }}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginTop: '20px' }}>
-          <img
-            src={event.logo || 'https://via.placeholder.com/180'}
-            alt="Event Poster"
-            style={{ width: '180px', height: '180px', borderRadius: '8px', objectFit: 'cover' }}
-          />
-          <div>
-            <Typography variant="body1" paragraph sx={{ mb: 2 }}>
-              {event.description}
-            </Typography>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-              📅 {formatDate(event.date)}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-              ⏰ {event.time}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-              📍 {event.venue}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-              💰 {event.fee}
-            </Typography>
+    <>
+      <Dialog
+        open={isOpen}
+        onClose={onRequestClose}
+        maxWidth="sm"
+        fullWidth
+        TransitionComponent={Transition} // Apply the Slide transition
+        TransitionProps={{ onEntered: () => setIsActive(true) }}
+      >
+        <DialogTitle sx={{ position: "relative", fontWeight: 700 }}>
+          {event.name}
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={onRequestClose}
+            aria-label="close"
+            sx={{
+              position: "absolute",
+              right: "20px",
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "24px",
+              marginTop: "20px",
+            }}
+          >
+            <img
+              src={event.logo || "https://via.placeholder.com/180"}
+              alt="Event Poster"
+              style={{
+                width: "180px",
+                height: "180px",
+                borderRadius: "8px",
+                objectFit: "cover",
+              }}
+            />
+            <div>
+              <Typography variant="body1" paragraph sx={{ mb: 2 }}>
+                {event.description}
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                📅 {formatDate(event.date)}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                ⏰ {event.time}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                📍 {event.venue}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                💰 {event.fee}
+              </Typography>
+            </div>
           </div>
-        </div>
-      </DialogContent>
-      <DialogActions sx={{ justifyContent: 'flex-end', px: 3, pb: 2 }}>
-        <Button onClick={handlePayment} variant="contained" color="primary">
-          Register Now
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "flex-end", px: 3, pb: 2 }}>
+          {renderButton()}
+        </DialogActions>
+      </Dialog>
+
+      {/* Feedback modal */}
+      {feedbackModalOpen && (
+        <Dialog open={feedbackModalOpen} onClose={() => setFeedbackModalOpen(false)}>
+          <DialogTitle>Event Feedback</DialogTitle>
+          <DialogContent>{renderFeedbackContent()}</DialogContent>
+          <DialogActions>
+            <Button onClick={() => setFeedbackModalOpen(false)}>Close</Button>
+          </DialogActions>
+        </Dialog>
+      )}
+    </>
   );
 };
 

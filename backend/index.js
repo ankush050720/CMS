@@ -9,6 +9,8 @@ const userRoute = require('./routes/userRoute');
 const proposeRoutes = require('./routes/proposeRoute');
 const memberRoute = require('./routes/memberRoute');
 const facultyMentorRoute = require('./routes/facultyMentorRoute')
+const scoreRoute = require('./routes/scoreRoute');
+const adminRoute = require('./routes/adminRoute')
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -39,6 +41,8 @@ app.use('/user', userRoute);
 app.use('/api/propose', proposeRoutes);
 app.use('/api/members', memberRoute);
 app.use('/api/proposals', facultyMentorRoute);
+app.use('/api/admin', adminRoute);
+app.use('/api/score', scoreRoute);
 
 // Listen on a port
 const PORT = process.env.PORT || 5000;

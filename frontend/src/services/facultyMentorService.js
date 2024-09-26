@@ -23,8 +23,10 @@ export const addChairperson = async (data) => {
     const response = await axios.post(`${API_URL}/api/proposals/add-chairperson`, data, {
       withCredentials: true,
     });
+    alert("Success");
     return response;
   } catch (error) {
+    alert("Error changing role");
     console.error("Error adding chairperson:", error);
     throw error;
   }
@@ -42,5 +44,25 @@ export const getClubMembers = async () => {
   }
 };
 
+export const getClubLeaders = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/api/proposals/leaders`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching club members:", error);
+    throw error;
+  }
+  
+};
 
-
+export const removeClubLeader = async (userId, role) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/proposals/remove-leader`, { userId, role });
+    alert("Removed leader");
+    return response.data;
+  } catch (error) {
+    alert("Error removing leader");
+    console.error('Error removing leader:', error);
+    throw error;
+  }
+};

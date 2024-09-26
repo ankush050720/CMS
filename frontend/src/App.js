@@ -15,6 +15,7 @@ import AdminPage from './pages/AdminPage/AdminPage';
 import Profile from './pages/ProfilePage/ProfilePage';
 import RegisteredEvents from './pages/RegisteredEventPage/RegisteredEventPage';
 import AcceptInvitation from './pages/AcceptInvitationPage/AcceptInvitationPage';
+import FeedbackForm from './pages/FeedbackForm';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/events" element={<EventPage />} />
             <Route path="/:clubName" element={<ClubPage />} />
+            <Route path="/feedback/:eventId" element={<FeedbackForm />} />
             <Route path="/guest" element={<GuestPage />} />
             <Route path="/member" element={<MemberPage />} />
             <Route path="/chairperson" element={<ChairpersonPage />} />

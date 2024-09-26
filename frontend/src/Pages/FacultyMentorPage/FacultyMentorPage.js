@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Container,
+  Grid2,
   Typography,
   Box,
   Select,
@@ -21,9 +22,15 @@ import { getProposal } from "../../services/proposeService";
 import {
   updateProposalStatus,
   addChairperson,
-  getClubMembers,
+  getClubMembers, // used for add chaiperson
+  getClubLeaders,
+  removeClubLeader,
 } from "../../services/facultyMentorService";
+import { fetchClubMembers } from "../../services/memberService"; // used for member fetching
 import "./FacultyMentorPage.css"; // Add appropriate styles
+import Header from "../../components/AdminHeader/AdminHeader";
+import RateEventPage from "../../pages/RateEventPage/RateEventPage";
+import BookedVenues from "../../components/bookedVenues";
 
 const FacultyMentorPage = () => {
   const [selectedAction, setSelectedAction] = useState("");
@@ -34,6 +41,27 @@ const FacultyMentorPage = () => {
   const [selectedMember, setSelectedMember] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [comment, setComment] = useState("");
+  const [members, setMembers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [clubLeaders, setClubLeaders] = useState({
+    chairperson: null,
+    viceChairperson: null,
+  });
+
+  useEffect(() => {
+    const fetchClubLeaders = async () => {
+      try {
+      const data = await getClubLeaders() ;
+      setClubLeaders({
+        chairperson: data.chairperson,
+        viceChairperson: data.viceChairperson,
+      });
+      } catch (error) {
+        console.error("Error fetching club leaders:", error);
+      }
+    };
+    fetchClubLeaders();
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -74,6 +102,19 @@ const FacultyMentorPage = () => {
     fetchClubMembers();
   }, []);
 
+  useEffect(() => {
+    const getClubMembers = async () => {
+      try {
+        const memberData = await fetchClubMembers();
+        setMembers(memberData);
+      } catch (error) {
+        console.error("Error fetching club members:", error);
+      }
+    };
+
+    getClubMembers();
+  }, []);
+
   const handleToggleExpand = (index) => {
     setExpandedProposalIndex(expandedProposalIndex === index ? null : index);
   };
@@ -84,7 +125,7 @@ const FacultyMentorPage = () => {
 
   const handleProposalAction = async (proposalId, action, comment) => {
     try {
-      console.log(comment) ;
+      console.log(comment);
       await updateProposalStatus(proposalId, action, comment);
       console.log(`Proposal ${action} successfully`);
     } catch (error) {
@@ -109,8 +150,38 @@ const FacultyMentorPage = () => {
     }
   };
 
+  const filteredMembers = members.filter(
+    (member) =>
+      member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member.role.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleRemoveLeader = async (userId, role) => {
+    try {
+      // Call the remove function to delete the leader
+      await removeClubLeader(userId, role);
+  
+      // Update the state to remove the leader by setting it to null
+      setClubLeaders((prevLeaders) => {
+        const updatedLeaders = { ...prevLeaders };
+  
+        // Check if the role is chairperson or vicechairperson and remove accordingly
+        if (role === "chairperson") {
+          updatedLeaders.chairperson = null;
+        } else if (role === "vicechairperson") {
+          updatedLeaders.viceChairperson = null;
+        }
+  
+        return updatedLeaders;
+      });
+    } catch (error) {
+      console.error("Error removing leader:", error);
+    }
+  };
+
   return (
     <div className="faculty-mentor-container">
+      <Header email={email} />
       <Card elevation={3} className="mentor-card">
         <CardContent>
           <Typography variant="h4" gutterBottom>
@@ -125,6 +196,9 @@ const FacultyMentorPage = () => {
               onChange={handleActionChange}
             >
               <MenuItem value="reviewProposals">Review Proposals</MenuItem>
+              <MenuItem value="checkBookedVenues">Check Booked Venues</MenuItem>
+              <MenuItem value="rateEvent">Rate Event</MenuItem>
+              <MenuItem value="viewMember">View Club Members</MenuItem>
               <MenuItem value="addChairperson">
                 Add Chairperson/ViceChairperson
               </MenuItem>
@@ -280,41 +354,108 @@ const FacultyMentorPage = () => {
                         <Box
                           mt={2}
                           display="flex"
-                          justifyContent="space-around"
+                          flexDirection="column"
+                          alignItems="center"
                         >
-                          <TextField
-                            fullWidth
-                            label="Comment"
-                            margin="normal"
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            sx= {{display: 'block'}}
-                          />
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() =>
-                              handleProposalAction(proposal._id, "accept" , comment)
-                            }
+                          <Box mb={2} width="100%" maxWidth="800px">
+                            <TextField
+                              fullWidth
+                              label="Comment"
+                              margin="normal"
+                              value={comment}
+                              onChange={(e) => setComment(e.target.value)}
+                              sx={{ width: "100%" }}
+                            />
+                          </Box>
+
+                          <Box
+                            display="flex"
+                            justifyContent="space-around"
+                            flexWrap="wrap"
+                            gap={2}
+                            width="100%" // Ensures the buttons stay within the container width
+                            maxWidth="800px"
                           >
-                            Accept
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={() =>
-                              handleProposalAction(proposal._id, "decline", comment)
-                            }
-                          >
-                            Decline
-                          </Button>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() =>
+                                handleProposalAction(
+                                  proposal._id,
+                                  "accept",
+                                  comment
+                                )
+                              }
+                              sx={{ flex: "1 1 150px" }}
+                            >
+                              Accept
+                            </Button>
+
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              onClick={() =>
+                                handleProposalAction(
+                                  proposal._id,
+                                  "decline",
+                                  comment
+                                )
+                              }
+                              sx={{ flex: "1 1 150px" }}
+                            >
+                              Decline
+                            </Button>
+                          </Box>
                         </Box>
+                      )}
+                      {proposal.status !== "Pending"  ? (
+                          <Typography variant="body1" mt={2}>
+                            <b>Comment:</b> {proposal.comment}
+                          </Typography>
+                        ) : (
+                          ""
                       )}
                     </Box>
                   </Collapse>
                 </CardContent>
               </Card>
             ))}
+          </CardContent>
+        </Card>
+      )}
+
+      {selectedAction === "viewMember" && (
+        <Card elevation={3} className="action-card">
+          <CardContent>
+            <Typography variant="h5" gutterBottom>
+              <u>Club Members</u>
+            </Typography>
+
+            {/* Search Bar */}
+            <TextField
+              fullWidth
+              label="Search by Email or Role"
+              variant="outlined"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              margin="normal"
+            />
+
+            <Box>
+              {filteredMembers.map((member, index) => (
+                <Box key={index} marginBottom="1rem">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight:
+                        member.role === "faculty mentor" ? "bold" : "normal",
+                    }}
+                  >
+                    {member.email} ({member.role})
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
           </CardContent>
         </Card>
       )}
@@ -367,11 +508,77 @@ const FacultyMentorPage = () => {
         <Card elevation={3} className="action-card">
           <CardContent>
             <Typography variant="h5" gutterBottom>
-              Remove Chairperson/ViceChairperson
+              Remove Chairperson/Vice Chairperson
             </Typography>
+
+            {clubLeaders.chairperson && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 3,
+                }}
+              >
+                <Typography variant="body1">
+                  <b>Chairperson:</b> {clubLeaders.chairperson.email}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() =>
+                    handleRemoveLeader(
+                      clubLeaders.chairperson._id,
+                      "chairperson"
+                    )
+                  }
+                >
+                  Remove Chairperson
+                </Button>
+              </Box>
+            )}
+
+            {clubLeaders.viceChairperson && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Typography variant="body1">
+                  <b>Vice Chairperson:</b> {clubLeaders.viceChairperson.email}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() =>
+                    handleRemoveLeader(
+                      clubLeaders.viceChairperson._id,
+                      "vicechairperson"
+                    )
+                  }
+                >
+                  Remove Vice Chairperson
+                </Button>
+              </Box>
+            )}
           </CardContent>
         </Card>
       )}
+
+      {selectedAction === "rateEvent" && (
+            <Card elevation={3} className="action-card">
+                <CardContent>
+                    <Typography variant="h5" gutterBottom>
+                        Rate Event
+                    </Typography>
+                    <RateEventPage/>
+                </CardContent>
+            </Card>
+          )
+        }
+        <BookedVenues selectedAction={selectedAction}/>
     </div>
   );
 };

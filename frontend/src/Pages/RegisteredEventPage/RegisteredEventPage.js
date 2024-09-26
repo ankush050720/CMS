@@ -95,8 +95,8 @@ const RegisteredEvents = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
-      <Card sx={{ width: "80%", maxWidth: "800px" }}>
+    <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4, marginBottom: 4 }}>
+      <Card sx={{ width: "80%", maxWidth: "800px", boxShadow: 5 }}> 
         <CardContent>
           <Typography variant="h4" gutterBottom>
             Team Details

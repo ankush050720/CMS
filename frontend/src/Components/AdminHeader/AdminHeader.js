@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { logout } from '../../services/loginService';
-import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@mui/material'; // Material-UI imports
+import './AdminHeader.css';
 
 const Header = ({ email }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -22,10 +23,6 @@ const Header = ({ email }) => {
     handleMenuClose();
   };
 
-  const handleRegisteredEventsClick = () => {
-    navigate('/registered-events');
-    handleMenuClose();
-  };
 
   const handleLogoutClick = async () => {
     if (window.confirm('Do you want to exit?')) {
@@ -45,12 +42,13 @@ const Header = ({ email }) => {
   };
 
   return (
-    <AppBar position="static" sx={{ width: '100%', margin: '0 auto', backgroundColor: 'primary.main' }}> {/* Set original color */}
-      <Toolbar sx={{ justifyContent: 'space-between' }}>
+    <AppBar position="static">
+      <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Logged in as: {email || 'Guest'}
         </Typography>
 
+        {/* Settings icon with dropdown */}
         <IconButton
           edge="end"
           color="inherit"
@@ -60,20 +58,19 @@ const Header = ({ email }) => {
           <FontAwesomeIcon icon={faCog} />
         </IconButton>
 
+        {/* Dropdown menu for user actions */}
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          {email ? (
+          {email && (
             <>
               <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-              <MenuItem onClick={handleRegisteredEventsClick}>Registered Events</MenuItem>
               <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
             </>
-          ) : (
-            <MenuItem onClick={handleLoginClick}>Login</MenuItem>
           )}
+          {!email && <MenuItem onClick={handleLoginClick}>Login</MenuItem>}
         </Menu>
       </Toolbar>
     </AppBar>
