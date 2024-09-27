@@ -40,15 +40,12 @@ const postScore = async (req, res) => {
         score.user.push(userId);
 
         // Depending on the user role, update the appropriate field
-        if (userRole === 'guest') {
-            // Append to guest array
-            score.guest.push(avgScore);
-        } else if (userRole === 'faculty mentor') {
+        if (userRole === 'faculty mentor') {
             score.faculty = avgScore;
         } else if (userRole === 'admin') {
             score.admin = avgScore; // Update admin score
         } else {
-            return res.status(403).json({ message: 'You do not have permission to post a score' });
+            score.guest.push(avgScore);
         }
 
         await score.save(); // Save the score document
