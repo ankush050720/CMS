@@ -4,18 +4,19 @@ import { Box, Text } from "@chakra-ui/layout";
 import "./styles.css";
 import { IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import ProfileModal from "./miscellaneous/ProfileModal";
 import ScrollableChat from "./ScrollableChat";
 import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
-
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
-const ENDPOINT = "http://localhost:5000"; 
+
+// Updated endpoint to match backend server port
+const ENDPOINT = "http://localhost:8080"; 
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -35,11 +36,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const { selectedChat, setSelectedChat, user, notification, setNotification } =
-    ChatState();
 
-  const fetchMessages = async () => {
+  const { selectedChat, setSelectedChat, user, notification, setNotification } = ChatState();
+
+  // Use useCallback to memoize fetchMessages
+  const fetchMessages = useCallback(async () => {
     if (!selectedChat) return;
+
+    setLoading(true); // Set loading to true before the API call
 
     try {
       const config = {
@@ -48,27 +52,27 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
       };
 
-      setLoading(true);
-
+      // Fetch messages from the API
       const { data } = await axios.get(
-        `/api/message/${selectedChat._id}`,
+        `http://localhost:8080/api/message/${selectedChat._id}`,
         config
       );
       setMessages(data);
-      setLoading(false);
-
-      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       toast({
-        title: "Error Occured!",
+        title: "Error Occurred!",
         description: "Failed to Load the Messages",
         status: "error",
         duration: 5000,
         isClosable: true,
         position: "bottom",
       });
+    } finally {
+      setLoading(false); // Ensure loading is set to false regardless of success or failure
     }
-  };
+
+    socket.emit("join chat", selectedChat._id);
+  }, [selectedChat, user.token, toast]); // Include relevant dependencies
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
@@ -80,20 +84,20 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        setNewMessage("");
         const { data } = await axios.post(
-          "/api/message",
+          "http://localhost:8080/api/message",
           {
             content: newMessage,
             chatId: selectedChat,
           },
           config
         );
+        setNewMessage("");
         socket.emit("new message", data);
-        setMessages([...messages, data]);
+        setMessages((prevMessages) => [...prevMessages, data]);
       } catch (error) {
         toast({
-          title: "Error Occured!",
+          title: "Error Occurred!",
           description: "Failed to send the Message",
           status: "error",
           duration: 5000,
@@ -104,38 +108,49 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
+  // Initialize Socket.IO connection once
   useEffect(() => {
     socket = io(ENDPOINT);
+
     socket.emit("setup", user);
-    socket.on("connected", () => setSocketConnected(true));
+    socket.on("connected", () => {
+      setSocketConnected(true);
+      console.log("Socket connected!"); // Log connection
+    });
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
 
-    // eslint-disable-next-line
-  }, []);
+    return () => {
+      socket.disconnect(); // Disconnect socket on unmount
+    };
+  }, [user]); // Include user in the dependency array
 
+  // Fetch messages when selectedChat changes
   useEffect(() => {
-    fetchMessages();
+    if (selectedChat) {
+      fetchMessages();
+      selectedChatCompare = selectedChat;
+    }
 
-    selectedChatCompare = selectedChat;
-    // eslint-disable-next-line
-  }, [selectedChat]);
-
-  useEffect(() => {
-    socket.on("message recieved", (newMessageRecieved) => {
+    // Handle incoming new messages
+    socket.on("message received", (newMessageReceived) => {
       if (
-        !selectedChatCompare || // if chat is not selected or doesn't match current chat
-        selectedChatCompare._id !== newMessageRecieved.chat._id
+        !selectedChatCompare || 
+        selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
-        if (!notification.includes(newMessageRecieved)) {
-          setNotification([newMessageRecieved, ...notification]);
+        if (!notification.includes(newMessageReceived)) {
+          setNotification([newMessageReceived, ...notification]);
           setFetchAgain(!fetchAgain);
         }
       } else {
-        setMessages([...messages, newMessageRecieved]);
+        setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
       }
     });
-  });
+
+    return () => {
+      socket.off("message received");
+    };
+  }, [selectedChat, fetchAgain, notification, fetchMessages, setFetchAgain, setNotification]); // Updated dependency array
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -147,10 +162,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       socket.emit("typing", selectedChat._id);
     }
     let lastTypingTime = new Date().getTime();
-    var timerLength = 3000;
+    const timerLength = 3000;
     setTimeout(() => {
-      var timeNow = new Date().getTime();
-      var timeDiff = timeNow - lastTypingTime;
+      const timeNow = new Date().getTime();
+      const timeDiff = timeNow - lastTypingTime;
       if (timeDiff >= timerLength && typing) {
         socket.emit("stop typing", selectedChat._id);
         setTyping(false);
@@ -177,8 +192,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               icon={<ArrowBackIcon />}
               onClick={() => setSelectedChat("")}
             />
-            {messages &&
-              (!selectedChat.isGroupChat ? (
+            {messages && (
+              !selectedChat.isGroupChat ? (
                 <>
                   {getSender(user, selectedChat.users)}
                   <ProfileModal
@@ -194,7 +209,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     setFetchAgain={setFetchAgain}
                   />
                 </>
-              ))}
+              )
+            )}
           </Text>
           <Box
             d="flex"
@@ -227,17 +243,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               isRequired
               mt={3}
             >
-              {istyping ? (
+              {istyping && (
                 <div>
                   <Lottie
                     options={defaultOptions}
-                    // height={50}
                     width={70}
                     style={{ marginBottom: 15, marginLeft: 0 }}
                   />
                 </div>
-              ) : (
-                <></>
               )}
               <Input
                 variant="filled"
@@ -250,7 +263,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           </Box>
         </>
       ) : (
-        // to get socket.io on same page
         <Box d="flex" alignItems="center" justifyContent="center" h="100%">
           <Text fontSize="3xl" pb={3} fontFamily="Work sans">
             Select a user to start a conversation...
