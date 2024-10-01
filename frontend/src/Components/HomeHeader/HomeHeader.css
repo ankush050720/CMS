@@ -35,10 +35,20 @@
     font-size: 16px;
     font-weight: bold;
     transition: color 0.3s;
-    font-size: large;
   }
   
   .nav-link:hover {
     color: #c5bcf8; /* Change color on hover */
   }
   
+
+  @media (max-width: 768px) {
+    /* .header {
+      flex-direction: column; 
+      align-items: center;
+    } */
+  
+    .nav-link {
+      font-size: 14px;
+    }
+  }
