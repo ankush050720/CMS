@@ -5,10 +5,15 @@ import { API_URL } from '../utils/config';
 export const getUserInfo = async () => {
   try {
     const res = await axios.get(`${API_URL}/user/me`, { withCredentials: true }); // Ensure credentials are sent
+
+    if (!res.data || !res.data.email) { // Check if user data is missing or incomplete
+      throw new Error('User not found');
+    }
+
     return res.data; // Return user data (email, role, etc.)
   } catch (err) {
     if (err.response && err.response.status === 401) {
-      throw new Error('Unauthorized'); // Throw specific error for unauthorized status
+      return null; // Throw specific error for unauthorized status
     }
     throw new Error('Unable to fetch user information');
   }

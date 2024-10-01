@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Grid, Select, MenuItem, Paper } from "@mui/material";
+import { Container, Typography, Paper } from "@mui/material";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, EffectCoverflow } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/effect-coverflow';
 import EventCard from "../../components/EventCard/EventCard";
 import EventModal from "../../components/EventModal/EventModal";
 import { getAllEvents } from "../../services/eventService";
 import { getAllClubs } from "../../services/clubService";
+import SwiperCore from 'swiper';
 import "./EventPage.css";
+
+// Initialize Swiper with the navigation and effect modules
+SwiperCore.use([Navigation, EffectCoverflow]);
 
 const EventPage = () => {
   const [events, setEvents] = useState([]);
@@ -34,10 +43,6 @@ const EventPage = () => {
     setIsEventModalOpen(false);
   };
 
-  const handleClubSelection = (e) => {
-    setSelectedClub(e.target.value);
-  };
-
   // Filter events based on selected club
   const filteredEvents =
     selectedClub === "All Clubs"
@@ -45,59 +50,46 @@ const EventPage = () => {
       : events.filter((event) => event.club === selectedClub);
 
   return (
-    <Container maxWidth="lg" sx={{ paddingY: 4 }}>
-      <Typography variant="h4" gutterBottom align="center">
+    <Container maxWidth="lg" sx={{ paddingY: 4 , marginTop: 5}}>
+      <Typography variant="h4" gutterBottom align="center" mb={10} style={{fontWeight:'bolder'}}>
         Events
       </Typography>
-      <Select
-        value={selectedClub}
-        onChange={handleClubSelection}
-        displayEmpty
-        fullWidth
-        variant="outlined"
-        sx={{ mb: 4 }}
-      >
-        <MenuItem value="All Clubs">All Clubs</MenuItem>
+
+      <Swiper
+  spaceBetween={50}
+  slidesPerView={1.5} // Adjust this value as needed
+  centeredSlides={true} // Ensure slides are centered
+  navigation
+  effect="coverflow"
+  grabCursor={true}
+  coverflowEffect={{
+    rotate: 50,
+    stretch: 0,
+    depth: 100,
+    modifier: 1,
+    slideShadows: true,
+  }}
+  loop={true}
+>
         {clubs.map((club) => (
-          <MenuItem key={club._id} value={club.name}>
-            {club.name}
-          </MenuItem>
+          <SwiperSlide key={club._id}>
+            <Paper elevation={5} className="club-event-card">
+              <Typography variant="h5" gutterBottom>
+                {club.name}
+              </Typography>
+              
+              {/* Upcoming Events */}
+              <Section title="Upcoming" events={filteredEvents} clubName={club.name} status="upcoming" openEventModal={openEventModal} />
+              
+              {/* Ongoing Events */}
+              <Section title="Ongoing" events={filteredEvents} clubName={club.name} status="ongoing" openEventModal={openEventModal} />
+              
+              {/* Completed Events */}
+              <Section title="Completed" events={filteredEvents} clubName={club.name} status={["completed", "feedbackClosed"]} openEventModal={openEventModal} />
+            </Paper>
+          </SwiperSlide>
         ))}
-      </Select>
-
-      {selectedClub === "All Clubs" ? (
-        clubs.map((club) => (
-          <Paper key={club._id} elevation={2} sx={{ padding: 2, marginBottom: 4 }}>
-            <Typography variant="h5" gutterBottom>
-              {club.name}
-            </Typography>
-
-            {/* Upcoming Events */}
-            <Section title="Upcoming" events={events} clubName={club.name} status="upcoming" openEventModal={openEventModal} />
-
-            {/* Ongoing Events */}
-            <Section title="Ongoing" events={events} clubName={club.name} status="ongoing" openEventModal={openEventModal} />
-
-            {/* Merged Completed/Feedback Closed Events */}
-            <Section title="Completed" events={events} clubName={club.name} status={["completed", "feedbackClosed"]} openEventModal={openEventModal} />
-          </Paper>
-        ))
-      ) : (
-        <Paper elevation={2} sx={{ padding: 2, marginBottom: 4 }}>
-          <Typography variant="h5" gutterBottom>
-            {selectedClub}
-          </Typography>
-
-          {/* Upcoming Events */}
-          <Section title="Upcoming" events={filteredEvents} clubName={selectedClub} status="upcoming" openEventModal={openEventModal} />
-
-          {/* Ongoing Events */}
-          <Section title="Ongoing" events={filteredEvents} clubName={selectedClub} status="ongoing" openEventModal={openEventModal} />
-
-          {/* Merged Completed/Feedback Closed Events */}
-          <Section title="Completed / Feedback Closed" events={filteredEvents} clubName={selectedClub} status={["completed", "feedbackClosed"]} openEventModal={openEventModal} />
-        </Paper>
-      )}
+      </Swiper>
 
       {selectedEvent && (
         <EventModal
@@ -110,36 +102,23 @@ const EventPage = () => {
   );
 };
 
-// Section Component for Event Status
 const Section = ({ title, events, clubName, status, openEventModal }) => {
-  return (
-    <Paper elevation={1} sx={{ padding: 2, marginY: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        {title}
-      </Typography>
-      <EventGrid events={events} clubName={clubName} status={status} openEventModal={openEventModal} />
-    </Paper>
+  // Check if status is an array, and filter accordingly
+  const filteredEvents = events.filter(event => 
+    event.club === clubName && (Array.isArray(status) ? status.includes(event.status) : event.status === status)
   );
-};
-
-// EventGrid component to handle rendering events
-const EventGrid = ({ events, clubName, status, openEventModal }) => {
-  const filteredEvents = Array.isArray(status)
-    ? events.filter(event => event.club === clubName && status.includes(event.status))
-    : events.filter(event => event.club === clubName && event.status === status);
 
   return filteredEvents.length > 0 ? (
-    <Grid container spacing={3}>
-      {filteredEvents.map(event => (
-        <Grid item xs={12} sm={6} md={4} key={event._id}>
-          <EventCard event={event} onClick={() => openEventModal(event)} />
-        </Grid>
-      ))}
-    </Grid>
+    <div>
+      <Typography variant="h6" gutterBottom>{title}</Typography>
+      <div className="event-grid">
+        {filteredEvents.map((event) => (
+          <EventCard event={event} onClick={() => openEventModal(event)} key={event._id} />
+        ))}
+      </div>
+    </div>
   ) : (
-    <Typography variant="body1" align="center" sx={{ mt: 2 }}>
-      No {Array.isArray(status) ? 'completed' : status} events right now, check back later.
-    </Typography>
+    <Typography variant="body1" align="center">No {title.toLowerCase()} events right now, check back later.</Typography>
   );
 };
 

@@ -52,7 +52,7 @@ const BookedVenues = ({ selectedAction }) => {
   return (
     <>
       {selectedAction === "checkBookedVenues" && (
-        <Card elevation={4} className="action-card" style={{marginBottom:"20px"}}>
+        <Card elevation={4} className="display-card" style={{marginBottom:"20px", marginTop:"40px"}}>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               <b>Booked Venues</b>

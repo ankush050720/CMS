@@ -6,7 +6,7 @@ import { logout } from '../../services/loginService';
 import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@mui/material'; // Material-UI imports
 import './AdminHeader.css';
 
-const Header = ({ email }) => {
+const Header = ({ email, className }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
@@ -22,7 +22,6 @@ const Header = ({ email }) => {
     navigate('/profile');
     handleMenuClose();
   };
-
 
   const handleLogoutClick = async () => {
     if (window.confirm('Do you want to exit?')) {
@@ -42,7 +41,7 @@ const Header = ({ email }) => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" className={className}> {/* Apply className here */}
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Logged in as: {email || 'Guest'}

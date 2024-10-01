@@ -1,22 +1,40 @@
 import React, { useState, useEffect } from "react";
 import {
-  Container,
+  Divider,
+  MenuList,
+  Grid,
   Typography,
   Box,
   Select,
   MenuItem,
   Button,
-  TextField,
-  FormControl,
-  InputLabel,
   Card,
   CardContent,
   IconButton,
   Collapse,
-  FormControlLabel,
+  FormControl,
+  InputLabel,
+  TextField,
+  ListItemIcon, 
+  ListItemText, 
   Radio,
   RadioGroup,
+  FormControlLabel
 } from "@mui/material";
+import { 
+  Assignment as AssignmentIcon, 
+  Event as EventIcon, 
+  Star as StarIcon, 
+  Group as GroupIcon, 
+  Add as AddIcon, 
+  Delete as DeleteIcon, 
+  PersonAdd as PersonAddIcon, 
+  PersonRemove as PersonRemoveIcon,
+  Close as CloseIcon, 
+  Cancel as CancelIcon,
+  Stop as StopIcon,
+  CheckCircle as CheckCirlceIcon
+} from '@mui/icons-material';
 import ImageUpload from "../../utils/ImageUpload";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -42,9 +60,7 @@ import {
   deleteEvent,
   getClubEvents,
 } from "../../services/clubService";
-import { Add as AddIcon } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { uploadImageToCloudinary } from "../../utils/cloudinaryUpload";
 import ActionCards from "../../components/eventActionCard"; // Adjust the import path as needed
 import BookedVenues from "../../components/bookedVenues";
@@ -595,48 +611,270 @@ const ChairpersonPage = () => {
   };
 
   return (
-    <div className="page-container">
-      <Header email={email} />
-      <Box textAlign="center" py={4}>
-        <Typography variant="h4" gutterBottom>
-          Welcome, Chairperson!
+    <div className="dashboard-container">
+      <div className="sidebar">
+        <Typography variant="h6" gutterBottom>
+          Chairperson Dashboard
         </Typography>
-      </Box>
+        <Divider />
+        <MenuList>
+          <MenuItem onClick={() => setSelectedAction("proposeEvent")}>
+            <ListItemIcon>
+              <AssignmentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Propose Event" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("viewProposals")}>
+            <ListItemIcon>
+              <EventIcon />
+            </ListItemIcon>
+            <ListItemText primary="View All Proposals" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("checkBookedVenues")}>
+            <ListItemIcon>
+              <StarIcon />
+            </ListItemIcon>
+            <ListItemText primary="Check Booked Venues" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("viewMember")}>
+            <ListItemIcon>
+              <GroupIcon />
+            </ListItemIcon>
+            <ListItemText primary="View Club Members" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("addMember")}>
+            <ListItemIcon>
+              <AddIcon />
+            </ListItemIcon>
+            <ListItemText primary="Add Member" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("removeMember")}>
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText primary="Remove Member" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("changeRoles")}>
+            <ListItemIcon>
+              <PersonAddIcon />
+            </ListItemIcon>
+            <ListItemText primary="Change Roles" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("changeClubData")}>
+            <ListItemIcon>
+              <PersonRemoveIcon />
+            </ListItemIcon>
+            <ListItemText primary="Change Club Data" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("registerInEvent")}>
+            <ListItemIcon>
+              <CheckCirlceIcon />
+            </ListItemIcon>
+            <ListItemText primary="Register For Event" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("addEvent")}>
+            <ListItemIcon>
+              <AddIcon />
+            </ListItemIcon>
+            <ListItemText primary="Add New Event" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("removeEvent")}>
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText primary="Remove Event" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("closeRegistration")}>
+            <ListItemIcon>
+              <StopIcon />
+            </ListItemIcon>
+            <ListItemText primary="Close Registration" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("closeEvent")}>
+            <ListItemIcon>
+              <CancelIcon />
+            </ListItemIcon>
+            <ListItemText primary="Mark Event as Complete" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("closeFeedback")}>
+            <ListItemIcon>
+              <CloseIcon />
+            </ListItemIcon>
+            <ListItemText primary="Close Feedback Collection" />
+          </MenuItem>
+        </MenuList>
+      </div>
+        <div className="dashboard-body" >
+        <Header email = {email} className="chair-header" />
+      <div className="dashboard-content">
+      
+        <Card elevation={3} className="welcome-card">
+          <CardContent>
+            <Typography variant="h4" gutterBottom>
+              Welcome, Chairperson!
+            </Typography>
+          </CardContent>
+        </Card>
 
-      <Box textAlign="center" mb={4} className="mentor-card">
-        <FormControl fullWidth variant="outlined">
-          <InputLabel id="action-label">Select an action</InputLabel>
-          <Select
-            labelId="action-label"
-            value={selectedAction}
-            onChange={handleActionChange}
-            label="Select an action"
-            className="selector"
-          >
-            <MenuItem value="">
-              <em>Select an action</em>
-            </MenuItem>
-            <MenuItem value="proposeEvent">Propose Event</MenuItem>
-            <MenuItem value="viewProposals">View All Proposals</MenuItem>
-            <MenuItem value="checkBookedVenues">Check Booked Venues</MenuItem>
-            <MenuItem value="viewMember">View Members</MenuItem>
-            <MenuItem value="addMember">Add Member</MenuItem>
-            <MenuItem value="removeMember">Remove Member</MenuItem>
-            <MenuItem value="changeRoles">Change Roles</MenuItem>
-            <MenuItem value="changeClubData">Change Club Data</MenuItem>
-            <MenuItem value="registerInEvent">Register For Event</MenuItem>
-            <MenuItem value="addEvent">Add New Event</MenuItem>
-            <MenuItem value="removeEvent">Remove Event</MenuItem>
-            <MenuItem value="closeRegistration">Close Registration</MenuItem>
-            <MenuItem value="closeEvent">Mark Event as Complete</MenuItem>
-            <MenuItem value="closeFeedback">Close Feedback Collection</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+        <Grid container spacing={2} className="action-grid">
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("proposeEvent")}
+            >
+              <CardContent>
+                <Typography variant="h6">Propose Event</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("viewProposals")}
+            >
+              <CardContent>
+                <Typography variant="h6">View All Proposals</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("checkBookedVenues")}
+            >
+              <CardContent>
+                <Typography variant="h6">Check Booked Venues</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("viewMember")}
+            >
+              <CardContent>
+                <Typography variant="h6">View Club Members</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("addMember")}
+            >
+              <CardContent>
+                <Typography variant="h6">Add Member</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("removeMember")}
+            >
+              <CardContent>
+                <Typography variant="h6">Remove Member</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("changeRoles")}
+            >
+              <CardContent>
+                <Typography variant="h6">Change Roles</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("changeClubData")}
+            >
+              <CardContent>
+                <Typography variant="h6">Change Club Data</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("registerInEvent")}
+            >
+              <CardContent>
+                <Typography variant="h6">Register For Event</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("addEvent")}
+            >
+              <CardContent>
+                <Typography variant="h6">Add New Event</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("removeEvent")}
+            >
+              <CardContent>
+                <Typography variant="h6">Remove Event</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("closeRegistration")}
+            >
+              <CardContent>
+                <Typography variant="h6">Close Registration</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("closeEvent")}
+            >
+              <CardContent>
+                <Typography variant="h6">Mark Event as Complete</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className="action-card"
+              onClick={() => setSelectedAction("closeFeedback")}
+            >
+              <CardContent>
+                <Typography variant="h6">Close Feedback Collection</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
 
-      <Box className="card-container">
         {selectedAction === "proposeEvent" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="details-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Propose Event
@@ -859,7 +1097,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "viewProposals" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="details-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 View All Proposals
@@ -867,7 +1105,7 @@ const ChairpersonPage = () => {
               {proposals.map((proposal, index) => (
                 <Card
                   elevation={3}
-                  className="action-card"
+                  className="details-card"
                   key={proposal._id}
                   style={{
                     margin: "10px 0",
@@ -1019,7 +1257,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "viewMember" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="details-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 <u>Club Members</u>
@@ -1055,7 +1293,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "addMember" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="details-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Add Member
@@ -1089,7 +1327,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "removeMember" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="details-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Remove Member
@@ -1127,7 +1365,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "changeRoles" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="details-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Change Roles
@@ -1186,7 +1424,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "changeClubData" && (
-          <Card elevation={3} className="action-card">
+          <Card elevation={3} className="details-card">
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Change Club Data
@@ -1717,9 +1955,11 @@ const ChairpersonPage = () => {
           </Card>
         )}
         <ActionCards selectedAction={selectedAction} />
-        <BookedVenues selectedAction={selectedAction}/>
-      </Box>
-    </div>
+        <BookedVenues selectedAction={selectedAction} />
+
+        </div>
+        </div>
+        </div>
   );
 };
 

@@ -1,1 +1,27 @@
 
+.guest-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .guest-header {
+    width: 80% !important;
+    margin: 0 auto !important;
+    border-radius: 8px;
+    position: fixed !important;
+    top: 20px !important;
+  }
+
+  .mentor-card {
+    width: 60%;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .action-card {
+    width: 60%;
+    margin-top: 20px;
+  }
+
+    

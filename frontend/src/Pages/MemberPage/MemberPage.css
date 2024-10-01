@@ -4,9 +4,12 @@
     align-items: center;
   }
   
-  Header {
-    width: 60% !important;
-    margin-bottom: 30px;
+  .member-header {
+    width: 80% !important;
+    margin: 0 auto !important;
+    border-radius: 8px;
+    position: fixed !important;
+    top: 20px !important;
   }
 
   .mentor-card {

@@ -1,0 +1,53 @@
+.events-page-container {
+    padding: 20px;
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .club-section {
+    margin-bottom: 50px;
+  }
+  
+  .club-section h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    /* font-size: 1.8rem; */
+    color: #333;
+  }
+  
+  .event-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    margin: 0 auto;
+  }
+  
+  /* Centered heading */
+  .events-heading {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Centering the dropdown menu and heading */
+  .club-dropdown-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .club-dropdown {
+    padding: 10px;
+    margin-bottom: 30px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 200px;
+  }

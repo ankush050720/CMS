@@ -27,21 +27,21 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
-  const [role, setRole] = useState("");
+  // const [role, setRole] = useState("");
   const [scores, setScores] = useState(null); // State to hold score data
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const userInfo = await getUserInfo();
-        setRole(userInfo.role);
-      } catch (error) {
-        console.error("Failed to fetch user info:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     try {
+  //       const userInfo = await getUserInfo();
+  //       setRole(userInfo.role);
+  //     } catch (error) {
+  //       console.error("Failed to fetch user info:", error);
+  //     }
+  //   };
 
-    fetchUserInfo();
-  }, []);
+  //   fetchUserInfo();
+  // }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -50,6 +50,16 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
       setIsActive(false);
     }
   }, [isOpen]);
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
 
   const fetchScores = async () => {
     try {
@@ -117,42 +127,59 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
     );
   };
   
-  
   const handlePayment = async () => {
     try {
       const userInfo = await getUserInfo();
       if (!userInfo) {
-        window.location.replace("/login");
+        console.log('Unauthorized user, redirecting to login...')
+        navigate('/login');
         return;
       }
-
-      const paymentSuccess = await PaymentService.processPayment(
-        event.fee,
-        userInfo.email
-      );
-      if (paymentSuccess) {
-        const registrationResult = await EventRegService.registerTeamForEvent(
-          event._id,
-          userInfo.email
-        );
-
-        if (registrationResult.alreadyRegistered) {
-          alert("Team is already registered for this event.");
-          return;
-        }
-
-        alert("Registration successful!");
-        onRequestClose();
-      } else {
-        alert("Payment failed. Please try again.");
+  
+      const orderId = await PaymentService.processPayment(event.fee, userInfo.email, event._id);
+  
+      const scriptLoaded = await loadRazorpayScript();
+  
+      if (!scriptLoaded) {
+        alert('Failed to load Razorpay SDK. Are you online?');
+        return;
       }
+  
+      const options = {
+        key: process.env.REACT_APP_RAZORPAY_KEY_ID, // Your Razorpay key ID
+        amount: event.fee * 100,
+        currency: "INR",
+        name: "Event Registration",
+        description: "Event Registration Fee",
+        order_id: orderId,
+        handler: async (response) => {
+          // Handle successful payment here
+          alert("Payment Successful!");
+          const registrationResult = await EventRegService.registerTeamForEvent(event._id, userInfo.email);
+          if (registrationResult.alreadyRegistered) {
+            alert("Team is already registered for this event.");
+          } else {
+            alert("Registration successful!");
+          }
+          onRequestClose();
+        },
+        prefill: {
+          name: userInfo.name,
+          email: userInfo.email,
+        },
+        notes: {
+          address: "Sample Address",
+        },
+        theme: {
+          color: "#F37254",
+        },
+      };
+  
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     } catch (error) {
-      if (error.message === "Unauthorized") {
-        window.location.replace("/login");
-      } else {
-        console.error("Payment or registration error:", error);
-        alert("An error occurred. Please try again.");
-      }
+      console.error("Payment error:", error);
+      alert("An error occurred while processing the payment.");
     }
   };
 

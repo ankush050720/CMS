@@ -1,53 +1,81 @@
-.events-page-container {
+.club-event-card {
   padding: 20px;
-  background-color: #f0f0f0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  position: relative;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  min-height: 400px;
+  z-index:2;
 }
 
-.club-section {
-  margin-bottom: 50px;
-}
 
-.club-section h2 {
-  margin-bottom: 20px;
-  text-align: center;
-  /* font-size: 1.8rem; */
-  color: #333;
-}
-
-.event-cards {
+.event-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
-  justify-content: center;
-  margin: 0 auto;
 }
 
-/* Centered heading */
-.events-heading {
-  text-align: center;
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 20px;
+
+/* EventPage.css */
+
+/* Prevent horizontal scrolling and overflow */
+.swiper-container {
+  max-width: 100%; /* Ensure swiper takes full width without overflow */
+  overflow: hidden; /* Prevents horizontal scrolling */
+  position: relative;
 }
 
-/* Centering the dropdown menu and heading */
-.club-dropdown-container {
+/* Make sure slides don't cause overflow */
+.swiper-slide {
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
 }
 
-.club-dropdown {
-  padding: 10px;
-  margin-bottom: 30px;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 200px;
+/* Adjust the position of the next and previous buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #000; /* Change arrow color if needed */
+  font-size: 20px; /* Adjust the size of the arrow */
+  top: 50%; /* Center the arrows vertically */
+  transform: translateY(-50%);
+  position: absolute;
+  top : 200px;
+  z-index: 10;
+}
+
+.swiper-button-next {
+  right: 10px; /* Move the next arrow closer to the card */
+}
+
+.swiper-button-prev {
+  left: 10px; /* Move the previous arrow closer to the card */
+}
+
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    font-size: 16px; /* Decrease arrow size on smaller screens */
+  }
+
+  .club-event-card {
+    width: 100%; /* Make cards take up full width on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    font-size: 14px; /* Further decrease arrow size on mobile devices */
+  }
+  
+  .club-event-card {
+    width: 100%; /* Ensure full width on mobile */
+    padding: 10px; /* Reduce padding for smaller screens */
+  }
 }

@@ -5,7 +5,7 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { logout } from '../../services/loginService';
 import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@mui/material';
 
-const Header = ({ email }) => {
+const Header = ({ email, className }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const Header = ({ email }) => {
   };
 
   return (
-    <AppBar position="static" sx={{ width: '100%', margin: '0 auto', backgroundColor: 'primary.main' }}> {/* Set original color */}
+    <AppBar className = {className} position="static" sx={{ width: '100%', margin: '0 auto', backgroundColor: 'primary.main' }}> {/* Set original color */}
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Logged in as: {email || 'Guest'}
