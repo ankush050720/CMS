@@ -405,9 +405,7 @@
 @media (max-width: 768px) {
 
   .intro-header{
-    position: relative;
-    margin-right: 50px !important;
-    max-width: 400px;
+    margin-right: 55px;
   }
 
   .intro-header h1 {
@@ -427,6 +425,7 @@
   .club-carousel {
     width: 90vw;
     height: auto;
+    margin-right: 10px;
   }
 
   .slick-slide .club-card {
@@ -463,6 +462,11 @@
 
 /* Adjustments for tablets and medium devices (max-width: 1200px) */
 @media (max-width: 1200px) {
+
+  .intro-header{
+    margin-right: 55px !important;
+  }
+
   .intro-header h1 {
     font-size: 2.8rem; /* Slightly smaller heading */
   }
