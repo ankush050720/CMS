@@ -28,12 +28,7 @@
 }
 
 /* Make sure slides don't cause overflow */
-.swiper-slide {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 
 /* Adjust the position of the next and previous buttons */
 .swiper-button-next,
@@ -56,8 +51,24 @@
 }
 
 
+@media (min-width: 1024px) {
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure slide takes full width */
+    height: auto; /* Allow it to adjust based on content */
+    padding: 20px;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    top:50%;
+  }
+}
+
 /* Media queries for responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .swiper-button-next,
   .swiper-button-prev {
     font-size: 16px; /* Decrease arrow size on smaller screens */
@@ -65,6 +76,13 @@
 
   .club-event-card {
     width: 100%; /* Make cards take up full width on smaller screens */
+  }
+
+  .swiper-slide {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 

@@ -13,6 +13,12 @@
   margin-left: 20px;
 }
 
+.chair-chat {
+  position: relative;
+  left: 0;
+  margin-bottom: 10px;
+}
+
 /* Header styling - now fixed */
 .chair-header {
   position: fixed !important;

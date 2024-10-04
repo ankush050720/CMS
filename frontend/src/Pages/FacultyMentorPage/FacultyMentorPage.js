@@ -44,6 +44,7 @@ import "./FacultyMentorPage.css"; // Add appropriate styles
 import Header from "../../components/AdminHeader/AdminHeader";
 import RateEventPage from "../../pages/RateEventPage/RateEventPage";
 import BookedVenues from "../../components/bookedVenues";
+import ChatButton from "../../components/ChatButton";
 
 const FacultyMentorPage = () => {
   const [selectedAction, setSelectedAction] = useState("");
@@ -248,6 +249,7 @@ const FacultyMentorPage = () => {
               Welcome, Faculty Mentor!
             </Typography>
           </CardContent>
+          <ChatButton />
         </Card>
 
         <Grid container spacing={2} className="action-grid">

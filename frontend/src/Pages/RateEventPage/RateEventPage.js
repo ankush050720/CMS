@@ -96,7 +96,7 @@ const EventGrid = ({ events, clubName, status, openEventModal }) => {
   return events.length > 0 ? (
     <Grid container spacing={3}>
       {events.map((event) => (
-        <Grid item xs={12} sm={6} md={4} key={event._id}>
+        <Grid item xs={12} sm={6} md={4} key={event._id} sx={{ minWidth: '280px' }}>
           <EventCard event={event} onClick={() => openEventModal(event)} />
         </Grid>
       ))}

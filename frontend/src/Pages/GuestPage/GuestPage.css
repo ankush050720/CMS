@@ -1,27 +1,74 @@
-
 .guest-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.guest-header {
+  width: 80% !important;
+  margin: 0 auto !important;
+  border-radius: 8px;
+  position: fixed !important;
+  top: 20px !important;
+}
+
+/* Mentor and Action Card styling */
+.mentor-card,
+.action-card {
+  width: 60%;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Media Queries */
+
+/* Extra small devices (phones, less than 600px) */
+@media (max-width: 600px) {
+  .guest-header {
+    width: 100% !important;
+    top: 10px !important;
   }
-  
+
+  .mentor-card,
+  .action-card {
+    width: 90%; /* Cards take up more space on mobile */
+    margin-bottom: 15px;
+    font-size: 14px; /* Slightly smaller font */
+  }
+
+  .guest-container {
+    padding: 10px; /* Reduce padding for mobile */
+  }
+}
+
+/* Small devices (tablets, 600px to 900px) */
+@media (min-width: 600px) and (max-width: 900px) {
+  .guest-header {
+    width: 85% !important;
+  }
+
+  .mentor-card,
+  .action-card {
+    width: 80%; /* Slightly larger cards on tablets */
+  }
+
+  .guest-container {
+    padding: 20px;
+  }
+}
+
+/* Medium devices (laptops, 900px to 1200px) */
+@media (min-width: 900px) and (max-width: 1200px) {
   .guest-header {
     width: 80% !important;
-    margin: 0 auto !important;
-    border-radius: 8px;
-    position: fixed !important;
-    top: 20px !important;
   }
 
-  .mentor-card {
-    width: 60%;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
+  .mentor-card,
   .action-card {
-    width: 60%;
-    margin-top: 20px;
+    width: 70%; /* Cards adjust for medium-sized screens */
   }
 
-    
+  .guest-container {
+    padding: 30px;
+  }
+}

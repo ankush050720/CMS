@@ -98,14 +98,12 @@
 .action-grid {
   margin-top: 30px;
   margin-left: 30px;
+
 }
 
 .action-card {
   cursor: pointer;
   transition: 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 150px;
   background-color: #34495e !important;
   color: white !important;
@@ -113,7 +111,8 @@
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1) !important;
-  word-break: break-word;
+  word-break:break-word;
+  max-width: 220px;
 }
 
 .action-card:hover {

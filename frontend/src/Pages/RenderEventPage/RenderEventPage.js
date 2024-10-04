@@ -4,7 +4,7 @@ import EventCard from "../../components/EventCard/EventCard";
 import EventModal from "../../components/EventModal/EventModal";
 import { getAllEvents } from "../../services/eventService";
 import { getAllClubs } from "../../services/clubService";
-import "./RenderEventPage.css";
+// import "./RenderEventPage.css";
 
 const EventPage = () => {
   const [events, setEvents] = useState([]);
@@ -131,7 +131,7 @@ const EventGrid = ({ events, clubName, status, openEventModal }) => {
   return filteredEvents.length > 0 ? (
     <Grid container spacing={3}>
       {filteredEvents.map(event => (
-        <Grid item xs={12} sm={6} md={4} key={event._id}>
+        <Grid item xs={12} sm={6} md={4} key={event._id} sx={{ minWidth: '280px' }}>
           <EventCard event={event} onClick={() => openEventModal(event)} />
         </Grid>
       ))}

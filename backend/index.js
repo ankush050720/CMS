@@ -10,7 +10,8 @@ const proposeRoutes = require('./routes/proposeRoute');
 const memberRoute = require('./routes/memberRoute');
 const facultyMentorRoute = require('./routes/facultyMentorRoute')
 const scoreRoute = require('./routes/scoreRoute');
-const adminRoute = require('./routes/adminRoute')
+const adminRoute = require('./routes/adminRoute');
+const chatRoute = require('./routes/chatRoute');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -25,9 +26,9 @@ app.use(cookieParser());
 //Init cross-origin request handlers
 // Update your CORS configuration
 app.use(cors({
-    origin: 'http://localhost:3000', 
-    credentials: true, // Allow credentials (cookies)
-  }));
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:8080'], // Allow frontend of both systems
+  credentials: true, // Allow credentials (cookies)
+}));
 
 // Connect to Database
 connectDB();
@@ -43,6 +44,7 @@ app.use('/api/members', memberRoute);
 app.use('/api/proposals', facultyMentorRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/score', scoreRoute);
+app.use('/api/chat', chatRoute);
 
 // Listen on a port
 const PORT = process.env.PORT || 5000;

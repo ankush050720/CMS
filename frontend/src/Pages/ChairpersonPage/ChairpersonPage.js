@@ -64,6 +64,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { uploadImageToCloudinary } from "../../utils/cloudinaryUpload";
 import ActionCards from "../../components/eventActionCard"; // Adjust the import path as needed
 import BookedVenues from "../../components/bookedVenues";
+import ChatButton from "../../components/ChatButton";
 import "./ChairpersonPage.css";
 
 const ChairpersonPage = () => {
@@ -714,6 +715,7 @@ const ChairpersonPage = () => {
               Welcome, Chairperson!
             </Typography>
           </CardContent>
+          <ChatButton />
         </Card>
 
         <Grid container spacing={2} className="action-grid">
@@ -1956,7 +1958,6 @@ const ChairpersonPage = () => {
         )}
         <ActionCards selectedAction={selectedAction} />
         <BookedVenues selectedAction={selectedAction} />
-
         </div>
         </div>
         </div>
