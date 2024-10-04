@@ -8,13 +8,27 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react"; // Import useState
 import { useHistory } from "react-router";
 import Login from "../components/Authentication/Login";
 import Signup from "../components/Authentication/Signup";
+import { useLocation } from 'react-router-dom';
 
 function Homepage() {
   const history = useHistory();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const email = query.get('email');
+  
+  // Create state to hold the email
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    if (email) {
+      localStorage.setItem("userEmail", email); // Store the userEmail in localStorage
+      setUserEmail(email); // Also update the state
+    }
+  }, [email]);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
@@ -36,7 +50,7 @@ function Homepage() {
         borderWidth="1px"
       >
         <Text fontSize="4xl" fontFamily="Work sans">
-          CHAT-INTEGRATION
+          CLUB-CHAT
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} border="10px solid black" borderRadius="xl" borderWidth="1px">
@@ -47,10 +61,11 @@ function Homepage() {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Login />
+              {/* Pass userEmail as prop */}
+              <Login userEmail={userEmail} />
             </TabPanel>
             <TabPanel>
-              <Signup />
+              <Signup userEmail={userEmail}/>
             </TabPanel>
           </TabPanels>
         </Tabs>

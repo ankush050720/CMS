@@ -42,6 +42,25 @@ export const getSender = (loggedUser, users) => {
   return users[0]?._id === loggedUser?._id ? users[1].name : users[0].name;
 };
 
+// export const getSender = (loggedUser, users) => {
+//   if (!loggedUser) {
+//     console.log('Not logged in');
+//     return null;
+//   }
+
+//   if ( !users || users.length === 0) {
+//     console.log('No users found');
+//     return null;
+//   }
+  
+//   if (users.length === 1) {
+//     return users[0].name; // Only one user available
+//   }
+
+//   return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
+// };
+
+
 export const getSenderFull = (loggedUser, users) => {
   return users[0]._id === loggedUser._id ? users[1] : users[0];
 };

@@ -4,27 +4,36 @@ import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 
-const Signup = () => {
+const Signup = ({ userEmail }) => { // Accept userEmail as prop
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const toast = useToast();
   const history = useHistory();
 
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [confirmpassword, setConfirmpassword] = useState();
-  const [password, setPassword] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState(userEmail || ""); // Use the prop for the email
+  const [confirmpassword, setConfirmpassword] = useState("");
+  const [password, setPassword] = useState("");
   const [pic, setPic] = useState();
   const [picLoading, setPicLoading] = useState(false);
+
+  // Effect to set the email from the prop
+  useEffect(() => {
+    if (userEmail) {
+      setEmail(userEmail);
+    } else {
+      console.log("Couldn't find user email");
+    }
+  }, [userEmail]);
 
   const submitHandler = async () => {
     setPicLoading(true);
     if (!name || !email || !password || !confirmpassword) {
       toast({
-        title: "Please Fill all the Feilds",
+        title: "Please fill all the fields",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -35,12 +44,13 @@ const Signup = () => {
     }
     if (password !== confirmpassword) {
       toast({
-        title: "Passwords Do Not Match",
+        title: "Passwords do not match",
         status: "warning",
         duration: 5000,
         isClosable: true,
         position: "bottom",
       });
+      setPicLoading(false);
       return;
     }
     console.log(name, email, password, pic);
@@ -73,7 +83,7 @@ const Signup = () => {
       history.push("/chats");
     } catch (error) {
       toast({
-        title: "Error Occured!",
+        title: "Error Occurred!",
         description: error.response.data.message,
         status: "error",
         duration: 5000,
@@ -88,15 +98,15 @@ const Signup = () => {
     setPicLoading(true);
     if (pics === undefined) {
       toast({
-        title: "Please Select an Image!",
+        title: "Please select an image!",
         status: "warning",
         duration: 5000,
         isClosable: true,
         position: "bottom",
       });
+      setPicLoading(false);
       return;
     }
-    console.log(pics);
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
@@ -118,7 +128,7 @@ const Signup = () => {
         });
     } else {
       toast({
-        title: "Please Select an Image!",
+        title: "Please select an image!",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -132,9 +142,9 @@ const Signup = () => {
   return (
     <VStack spacing="5px">
       <FormControl id="first-name" isRequired>
-        <FormLabel>Name</FormLabel>
+        <FormLabel>Username</FormLabel>
         <Input
-          placeholder="Enter Your Name"
+          placeholder="Enter a fancy username"
           focusBorderColor="blackAlpha.400"
           onChange={(e) => setName(e.target.value)}
         />
@@ -143,9 +153,10 @@ const Signup = () => {
         <FormLabel>Email Address</FormLabel>
         <Input
           type="email"
-          placeholder="Enter Your Email Address"
+          color="#c7a6a6"
+          value={email} // Set the email from prop
           focusBorderColor="blackAlpha.400"
-          onChange={(e) => setEmail(e.target.value)}
+          isReadOnly // Make the field uneditable
         />
       </FormControl>
       <FormControl id="password" isRequired>
@@ -164,7 +175,7 @@ const Signup = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-      <FormControl id="password" isRequired>
+      <FormControl id="confirmpassword" isRequired>
         <FormLabel>Confirm Password</FormLabel>
         <InputGroup size="md">
           <Input
@@ -194,7 +205,6 @@ const Signup = () => {
         variant="solid"
         bg="#ff904d"
         color="white"
-        // colorScheme="blue"
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}

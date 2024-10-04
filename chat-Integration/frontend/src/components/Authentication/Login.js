@@ -2,28 +2,43 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 import { ChatState } from "../../Context/ChatProvider";
 
-const Login = () => {
+const Login = ({ userEmail }) => {  // Accept userEmail as prop
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+  const [email, setEmail] = useState(userEmail); // Set email to userEmail
   const toast = useToast();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const history = useHistory();
   const { setUser } = ChatState();
 
+  useEffect(() => {
+    // Check localStorage for the email
+    const storedEmail = localStorage.getItem("userEmail");
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
+
+  // Optionally use a useEffect to update if userEmail changes
+  useEffect(() => {
+    if (userEmail) {
+      setEmail(userEmail); // Update if userEmail changes
+    }
+  }, [userEmail]);
+
   const submitHandler = async () => {
     setLoading(true);
-    if (!email || !password) {
+    if (!email || !password) { 
       toast({
-        title: "Please Fill all the Feilds",
+        title: "Please fill all the fields",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -42,7 +57,7 @@ const Login = () => {
 
       const { data } = await axios.post(
         "/api/user/login",
-        { email, password },
+        { email: email, password }, 
         config
       );
 
@@ -59,7 +74,7 @@ const Login = () => {
       history.push("/chats");
     } catch (error) {
       toast({
-        title: "Error Occured!",
+        title: "Error Occurred!",
         description: error.response.data.message,
         status: "error",
         duration: 5000,
@@ -76,11 +91,11 @@ const Login = () => {
         <FormLabel>Email Address</FormLabel>
         <Input
           bg="#FFFFFF"
-          value={email}
+          value={email}  // Set userEmail as the value
+          color="#c7a6a6"
           type="email"
-          placeholder="Enter Your Email Address" 
           focusBorderColor="blackAlpha.400"
-          onChange={(e) => setEmail(e.target.value)}
+          isReadOnly  // Make the field uneditable
         />
       </FormControl>
       <FormControl id="password" isRequired>
@@ -104,7 +119,6 @@ const Login = () => {
       <Button
         _hover={{}}
         variant="solid"
-        // colorScheme="blue"
         bg="#ff904d"
         color="white"
         width="100%"
@@ -114,20 +128,18 @@ const Login = () => {
       >
         Login
       </Button>
-      <Button
+      {/* <Button
         _hover={{}}
         variant="solid"
-        // colorScheme="orange"
         bg="#0097b5"
         color="white"
         width="100%"
         onClick={() => {
-          setEmail("guest@example.com");
           setPassword("123456");
         }}
       >
         Get Guest User Credentials
-      </Button>
+      </Button> */}
     </VStack>
   );
 };

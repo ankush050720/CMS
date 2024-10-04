@@ -1,11 +1,33 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const generateToken = require("../config/generateToken");
+const axios = require('axios');
 
 //@description     Get or Search all users
 //@route           GET /api/user?search=
 //@access          Public
+
+// const allUsers = asyncHandler(async (req, res) => {
+//   const keyword = req.query.search
+//     ? {
+//         $or: [
+//           { name: { $regex: req.query.search, $options: "i" } },
+//           { email: { $regex: req.query.search, $options: "i" } },
+//         ],
+//       }
+//     : {};
+
+//   // Combine both conditions
+//   const users = await User.find({
+//     ...keyword, // spread the search criteria
+//     _id: { $ne: req.user.id }, // exclude the logged-in user
+//   });
+
+//   res.send(users);
+// });
+
 const allUsers = asyncHandler(async (req, res) => {
+
   const keyword = req.query.search
     ? {
         $or: [
@@ -15,8 +37,27 @@ const allUsers = asyncHandler(async (req, res) => {
       }
     : {};
 
-  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
-  res.send(users);
+  try {
+    const response = await axios.get(`http://localhost:5000/api/chat/getClubIdByEmail/${req.user.email}`);
+    const { clubId } = response.data;
+
+    const membersResponse = await axios.get(`http://localhost:5000/api/chat/${clubId}/members`);
+    const clubMembers = membersResponse.data;
+
+    const users = await User.find({
+      ...keyword, // spread the search criteria
+      _id: { $ne: req.user.id }, // exclude the logged-in user
+    });
+
+    const filteredUsers = users.filter((user) =>
+      clubMembers.some((member) => member.email === user.email)
+    );
+
+    res.send(filteredUsers);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send({ message: 'Server error', error });
+  }
 });
 
 //@description     Register new user
