@@ -1,7 +1,7 @@
 .club-event-card {
   padding: 20px;
   position: relative;
-  background-color: #fff;
+  background-color: #0bb6cd30 !important;
   border-radius: 10px;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -43,11 +43,11 @@
 }
 
 .swiper-button-next {
-  right: 10px; /* Move the next arrow closer to the card */
+  right: 40px; /* Move the next arrow closer to the card */
 }
 
 .swiper-button-prev {
-  left: 10px; /* Move the previous arrow closer to the card */
+  left: 40px; /* Move the previous arrow closer to the card */
 }
 
 

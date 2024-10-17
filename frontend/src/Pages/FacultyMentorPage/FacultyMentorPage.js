@@ -40,7 +40,7 @@ import {
   removeClubLeader,
 } from "../../services/facultyMentorService";
 import { fetchClubMembers } from "../../services/memberService"; // used for member fetching
-import "./FacultyMentorPage.css"; // Add appropriate styles
+import styles from "./FacultyMentorPage.module.css"; // Add appropriate styles
 import Header from "../../components/AdminHeader/AdminHeader";
 import RateEventPage from "../../pages/RateEventPage/RateEventPage";
 import BookedVenues from "../../components/bookedVenues";
@@ -194,8 +194,8 @@ const FacultyMentorPage = () => {
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="sidebar">
+    <div className={styles["dashboard-container"]}>
+      <div className={styles.sidebar}>
         <Typography variant="h6" gutterBottom>
           Faculty Mentor Dashboard
         </Typography>
@@ -229,21 +229,21 @@ const FacultyMentorPage = () => {
             <ListItemIcon>
               <AddIcon />
             </ListItemIcon>
-            <ListItemText primary="Add Chairperson/ViceChairperson" />
+            <ListItemText primary="Add Chair/ViceChair" />
           </MenuItem>
           <MenuItem onClick={() => setSelectedAction("removeChairperson")}>
             <ListItemIcon>
               <DeleteIcon />
             </ListItemIcon>
-            <ListItemText primary="Remove Chairperson/ViceChaiperson" />
+            <ListItemText primary="Remove Chair/ViceChair" />
           </MenuItem>
         </MenuList>
       </div>
-        <div className="dashboard-body" >
-        <Header email = {email} className="facultyMentorPage-header" />
-      <div className="dashboard-content">
+        <div className={styles["dashboard-body"]} >
+        <Header email = {email} className={styles["facultyMentorPage-header"]} />
+      <div className={styles["dashboard-content"]} >
       
-        <Card elevation={3} className="welcome-card">
+        <Card elevation={3} className={styles["welcome-card"]} >
           <CardContent>
             <Typography variant="h4" gutterBottom>
               Welcome, Faculty Mentor!
@@ -252,11 +252,11 @@ const FacultyMentorPage = () => {
           <ChatButton />
         </Card>
 
-        <Grid container spacing={2} className="action-grid">
+        <Grid container spacing={2} className={styles["action-grid"]}>
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("reviewProposals")}
             >
               <CardContent>
@@ -267,7 +267,7 @@ const FacultyMentorPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("checkBookedVenues")}
             >
               <CardContent>
@@ -278,7 +278,7 @@ const FacultyMentorPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("rateEvent")}
             >
               <CardContent>
@@ -289,7 +289,7 @@ const FacultyMentorPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("viewMember")}
             >
               <CardContent>
@@ -300,7 +300,7 @@ const FacultyMentorPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("addChairperson")}
             >
               <CardContent>
@@ -311,7 +311,7 @@ const FacultyMentorPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("removeChairperson")}
             >
               <CardContent>
@@ -322,7 +322,7 @@ const FacultyMentorPage = () => {
         </Grid>
 
         {selectedAction === "reviewProposals" && (
-        <Card elevation={3} className="details-card">
+        <Card elevation={3} className={styles["details-card"]}>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               Review Proposals
@@ -330,7 +330,7 @@ const FacultyMentorPage = () => {
             {proposals.map((proposal, index) => (
               <Card
                 elevation={3}
-                className="details-card"
+                className={styles["details-card"]}
                 key={proposal._id}
                 style={{ margin: "10px 0", width: "100%" }}
               >
@@ -536,7 +536,7 @@ const FacultyMentorPage = () => {
       )}
 
       {selectedAction === "viewMember" && (
-        <Card elevation={3} className="details-card">
+        <Card elevation={3} className={styles["details-card"]}>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               <u>Club Members</u>
@@ -572,7 +572,7 @@ const FacultyMentorPage = () => {
       )}
 
       {selectedAction === "addChairperson" && (
-        <Card elevation={3} className="details-card">
+        <Card elevation={3} className={styles["details-card"]}>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               Add ChairPerson/ViceChairperson
@@ -616,7 +616,7 @@ const FacultyMentorPage = () => {
       )}
 
       {selectedAction === "removeChairperson" && (
-        <Card elevation={3} className="details-card">
+        <Card elevation={3} className={styles["details-card"]}>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               Remove Chairperson/Vice Chairperson
@@ -679,7 +679,7 @@ const FacultyMentorPage = () => {
       )}
 
       {selectedAction === "rateEvent" && (
-            <Card elevation={3} className="details-card">
+            <Card elevation={3} className={styles["details-card"]}>
                 <CardContent>
                     <Typography variant="h5" gutterBottom>
                         Rate Event
@@ -689,7 +689,7 @@ const FacultyMentorPage = () => {
             </Card>
           )
         }
-        <BookedVenues selectedAction={selectedAction}/>
+        <BookedVenues className={styles["details-card"]} selectedAction={selectedAction}/>
 
         </div>
       </div>

@@ -28,10 +28,10 @@ const EventCard = ({ event, onClick }) => {
           background: 'linear-gradient(135deg, #64b5f6, #2196f3)', // Change gradient on hover
         },
         '&:hover .event-title': {
-          fontSize: '26px',
+          fontSize: '30px',
         },
         '&:hover .event-details': {
-          fontSize: '14px',
+          fontSize: '10px',
         },
       }}
       onClick={onClick}

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import { getUserInfo } from "../../services/userService";
 import EventPage from "../RenderEventPage/RenderEventPage";
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, Card, CardContent } from "@mui/material";
 import ChatButton from "../../components/ChatButton";
-import "./MemberPage.css"
+import "./MemberPage.css";
 
 const MemberPage = () => {
   const [email, setEmail] = useState("");
@@ -13,7 +13,7 @@ const MemberPage = () => {
     const fetchUserDetails = async () => {
       try {
         const userInfo = await getUserInfo();
-        setEmail(userInfo.email); 
+        setEmail(userInfo.email);
       } catch (err) {
         console.error("Error fetching user info", err);
       }
@@ -23,11 +23,12 @@ const MemberPage = () => {
   }, []);
 
   return (
-    <div style={{ width: "80%", margin: "0 auto" }}>
-      <Header email = {email} className = "member-header" />
+    <div style={{ backgroundColor: "whitesmoke", paddingTop:"40px", paddingBottom:"50px" }}>
+    <div style={{ width: "80%", margin: "0 auto"}}>
+      <Header email={email} className="member-header" />
       <Box mt={14} mb={4} sx={{ width: "100%" }}>
         <Paper elevation={3} sx={{ padding: 4, borderRadius: 2 }}>
-          <Typography variant="h4" align="center" gutterBottom mb={3}>  
+          <Typography variant="h4" align="center" gutterBottom mb={3}>
             Welcome, Member!
           </Typography>
           <ChatButton />
@@ -35,11 +36,13 @@ const MemberPage = () => {
       </Box>
 
       <Box mt={3} mb={4} sx={{ width: "100%" }}>
-        <Paper elevation={3} sx={{ padding: 4, borderRadius: 2 }}>
-          <EventPage />
-        </Paper>
+        <Card elevation={3}>
+          <CardContent>
+            <EventPage />
+          </CardContent>
+        </Card>
       </Box>
-
+    </div>
     </div>
   );
 };

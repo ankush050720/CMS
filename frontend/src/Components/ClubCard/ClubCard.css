@@ -1,31 +1,61 @@
 .club-card {
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 10px 10px 10px rgba(27, 0, 0, 0.326);
-  transition: transform 0.2s ease;
+  width: 250px;
+  background-color: #0d2235; /* Dark background color */
+  border-radius: 15px; /* More rounded corners */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+  padding: 25px 20px; /* Adjusted padding */
+  text-align: center;
+  margin: 20px;
   position: relative;
-  background-color: rgb(222, 247, 247);
-}
-
-.club-card:hover {
-  transform: scale(1.05);
+  color: white; /* Text color to white */
 }
 
 .club-logo {
-  border-radius: 50%;
-  position: absolute;
-  top: -20px;
-  border: 4px solid white;
+  height: 100px; /* Bigger logo size */
+  width: 100px;
+  margin-bottom: 20px; /* Increased spacing */
+  border-radius: 10px;
+}
+
+.club-content {
+  padding-top: 15px; /* Increased top padding */
+}
+
+.club-type {
+  display: inline-block;
+  background-color: #ffd7d1; /* Lighter background */
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #d65050; /* Stronger red color */
+  margin-bottom: 12px;
+  font-weight: 600;
 }
 
 .club-name {
-  font-weight: bolder;
-  font-family:cursive;
-  margin-top: 90px;
-  text-align: center;
-  font-size: larger;
+  font-size: 22px; /* Bigger font size */
+  font-weight: bold;
+  color: white; /* Ensuring the name is in white */
+  margin-bottom: 10px;
+}
+
+.club-lead {
+  font-size: 14px;
+  color: #e1e1e1; /* Light grey for lead text */
+  margin: 6px 0;
+}
+
+.club-button {
+  background-color: #000000; /* Black button */
+  color: white;
+  border: none;
+  padding: 10px 25px; /* Wider button */
+  border-radius: 30px; /* More rounded button */
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.club-button:hover {
+  background-color: #555; /* Darker hover effect */
 }

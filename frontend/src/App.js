@@ -16,8 +16,6 @@ import Profile from './pages/ProfilePage/ProfilePage';
 import RegisteredEvents from './pages/RegisteredEventPage/RegisteredEventPage';
 import AcceptInvitation from './pages/AcceptInvitationPage/AcceptInvitationPage';
 import FeedbackForm from './pages/FeedbackForm';
-import PaymentSuccess from './pages/PaymentSuccessPage';
-import PaymentCancel from './pages/PaymentCancelPage';
 
 const App = () => {
   return (
@@ -41,8 +39,6 @@ const App = () => {
             <Route path="/profile" element={<Profile email="user@example.com" phoneNumber="123-456-7890" role="Member" />} />
             <Route path="/registered-events" element={<RegisteredEvents />} />
             <Route path="/accept-invitation" element={<AcceptInvitation />} />
-            <Route path="/payment-success" element={<PaymentSuccess />} />
-            <Route path="/payment-cancel" element={<PaymentCancel />} />
           </Routes>
         </div>
       </Loader>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getUserInfo } from '../../services/userService';
-import { Card, CardContent, Typography, Grid, CircularProgress } from '@mui/material'; // Material-UI imports
+import { Card, CardContent, Typography, Grid, CircularProgress, Avatar } from '@mui/material'; // Material-UI imports
+import PersonIcon from '@mui/icons-material/Person'; // Optional user icon
 import './ProfilePage.css';
 
 const Profile = () => {
@@ -29,24 +30,39 @@ const Profile = () => {
   return (
     <Grid container justifyContent="center" style={{ marginTop: '2rem' }}>
       <Grid item xs={12} md={6}>
-        <Card elevation={3}>
+        <Card elevation={5} style={{ padding: '2rem', backgroundColor: '#f9f9f9' }}>
           <CardContent>
-            <Typography variant="h4" gutterBottom>
-              Profile
-            </Typography>
-            {userInfo && (
-              <div className="profile-details">
-                <Typography variant="h6">
-                  Email: {userInfo.email}
-                </Typography>
-                <Typography variant="h6">
-                  Phone Number: {userInfo.phone}
-                </Typography>
-                <Typography variant="h6">
-                  Role: {userInfo.role}
-                </Typography>
-              </div>
-            )}
+            <Grid container direction="column" alignItems="center">
+              {/* Avatar or user icon */}
+              <Avatar
+                style={{
+                  width: '80px',
+                  height: '80px',
+                  marginBottom: '1rem',
+                  backgroundColor: '#2c3e50',
+                }}
+              >
+                <PersonIcon style={{ fontSize: '3rem', color: '#fff' }} />
+              </Avatar>
+
+              <Typography variant="h4" gutterBottom style={{ color: '#2c3e50', fontWeight: 'bold' }}>
+                Profile
+              </Typography>
+
+              {userInfo && (
+                <div className="profile-details" style={{ textAlign: 'center' }}>
+                  <Typography variant="h6" style={{ marginBottom: '1rem', color: '#34495e' }}>
+                    <strong>Email:</strong> {userInfo.email}
+                  </Typography>
+                  <Typography variant="h6" style={{ marginBottom: '1rem', color: '#34495e' }}>
+                    <strong>Phone Number:</strong> {userInfo.phone}
+                  </Typography>
+                  <Typography variant="h6" style={{ color: '#34495e' }}>
+                    <strong>Role:</strong> {userInfo.role}
+                  </Typography>
+                </div>
+              )}
+            </Grid>
           </CardContent>
         </Card>
       </Grid>

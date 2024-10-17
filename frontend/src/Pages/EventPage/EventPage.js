@@ -9,6 +9,7 @@ import EventCard from "../../components/EventCard/EventCard";
 import EventModal from "../../components/EventModal/EventModal";
 import { getAllEvents } from "../../services/eventService";
 import { getAllClubs } from "../../services/clubService";
+import Header from "../../components/HomeHeader/HomeHeader";
 import SwiperCore from "swiper";
 import "./EventPage.css";
 
@@ -50,13 +51,28 @@ const EventPage = () => {
       : events.filter((event) => event.club === selectedClub);
 
   return (
-    <Container maxWidth="lg" sx={{ paddingY: 4, marginTop: 5 }}>
+    <Container
+      maxWidth={false} // Make sure it spans the full width
+      sx={{
+        paddingY: 4,
+        marginTop: 0, // Remove margin to ensure it spans from the top
+        minHeight: "100vh", // Ensure it covers the full viewport height
+      }}
+      style={{
+        backgroundImage: 'url("eventBg.avif")',
+        backgroundSize: "cover", // Cover the entire area
+        backgroundPosition: "center", // Center the background image
+        backgroundRepeat: "no-repeat", // Prevent background repeat
+      }}
+    >
+    <Header />
       <Typography
         variant="h4"
         gutterBottom
         align="center"
+        mt={10}
         mb={10}
-        style={{ fontWeight: "bolder" }}
+        style={{ fontWeight: "bolder", color:"#4086ea", fontSize: "3rem" }}
       >
         Check Out Our Events...
       </Typography>
@@ -78,7 +94,7 @@ const EventPage = () => {
         loop={true}
       >
         {clubs.map((club) => (
-          <SwiperSlide key={club._id}>
+          <SwiperSlide key={club._id} className="swiper">
             <Paper elevation={5} className="club-event-card">
               <Typography variant="h5" gutterBottom>
                 {club.name}

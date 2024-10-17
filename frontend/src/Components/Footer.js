@@ -42,7 +42,7 @@ const Footer = () => {
             color:'#847878'
           }}
         >
-          All rights reserved.
+          School of CS&AI
         </Typography>
       </Box>
     </Box>

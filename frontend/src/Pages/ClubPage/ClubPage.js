@@ -13,6 +13,8 @@ import {
   Avatar,
 } from "@mui/material";
 import "./ClubPage.css"; // Import the CSS file
+import Header from "../../components/HomeHeader/HomeHeader";
+
 
 const ClubPage = () => {
   const { clubName } = useParams();
@@ -32,14 +34,16 @@ const ClubPage = () => {
   if (!club) return <Typography variant="h6">Loading...</Typography>;
 
   return (
-    <div
-      className="club-page-container"
-      style={{ marginTop: "2rem" }}
-    >
-      {/* Club Logo and Name */}
+    <div style={{ 
+      backgroundImage: 'url("clubBg.jpg")',
+      backgroundSize: "cover", // Cover the entire area
+      backgroundPosition: "center", // Center the background image
+      backgroundRepeat: "no-repeat",}}>
+      <Header />
+    <div className="club-page-container">
       <Paper
         elevation={4}
-        style={{ padding: "2rem", marginBottom: "2rem", textAlign: "center" }}
+        style={{ padding: "2rem", marginBottom: "2rem", textAlign: "center", backgroundColor: "rgba(11,182,205,0.05)" }}
       >
         <Avatar
           src={club.clubLogo}
@@ -54,7 +58,7 @@ const ClubPage = () => {
       {/* Faculty and Student Information */}
       <Grid container spacing={4}>
         <Grid item xs={12} sm={6}>
-          <Paper elevation={3} style={{ padding: "1.5rem" }}>
+          <Paper elevation={3} style={{ padding: "1.5rem" , backgroundColor: "rgba(11,182,205,0.05)"}}>
             <Typography variant="h6" gutterBottom>
               Faculty Coordinator: {club.facultyCoordinator}
             </Typography>
@@ -72,7 +76,7 @@ const ClubPage = () => {
 
         {/* Social Media and Website Links */}
         <Grid item xs={12} sm={6}>
-          <Paper elevation={3} style={{ padding: "1.5rem" }}>
+          <Paper elevation={3} style={{ padding: "1.5rem", backgroundColor: "rgba(11,182,205,0.05)" }}>
             <Typography variant="h6" gutterBottom>
               Club Website:{" "}
               <a
@@ -277,6 +281,7 @@ const ClubPage = () => {
                   padding: "2rem",
                   textAlign: "center",
                   height: "200px", // Consistent height for event cards
+                  backgroundColor: "rgba(11,182,205,0.05)"
                 }}
               >
                 <Typography variant="h6" gutterBottom>
@@ -303,6 +308,7 @@ const ClubPage = () => {
           </Typography>
         </Box>
       )}
+    </div>
     </div>
   );
 };

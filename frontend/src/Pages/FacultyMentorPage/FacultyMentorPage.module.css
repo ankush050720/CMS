@@ -6,24 +6,21 @@
 
 .dashboard-body {
   display: flex;
-  height: 100%;
+  height:fit-content;
   flex-direction: column;
   flex-grow: 1;
-  padding: 10px 30px;
-  margin-left: 20px;
-}
-
-.chair-chat {
-  position: relative;
-  left: 0;
-  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-left: 50px;
+  padding-right: 30px;
+  padding-bottom: 20px;
+  margin: 0 20px 10px 270px;
 }
 
 /* Header styling - now fixed */
-.chair-header {
+.facultyMentorPage-header {
   position: fixed !important;
-  left: 380px !important;
-  width: calc(100% - 400px) !important;
+  left: 350px !important;
+  width: calc(100% - 420px) !important;
   border-radius: 8px;
   padding: 15px;
   z-index: 100;
@@ -39,9 +36,8 @@
   flex-direction: column;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   position: fixed;
-  height: 100%; /* Sidebar fixed height to cover full screen */
-  transition: width 0.3s ease; /* Smooth sidebar transitions */
-  overflow-y: scroll;
+  height: 100%;
+  transition: width 0.3s ease;
 }
 
 .sidebar h6 {
@@ -50,11 +46,11 @@
   color: #ecf0f1;
 }
 
-.sidebar .MuiMenuList-root {
+.sidebar :global(.MuiMenuList-root) {
   padding-top: 10px;
 }
 
-.sidebar .MuiMenuItem-root {
+.sidebar :global(.MuiMenuItem-root) {
   color: white;
   margin-bottom: 10px;
   padding: 12px;
@@ -64,35 +60,52 @@
   align-items: center;
 }
 
-.sidebar .MuiMenuItem-root:hover {
+.sidebar :global(.MuiMenuItem-root:hover) {
   background-color: #1abc9c;
   transform: translateX(5px); /* Small hover effect */
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* Sidebar icons */
-.sidebar .MuiSvgIcon-root {
-  margin-right: 10px;
+.sidebar :global(.MuiSvgIcon-root) {
+  margin-right: 10px; 
   font-size: 1.5rem;
-  color: #ffffffb3;
+  color: rgb(214, 102, 102);
 }
 
-/* Main content area styling */
+:global(.MuiMenuList-root) {
+  padding-top: 10px;
+}
+
+:global(.MuiMenuItem-root) {
+  color: white;
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+:global(.MuiMenuItem-root:hover) {
+  background-color: #1abc9c;
+  transform: translateX(5px); /* Small hover effect */
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+}
+
 .dashboard-content {
   flex-grow: 1;
   padding: 30px;
-  margin-left: 270px; /* Create space for fixed sidebar */
-  margin-top: 120px; /* Create space for the fixed header */
+  margin-top: 120px;
   background-color: #f1f2f6;
   border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for content */
-  margin-bottom: 20px !important;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) ;
 }
 
 /* Welcome card styling */
 .welcome-card {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   padding: 30px;
   background-color: #ffffff;
   border-radius: 10px;
@@ -103,8 +116,7 @@
 
 /* Action grid and card styling */
 .action-grid {
-  margin-top: 30px;
-  margin-left: 30px;
+  margin: 30px auto;
 }
 
 .action-card {
@@ -142,23 +154,32 @@
 }
 
 /* Adjust button styles */
-button, .MuiButton-root {
+button, :global(.MuiButton-root) {
   padding: 10px 20px;
   font-size: 1rem;
   border-radius: 5px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-button:hover, .MuiButton-root:hover {
+button:hover, :global(.MuiButton-root:hover) {
   background-color: #16a085;
   transform: translateY(-3px);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive layout */
+
+
 @media (max-width: 1200px) {
   .dashboard-container {
     flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  .dashboard-body {
+    margin-right: 0;
+    margin-left: 30px;
+    padding: 10px auto;
+    padding-left: 0;
   }
 
   .sidebar {
@@ -168,20 +189,20 @@ button:hover, .MuiButton-root:hover {
     height: auto;
     margin-bottom: 20px;
     box-shadow: none;
-    overflow-y: visible;
   }
 
-  .chair-header {
+  .facultyMentorPage-header {
     left: 0 !important; /* Remove the left offset */
     width: 100% !important; /* Make the header full width */
     top: 0 !important; /* Ensure the header is fixed at the top */
-    border-radius: 0; /* Remove border-radius for full-width header */
+    border-radius: 0;
   }
+
 
   .dashboard-content {
     margin-left: 0;
     margin-top: 70px; /* Add margin for the fixed header height */
-    padding: 20px;
+    padding: 20px !important;
   }
 
   .details-card {

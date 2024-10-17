@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { checkVenue } from "../services/eventService";
 
-const BookedVenues = ({ selectedAction }) => {
+const BookedVenues = ({ className, selectedAction }) => {
   const [events, setEvents] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -52,7 +52,7 @@ const BookedVenues = ({ selectedAction }) => {
   return (
     <>
       {selectedAction === "checkBookedVenues" && (
-        <Card elevation={4} className="display-card" style={{marginBottom:"20px", marginTop:"40px"}}>
+        <Card elevation={4} className={className} style={{marginBottom:"20px", marginTop:"40px"}}>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               <b>Booked Venues</b>

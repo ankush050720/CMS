@@ -55,7 +55,6 @@ import {
   getClubMembers,
   updateMember,
   deleteMember,
-  postClubEvents,
   updateEvent,
   deleteEvent,
   getClubEvents,
@@ -65,7 +64,7 @@ import { uploadImageToCloudinary } from "../../utils/cloudinaryUpload";
 import ActionCards from "../../components/eventActionCard"; // Adjust the import path as needed
 import BookedVenues from "../../components/bookedVenues";
 import ChatButton from "../../components/ChatButton";
-import "./ChairpersonPage.css";
+import styles from "./ChairpersonPage.module.css";
 
 const ChairpersonPage = () => {
   const [selectedAction, setSelectedAction] = useState("");
@@ -612,8 +611,8 @@ const ChairpersonPage = () => {
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="sidebar">
+    <div className={styles["dashboard-container"]}>
+      <div className={styles.sidebar}>
         <Typography variant="h6" gutterBottom>
           Chairperson Dashboard
         </Typography>
@@ -705,11 +704,11 @@ const ChairpersonPage = () => {
           </MenuItem>
         </MenuList>
       </div>
-        <div className="dashboard-body" >
-        <Header email = {email} className="chair-header" />
-      <div className="dashboard-content">
+        <div className={styles["dashboard-body"]} >
+        <Header email = {email} className={styles["chair-header"]} />
+      <div className={styles["dashboard-content"]}>
       
-        <Card elevation={3} className="welcome-card">
+        <Card elevation={3} className={styles["welcome-card"]}>
           <CardContent>
             <Typography variant="h4" gutterBottom>
               Welcome, Chairperson!
@@ -718,11 +717,11 @@ const ChairpersonPage = () => {
           <ChatButton />
         </Card>
 
-        <Grid container spacing={2} className="action-grid">
+        <Grid container spacing={2} className={styles["action-grid"]}>
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("proposeEvent")}
             >
               <CardContent>
@@ -733,7 +732,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("viewProposals")}
             >
               <CardContent>
@@ -744,7 +743,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("checkBookedVenues")}
             >
               <CardContent>
@@ -755,7 +754,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("viewMember")}
             >
               <CardContent>
@@ -766,7 +765,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("addMember")}
             >
               <CardContent>
@@ -777,7 +776,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("removeMember")}
             >
               <CardContent>
@@ -788,7 +787,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("changeRoles")}
             >
               <CardContent>
@@ -799,7 +798,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("changeClubData")}
             >
               <CardContent>
@@ -810,7 +809,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("registerInEvent")}
             >
               <CardContent>
@@ -821,7 +820,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("addEvent")}
             >
               <CardContent>
@@ -832,7 +831,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("removeEvent")}
             >
               <CardContent>
@@ -843,7 +842,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("closeRegistration")}
             >
               <CardContent>
@@ -854,7 +853,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("closeEvent")}
             >
               <CardContent>
@@ -865,7 +864,7 @@ const ChairpersonPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("closeFeedback")}
             >
               <CardContent>
@@ -876,7 +875,7 @@ const ChairpersonPage = () => {
         </Grid>
 
         {selectedAction === "proposeEvent" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Propose Event
@@ -1099,7 +1098,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "viewProposals" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 View All Proposals
@@ -1107,7 +1106,7 @@ const ChairpersonPage = () => {
               {proposals.map((proposal, index) => (
                 <Card
                   elevation={3}
-                  className="details-card"
+                  className={styles["details-card"]}
                   key={proposal._id}
                   style={{
                     margin: "10px 0",
@@ -1259,7 +1258,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "viewMember" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 <u>Club Members</u>
@@ -1295,7 +1294,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "addMember" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Add Member
@@ -1329,7 +1328,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "removeMember" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Remove Member
@@ -1367,7 +1366,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "changeRoles" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Change Roles
@@ -1426,7 +1425,7 @@ const ChairpersonPage = () => {
         )}
 
         {selectedAction === "changeClubData" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Change Club Data
@@ -1956,8 +1955,8 @@ const ChairpersonPage = () => {
             </CardContent>
           </Card>
         )}
-        <ActionCards selectedAction={selectedAction} />
-        <BookedVenues selectedAction={selectedAction} />
+        <ActionCards className = {styles["details-card"]} selectedAction={selectedAction} />
+        <BookedVenues className = {styles["details-card"]} selectedAction={selectedAction} />
         </div>
         </div>
         </div>

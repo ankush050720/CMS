@@ -19,13 +19,13 @@
     color: #333;
   }
   
-  .event-cards {
+  /* .event-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     justify-content: center;
     margin: 0 auto;
-  }
+  } */
   
   /* Centered heading */
   .events-heading {

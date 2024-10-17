@@ -5,7 +5,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.7); /* Darker overlay for greater focus */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,17 +22,17 @@
 
 /* Modal content */
 .modal-content {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: #ffffff;
+  border-radius: 12px; /* More rounded corners for elegance */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); /* Deeper shadow for a lifted look */
   width: 90%;
-  max-width: 500px;
-  padding: 20px;
+  max-width: 600px; /* Maintain larger max-width for better readability */
+  padding: 30px;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translateY(-50px);
+  transform: translateY(-30px); /* Subtle entrance animation */
   opacity: 0;
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
@@ -42,17 +42,18 @@
   opacity: 1;
 }
 
+/* Close button */
 .close-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none; /* No default background */
+  top: 15px;
+  right: 15px;
+  background: none;
   border: none;
-  border-radius: 50%; /* Circular shape */
-  width: 40px;
-  height: 40px;
-  font-size: 24px;
-  color: rgba(136, 136, 136, 0.7); /* Greyish color with transparency */
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  color: rgba(136, 136, 136, 0.9); /* Darker grey for better visibility */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,10 +62,11 @@
 }
 
 .close-button:hover {
-  background: #f7f6f6; /* Light gray background with transparency on hover */
-  color: rgba(85, 85, 85, 0.9); /* Darker grey with transparency for 'x' on hover */
+  background: rgba(255, 255, 255, 0.9); /* White background on hover for contrast */
+  color: #dc3545; /* Red color on hover for attention */
 }
 
+/* Modal header */
 .modal-header {
   display: flex;
   flex-direction: column;
@@ -73,20 +75,23 @@
 }
 
 .club-logo {
-  width: 100px;
-  height: 100px;
-  max-width: 100%;
+  height: 150px; /* Maintain height for better visual hierarchy */
   margin-bottom: 15px;
+  border-radius: 8px; /* Slight rounding for logos */
+  overflow: hidden; /* Crop any overflow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
 }
 
 .modal-header h2 {
-  font-size: 1.5rem;
+  font-size: 1.75rem; /* Prominent heading size */
   margin-top: 0;
   color: #333;
-  padding-top: 80px;
+  padding-top: 20px;
   margin-bottom: 0;
+  text-align: center; /* Center text for better visual balance */
 }
 
+/* Modal body */
 .modal-body {
   text-align: center;
 }
@@ -94,9 +99,11 @@
 .modal-body p {
   margin-top: 0;
   color: #666;
-  font-size: 0.9rem;
+  font-size: 1rem; /* Clear and readable font size */
+  line-height: 1.5; /* Increased line height for better readability */
 }
 
+/* Modal footer */
 .modal-footer {
   margin-top: 20px;
   display: flex;
@@ -105,16 +112,39 @@
 }
 
 .read-more-button {
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for scaling */
   background-color: #007bff;
   color: white;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2); /* Subtle shadow for depth */
+  outline: none; /* Remove default outline */
 }
 
 .read-more-button:hover {
-  background-color: #28a745; /* Green color on hover */
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: translateY(-2px); /* Slight lift on hover for interactivity */
+}
+
+.read-more-button:focus {
+  outline: 2px solid #0056b3; /* Custom focus outline for accessibility */
+  outline-offset: 2px; /* Space between the outline and button */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 20px; /* Reduce padding for smaller screens */
+  }
+
+  .modal-header h2 {
+    font-size: 1.5rem; /* Smaller title size on mobile */
+  }
+
+  .read-more-button {
+    width: 100%; /* Full width button on mobile */
+  }
 }

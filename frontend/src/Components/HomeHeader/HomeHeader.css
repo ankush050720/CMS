@@ -2,19 +2,20 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100% !important; 
+    width: 100%; 
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.6); /* Semi-transparent white background */
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(10px); /* Optional: adds a blur effect behind the header */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for separation */
     z-index: 1000; /* Ensure the header stays on top */
+    min-height: 60px;
   }
   
   .logo-container {
-    margin-left: 20px;
+    margin-left: 30px;
     display: flex;
     align-items: center;
   }
@@ -38,7 +39,7 @@
   }
   
   .nav-link:hover {
-    color: #c5bcf8; /* Change color on hover */
+    color: #a597f1; /* Change color on hover */
   }
   
 

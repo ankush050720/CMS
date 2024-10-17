@@ -30,7 +30,7 @@ import {
 } from '@mui/icons-material'; // Material-UI icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import "./AdminPage.css"; // Add appropriate styles
+import styles from './AdminPage.module.css'; // Add appropriate styles
 import Header from "../../components/AdminHeader/AdminHeader";
 import {
   getProposal,
@@ -244,8 +244,8 @@ const AdminPage = () => {
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="sidebar">
+    <div className={styles["dashboard-container"]}>
+      <div className={styles.sidebar}>
         <Typography variant="h6" gutterBottom>
           Admin Dashboard
         </Typography>
@@ -301,11 +301,11 @@ const AdminPage = () => {
           </MenuItem>
         </MenuList>
       </div>
-        <div className="dashboard-body" >
-        <Header email = {email} className="adminPage-header" />
-      <div className="dashboard-content">
+        <div className={styles["dashboard-body"]} >
+        <Header email = {email} className={styles["adminPage-header"]} />
+      <div className={styles["dashboard-content"]}>
       
-        <Card elevation={3} className="welcome-card">
+        <Card elevation={3} className={styles["welcome-card"]}>
           <CardContent>
             <Typography variant="h4" gutterBottom>
               Welcome, Admin!
@@ -313,11 +313,11 @@ const AdminPage = () => {
           </CardContent>
         </Card>
 
-        <Grid container spacing={2} className="action-grid">
+        <Grid container spacing={2} className={styles["action-grid"]}>
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("reviewProposals")}
             >
               <CardContent>
@@ -328,7 +328,7 @@ const AdminPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("checkBookedVenues")}
             >
               <CardContent>
@@ -339,7 +339,7 @@ const AdminPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("rateEvent")}
             >
               <CardContent>
@@ -350,7 +350,7 @@ const AdminPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("viewMember")}
             >
               <CardContent>
@@ -361,7 +361,7 @@ const AdminPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("addClub")}
             >
               <CardContent>
@@ -372,7 +372,7 @@ const AdminPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("removeClub")}
             >
               <CardContent>
@@ -383,7 +383,7 @@ const AdminPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("addFaculty")}
             >
               <CardContent>
@@ -394,7 +394,7 @@ const AdminPage = () => {
           <Grid item xs={12} sm={6} md={4}>
             <Card
               elevation={3}
-              className="action-card"
+              className={styles["action-card"]}
               onClick={() => setSelectedAction("removeFaculty")}
             >
               <CardContent>
@@ -405,7 +405,7 @@ const AdminPage = () => {
         </Grid>
 
         {selectedAction === "reviewProposals" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Review Proposals
@@ -413,7 +413,7 @@ const AdminPage = () => {
               {proposals.map((proposal, index) => (
                 <Card
                   elevation={3}
-                  className="details-card"
+                  className={styles["details-card"]}
                   key={proposal._id}
                   style={{ margin: "10px 0", width: "100%" }}
                 >
@@ -622,7 +622,7 @@ const AdminPage = () => {
         )}
 
         {selectedAction === "viewMember" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 <u>Club Members</u>
@@ -675,7 +675,7 @@ const AdminPage = () => {
         )}
 
         {selectedAction === "addClub" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Add a new Club
@@ -702,7 +702,7 @@ const AdminPage = () => {
         )}
 
         {selectedAction === "removeClub" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Remove Club
@@ -732,7 +732,7 @@ const AdminPage = () => {
         )}
 
         {selectedAction === "addFaculty" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Add Faculty Mentor
@@ -780,7 +780,7 @@ const AdminPage = () => {
         )}
 
         {selectedAction === "removeFaculty" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Remove Faculty Mentor
@@ -811,7 +811,7 @@ const AdminPage = () => {
         )}
 
         {selectedAction === "rateEvent" && (
-          <Card elevation={3} className="details-card">
+          <Card elevation={3} className={styles["details-card"]}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 Rate Event

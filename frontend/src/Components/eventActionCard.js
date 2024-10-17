@@ -16,7 +16,7 @@ import EventPage from "../pages/RenderEventPage/RenderEventPage"; // Adjust the 
 import {uploadImageToCloudinary} from "../utils/cloudinaryUpload";
 import { addEvent, getClubEvents, removeEvent, getUpcomingEvents, getOngoingEvents, getClosedEvents, closeRegistration, closeEvent, closeFeedback } from "../services/eventService";
 
-const ActionCards = ({selectedAction}) => {
+const ActionCards = ({className, selectedAction}) => {
     const [formData,
         setFormData] = useState({
         name: "",
@@ -172,7 +172,7 @@ const ActionCards = ({selectedAction}) => {
       <>
     
         {selectedAction === "registerInEvent" && (
-            <Card elevation={3} className="details-card">
+            <Card elevation={3} className={className}>
                 <CardContent>
                     <Typography variant="h5" gutterBottom>
                         Register For Event
@@ -185,7 +185,7 @@ const ActionCards = ({selectedAction}) => {
 
     {
         selectedAction === "closeRegistration" && (
-            <Card elevation={3} className="details-card">
+            <Card elevation={3} className={className}>
                 <CardContent>
                     <Typography variant="h5" gutterBottom>
                         Close Registration
@@ -218,7 +218,7 @@ const ActionCards = ({selectedAction}) => {
 
     {
         selectedAction === "closeEvent" && (
-            <Card elevation={3} className="details-card">
+            <Card elevation={3} className={className}>
                 <CardContent>
                     <Typography variant="h5" gutterBottom>
                         Close Event
@@ -251,7 +251,7 @@ const ActionCards = ({selectedAction}) => {
 
     {
         selectedAction === "closeFeedback" && (
-            <Card elevation={3} className="details-card">
+            <Card elevation={3} className={className}>
                 <CardContent>
                     <Typography variant="h5" gutterBottom>
                         Close Feedback
@@ -284,7 +284,7 @@ const ActionCards = ({selectedAction}) => {
 
     {
         selectedAction === "removeEvent" && (
-            <Card elevation={3} className="details-card">
+            <Card elevation={3} className={className}>
                 <CardContent>
                     <Typography variant="h5" gutterBottom>
                         Remove Event
@@ -317,7 +317,7 @@ const ActionCards = ({selectedAction}) => {
 
     {
         selectedAction === "addEvent" && (
-            <Card elevation={3} className="details-card">
+            <Card elevation={3} className={className}>
                 <CardContent>
                     <Typography variant="h5" gutterBottom>
                         Add New Event

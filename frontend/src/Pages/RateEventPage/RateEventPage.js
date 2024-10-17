@@ -92,7 +92,7 @@ const RateEventPage = () => {
 };
 
 // EventGrid component to handle rendering completed events
-const EventGrid = ({ events, clubName, status, openEventModal }) => {
+const EventGrid = ({ events, openEventModal }) => {
   return events.length > 0 ? (
     <Grid container spacing={3}>
       {events.map((event) => (

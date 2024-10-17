@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
-import { logout } from '../../services/loginService';
-import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@mui/material'; // Material-UI imports
-import './AdminHeader.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCog } from "@fortawesome/free-solid-svg-icons";
+import { logout } from "../../services/loginService";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material"; // Material-UI imports
+import "./AdminHeader.css";
 
 const Header = ({ email, className }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -19,32 +26,34 @@ const Header = ({ email, className }) => {
   };
 
   const handleProfileClick = () => {
-    navigate('/profile');
+    navigate("/profile");
     handleMenuClose();
   };
 
   const handleLogoutClick = async () => {
-    if (window.confirm('Do you want to exit?')) {
+    if (window.confirm("Do you want to exit?")) {
       try {
         await logout();
-        navigate('/login');
+        navigate("/login");
       } catch (err) {
-        console.error('Logout failed', err);
+        console.error("Logout failed", err);
       }
     }
     handleMenuClose();
   };
 
   const handleLoginClick = () => {
-    navigate('/login');
+    navigate("/login");
     handleMenuClose();
   };
 
   return (
-    <AppBar position="static" className={className}> {/* Apply className here */}
+    <AppBar position="static" className={className}>
+      {" "}
+      {/* Apply className here */}
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Logged in as: {email || 'Guest'}
+          Logged in as: {email || "Guest"}
         </Typography>
 
         {/* Settings icon with dropdown */}
@@ -62,6 +71,11 @@ const Header = ({ email, className }) => {
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
+          PaperProps={{
+            style: {
+              minWidth: "200px",
+            },
+          }}
         >
           {email && (
             <>
