@@ -50,10 +50,6 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
             marginBottom: '15px',
             padding: '0 10px',
             letterSpacing: '0.05rem',
-            borderRadius: '5px',
-            marginBottom: '15px',
-            padding: '0 10px',
-            letterSpacing: '0.05rem',
           }}
         />
 
@@ -101,6 +97,19 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
           Student Lead: <strong>{studentLead}</strong>
         </Typography>
       </CardContent>
+
+      {/* Light Grey Rule Above More Details */}
+      <Box sx={{ textAlign: 'center', marginBottom: 1 }}>
+        <Box
+          sx={{
+            height: '1px',
+            backgroundColor: '#d3d3d3', // Light grey color
+            width: '80%', // Adjust the width as needed
+            margin: '0 auto', // Center the rule
+            marginBottom: 1, // Space below the line
+          }}
+        />
+      </Box>
 
       {/* More Details Button */}
       <Box sx={{ textAlign: 'center', marginBottom: 2 }}>

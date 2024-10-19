@@ -284,7 +284,7 @@
 .event-cards {
   display: grid;
   gap: 20px;
-  max-width: 1200px;
+  max-width: 1050px;
   width: 100%;
   justify-content: center !important;
   margin: 0 auto;
@@ -326,7 +326,8 @@
 .intro,
 .carousel,
 .events-section,
-.dean-container {
+.dean-container,
+.video-container {
   opacity: 0;
   transform: translateY(40px); /* Increased translation for more visible movement */
   transition: opacity 0.9s ease-out, transform 1s cubic-bezier(0.5, 1, 0.3, 1); /* Extended duration and changed easing for a stronger effect */
@@ -336,7 +337,8 @@
 .intro.visible,
 .carousel.visible,
 .events-section.visible,
-.dean-container.visible {
+.dean-container.visible,
+.video-container.visible {
   opacity: 1;
   transform: translateY(0); /* Element returns to its original position */
 }
@@ -345,7 +347,8 @@
 .intro,
 .carousel,
 .events-section,
-.dean-container {
+.dean-container,
+.video-container {
   transition-delay: 0.3s; /* Adds delay to opacity */
 }
 

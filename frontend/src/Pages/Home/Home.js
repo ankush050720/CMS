@@ -26,6 +26,7 @@ const Home = () => {
   const carouselRef = useRef();
   const eventSectionRef = useRef();
   const deanSectionRef = useRef();
+  const videoSectionRef = useRef();
 
   useEffect(() => {
     const fetchClubs = async () => {
@@ -41,58 +42,31 @@ const Home = () => {
   }, []);
 
   const VideoPlayer = ({ videoUrl }) => {
-    const videoSectionRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(false);
-  
-    useEffect(() => {
-      const videoSection = videoSectionRef.current;
-  
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0];
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.unobserve(videoSection); // Optionally, unobserve once it's visible
-          }
-        },
-        { threshold: 0.2 } // Adjust the threshold to control when the video becomes "visible"
-      );
-  
-      if (videoSection) {
-        observer.observe(videoSection);
-      }
-  
-      return () => {
-        if (videoSection) {
-          observer.unobserve(videoSection);
-        }
-      };
-    }, []);
-  
     return (
       <div
-        ref={videoSectionRef}
-        className={`video-player ${isVisible ? 'visible' : ''}`} // Add the 'visible' class when in view
+        className="video-player"
         style={{
           position: 'relative',
-          minHeight: '1000px', // Base minimum height for larger screens
+          minHeight: '1000px',
           width: '100%',
           backgroundImage: 'url("/video-bg.jpg")',
           backgroundPosition: 'center top',
-          backgroundSize: '100% 50%', // Fit the entire image into the top half of the div
+          backgroundSize: '100% 50%',
           backgroundRepeat: 'no-repeat',
           zIndex: '1',
+          opacity: 1, // Set to 1 for always visible
+          transform: 'translateY(0)', // No translation needed
         }}
       >
         <h2
           style={{
             fontFamily: 'Poppins, sans-serif',
             position: 'absolute',
-            top: '12%', // Adjust as per the look you need
+            top: '12%',
             left: '50%',
             transform: 'translateX(-50%)',
             color: 'white',
-            fontSize: '2.5rem', // Base font size
+            fontSize: '2.5rem',
             zIndex: 3,
             textAlign: 'center',
           }}
@@ -106,15 +80,15 @@ const Home = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '70%', // Base width
+            width: '70%',
             height: 'auto',
-            zIndex: 2, // This should be lower than the heading
+            zIndex: 2,
             marginTop: '75px',
           }}
         >
           <iframe
             width="100%"
-            height="550px" // Base height
+            height="550px"
             src={videoUrl}
             title="YouTube video player"
             frameBorder="0"
@@ -130,20 +104,15 @@ const Home = () => {
             width: '100%',
             height: '50%',
             backgroundColor: '#FBECFC',
-            zIndex: 1, // Behind both the video and the heading
+            zIndex: 1,
           }}
         ></div>
   
-        {/* Inject styles for media queries */}
         <style>{`
           .video-player {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-          }
-          .video-player.visible {
-            opacity: 1;
-            transform: translateY(0);
+            opacity: 1; /* Always visible */
+            transform: translateY(0); /* No transform needed */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* Keep transition for potential future use */
           }
   
           @media (max-width: 900px) {
@@ -154,16 +123,11 @@ const Home = () => {
   
             h2 {
               font-size: 1.8rem; /* Smaller font size for the title */
-              top: 10%; /* Slightly adjusted top position */
-            }
-  
-            .video-container {
-              width: 90%; /* Make the video container wider */
-              margin-top: 40px; /* Reduce margin on top */
+              top: 10%;
             }
   
             iframe {
-              height: 300px; /* Set a smaller height for iframe */
+              height: 300px;
             }
           }
   
@@ -175,16 +139,11 @@ const Home = () => {
   
             h2 {
               font-size: 2rem; /* Smaller font size for the title */
-              top: 20%; /* Slightly adjusted top position */
-            }
-  
-            .video-container {
-              width: 95%; /* Make the video container wider */
-              margin-top: 50px; /* Reduce margin on top */
+              top: 20%;
             }
   
             iframe {
-              height: 500px; /* Set a smaller height for iframe */
+              height: 500px;
             }
           }
         `}</style>
@@ -244,7 +203,8 @@ const Home = () => {
       introRef.current,
       carouselRef.current,
       eventSectionRef.current,
-      deanSectionRef.current
+      deanSectionRef.current,
+      videoSectionRef.current,
     ];
     const observer = new IntersectionObserver(
       (entries, observer) => {
@@ -325,7 +285,10 @@ const Home = () => {
         </div>
       </div>
 
-      <VideoPlayer videoUrl={videoUrl} />
+      <div className="video-container" ref={videoSectionRef}>
+        <VideoPlayer videoUrl={videoUrl} />
+      </div>
+      
 
       <div className="carousel" ref={carouselRef}>
         <h1>

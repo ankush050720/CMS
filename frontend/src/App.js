@@ -16,6 +16,8 @@ import Profile from './pages/ProfilePage/ProfilePage';
 import RegisteredEvents from './pages/RegisteredEventPage/RegisteredEventPage';
 import AcceptInvitation from './pages/AcceptInvitationPage/AcceptInvitationPage';
 import FeedbackForm from './pages/FeedbackForm';
+import About from './pages/AboutPage/AboutPage';
+import Contact from './pages/ContactPage/ContactPage';
 
 const App = () => {
   return (
@@ -39,6 +41,8 @@ const App = () => {
             <Route path="/profile" element={<Profile email="user@example.com" phoneNumber="123-456-7890" role="Member" />} />
             <Route path="/registered-events" element={<RegisteredEvents />} />
             <Route path="/accept-invitation" element={<AcceptInvitation />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/contact' element={<Contact />} />
           </Routes>
         </div>
       </Loader>

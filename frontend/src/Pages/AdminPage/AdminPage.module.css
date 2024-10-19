@@ -155,6 +155,9 @@
 
 /* Adjust button styles */
 button, :global(.MuiButton-root) {
+  color:white;
+  background-color: #1976d2;
+  border:none;
   padding: 10px 20px;
   font-size: 1rem;
   border-radius: 5px;
