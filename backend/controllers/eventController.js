@@ -1,6 +1,7 @@
 const Event = require('../models/Event.js');
 const Team = require('../models/Team.js');
 const User = require('../models/User.js');
+const Club = require('../models/Club.js'); 
 const sendEmail = require('../utils/sendEmail');
 const Invitation = require('../models/Invite');
 const crypto = require('crypto');
@@ -617,5 +618,74 @@ exports.closeFeedback = async (req, res) => {
   } catch (error) {
     console.error('Error closing feedback:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+// Controller to get all events with their respective teams
+exports.getAllEventsWithTeams = async (req, res) => {
+    try {
+        // Fetch all events
+        const events = await Event.find({});
+        const teams = await Team.find({}); // Get all teams
+
+        const responseArray = [];
+        // Loop through each event
+        for (const event of events) {
+            const eventDetails = { event: event.name, teams: [] };
+
+            // Loop through each team
+            for (const team of teams) {
+                // Check if the team's registeredEvents contain the event id
+                if (team.registeredEvents.includes(event._id)) {
+                    eventDetails.teams.push({
+                        team: team.name,
+                        members: team.members,
+                    });
+                }
+            }
+            responseArray.push(eventDetails);
+        }
+
+        return res.status(200).json(responseArray);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getEventsByUserClub = async (req, res) => {
+  try {
+      const clubId = req.user.club;
+      const club = await Club.findById(clubId);
+
+      if (!club) {
+          return res.status(404).json({ message: 'Club not found' });
+      }
+
+      const clubName = club.name;
+      const events = await Event.find({ club: clubName }); // Get events for the club
+      const teams = await Team.find({}); // Get all teams
+
+      const responseArray = [];
+
+      // Loop through each event
+      for (const event of events) {
+          const eventDetails = { event: event.name, teams: [] };
+
+          // Loop through each team
+          for (const team of teams) {
+              // Check if the team's registeredEvents contain the event id
+              if (team.registeredEvents.includes(event._id)) {
+                  eventDetails.teams.push({
+                      team: team.name,
+                      members: team.members,
+                  });
+              }
+          }
+          responseArray.push(eventDetails);
+      }
+      return res.status(200).json(responseArray);
+  } catch (error) {
+      return res.status(500).json({ message: error.message });
   }
 };

@@ -19,7 +19,9 @@ const {
   closeRegistration,
   closeEvent,
   closeFeedback,
-  checkVenue
+  checkVenue,
+  getEventsByUserClub,
+  getAllEventsWithTeams
 } = require('../controllers/eventController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -34,6 +36,8 @@ router.get('/get-club-events', authMiddleware, getClubEvents); // Get events
 router.get('/get-upcoming-events', authMiddleware, getUpcomingEvents); // Get events
 router.get('/get-ongoing-events', authMiddleware, getOngoingEvents); // Get events with
 router.get('/get-closed-events', authMiddleware, getClosedEvents); // Get events
+router.get('/getEventsByUserClub', authMiddleware, getEventsByUserClub);
+router.get('/getAllEventsWithTeams', authMiddleware, getAllEventsWithTeams);
 
 // Team-related routes
 router.post('/create', createTeam);                                     // Create new team

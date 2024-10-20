@@ -127,3 +127,18 @@ export const closeFeedback = async (eventId) => {
     throw error;
   }
 };
+
+
+export const getAllRegistry = async (role, req, res) => {
+  try {
+      if (role === 'admin') {
+          // Call the first controller for admin
+          return await axios.get(`${API_URL}/api/events/getAllEventsWithTeams`);
+      } else {
+          // Call the second controller for non-admin roles
+          return await axios.get(`${API_URL}/api/events/getEventsByUserClub`);
+      }
+  } catch (error) {
+      return res.status(500).json({ message: error.message });
+  }
+};

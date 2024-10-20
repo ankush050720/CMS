@@ -24,6 +24,7 @@ import {
   Star as StarIcon, 
   Group as GroupIcon, 
   Add as AddIcon, 
+  Visibility as VisibilityIcon, 
   Delete as DeleteIcon, 
   PersonAdd as PersonAddIcon, 
   PersonRemove as PersonRemoveIcon 
@@ -47,6 +48,7 @@ import { getUserInfo } from "../../services/userService";
 import { getAllClubs } from "../../services/clubService";
 import RateEventPage from "../../pages/RateEventPage/RateEventPage";
 import BookedVenues from "../../components/bookedVenues";
+import EventsRegistry from "../../components/eventsRegistry";
 
 const AdminPage = () => {
   const [selectedAction, setSelectedAction] = useState("");
@@ -269,6 +271,12 @@ const AdminPage = () => {
             </ListItemIcon>
             <ListItemText primary="Rate Event" />
           </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("checkEventsRegistry")}>
+            <ListItemIcon>
+              <VisibilityIcon />
+            </ListItemIcon>
+            <ListItemText primary="Events Registry" />
+          </MenuItem>
           <MenuItem onClick={() => setSelectedAction("viewMember")}>
             <ListItemIcon>
               <GroupIcon />
@@ -344,6 +352,17 @@ const AdminPage = () => {
             >
               <CardContent>
                 <Typography variant="h6">Rate Event</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className={styles["action-card"]}
+              onClick={() => setSelectedAction("checkEventsRegistry")}
+            >
+              <CardContent>
+                <Typography variant="h6">Events Registry</Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -822,7 +841,7 @@ const AdminPage = () => {
         )}
 
         <BookedVenues selectedAction={selectedAction} />
-
+        <EventsRegistry className={styles["details-card"]} selectedAction={selectedAction} role={"admin"} />
         {/* Continue rendering other sections as per selectedAction */}
       </div>
       </div>

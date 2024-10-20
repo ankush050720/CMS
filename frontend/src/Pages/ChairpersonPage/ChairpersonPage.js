@@ -33,7 +33,8 @@ import {
   Close as CloseIcon, 
   Cancel as CancelIcon,
   Stop as StopIcon,
-  CheckCircle as CheckCirlceIcon
+  CheckCircle as CheckCirlceIcon,
+  Visibility as VisibilityIcon
 } from '@mui/icons-material';
 import ImageUpload from "../../utils/ImageUpload";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -64,6 +65,7 @@ import { uploadImageToCloudinary } from "../../utils/cloudinaryUpload";
 import ActionCards from "../../components/eventActionCard"; // Adjust the import path as needed
 import BookedVenues from "../../components/bookedVenues";
 import ChatButton from "../../components/ChatButton";
+import EventsRegistry from "../../components/eventsRegistry";
 import styles from "./ChairpersonPage.module.css";
 
 const ChairpersonPage = () => {
@@ -672,6 +674,12 @@ const ChairpersonPage = () => {
             </ListItemIcon>
             <ListItemText primary="Register For Event" />
           </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("checkEventsRegistry")}>
+            <ListItemIcon>
+              <VisibilityIcon />
+            </ListItemIcon>
+            <ListItemText primary="Events Registry" />
+          </MenuItem>
           <MenuItem onClick={() => setSelectedAction("addEvent")}>
             <ListItemIcon>
               <AddIcon />
@@ -814,6 +822,17 @@ const ChairpersonPage = () => {
             >
               <CardContent>
                 <Typography variant="h6">Register For Event</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              elevation={3}
+              className={styles["action-card"]}
+              onClick={() => setSelectedAction("checkEventsRegistry")}
+            >
+              <CardContent>
+                <Typography variant="h6">Events Registry</Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -1957,6 +1976,7 @@ const ChairpersonPage = () => {
         )}
         <ActionCards className = {styles["details-card"]} selectedAction={selectedAction} />
         <BookedVenues className = {styles["details-card"]} selectedAction={selectedAction} />
+        <EventsRegistry className={styles["details-card"]} selectedAction={selectedAction} role={"chairperson"}/>
         </div>
         </div>
         </div>

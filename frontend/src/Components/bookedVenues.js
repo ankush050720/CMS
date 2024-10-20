@@ -5,6 +5,13 @@ import {
   Typography,
   TextField,
   Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
 import { checkVenue } from "../services/eventService";
 
@@ -52,7 +59,7 @@ const BookedVenues = ({ className, selectedAction }) => {
   return (
     <>
       {selectedAction === "checkBookedVenues" && (
-        <Card elevation={4} className={className} style={{marginBottom:"20px", marginTop:"40px"}}>
+        <Card elevation={4} className={className} style={{ marginBottom: "20px", marginTop: "40px" }}>
           <CardContent>
             <Typography variant="h5" gutterBottom>
               <b>Booked Venues</b>
@@ -66,28 +73,38 @@ const BookedVenues = ({ className, selectedAction }) => {
               fullWidth
               margin="normal"
             />
-            {Object.keys(groupedEvents)
-              .filter(club => groupedEvents[club].length > 0) // Filter out clubs without events
-              .map((club) => (
-                <Box key={club} mb={2}>
-                  <Typography variant="h6" gutterBottom>
-                    <strong>{club}</strong>
-                  </Typography>
-                  {groupedEvents[club].map((event, index) => (
-                    <Box key={event._id} mb={1} pl={2}>
-                      <Typography variant="body1">
-                        <strong>{index + 1}. {event.name}</strong>
-                        <br />
-                        <span>Date: {formatDate(event.date)}</span>
-                        <br />
-                        <span>Time: {event.time}</span>
-                        <br />
-                        <span>Venue: {event.venue}</span>
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-              ))}
+            {Object.keys(groupedEvents).length > 0 ? (
+              <TableContainer component={Paper} style={{ marginTop: "20px", maxWidth: "100%", overflowX: "auto" }}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell><strong>Club</strong></TableCell>
+                      <TableCell><strong>Event Name</strong></TableCell>
+                      <TableCell><strong>Date</strong></TableCell>
+                      <TableCell><strong>Time</strong></TableCell>
+                      <TableCell><strong>Venue</strong></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {Object.keys(groupedEvents).map((club) => (
+                      groupedEvents[club].map((event) => (
+                        <TableRow key={event._id}>
+                          <TableCell>{club}</TableCell>
+                          <TableCell>{event.name}</TableCell>
+                          <TableCell>{formatDate(event.date)}</TableCell>
+                          <TableCell>{event.time}</TableCell>
+                          <TableCell>{event.venue}</TableCell>
+                        </TableRow>
+                      ))
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            ) : (
+              <Typography variant="body1" style={{ marginTop: "20px" }}>
+                No events found.
+              </Typography>
+            )}
           </CardContent>
         </Card>
       )}
