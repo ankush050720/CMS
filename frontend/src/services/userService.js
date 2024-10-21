@@ -4,7 +4,7 @@ import { API_URL } from '../utils/config';
 // Fetch user info from the backend
 export const getUserInfo = async () => {
   try {
-    const res = await axios.get(`${API_URL}/user/me`, { withCredentials: true }); // Ensure credentials are sent
+    const res = await axios.get(`${API_URL}/api/user/me`, { withCredentials: true }); // Ensure credentials are sent
 
     if (!res.data || !res.data.email) { // Check if user data is missing or incomplete
       throw new Error('User not found');

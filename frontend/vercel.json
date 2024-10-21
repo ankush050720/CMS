@@ -1,9 +1,16 @@
 {
+    "version": 2,
     "builds": [
-      { "src": "src/index.js", "use": "@vercel/node" }
+      {
+        "src": "build/**/*",
+        "use": "@vercel/static"
+      }
     ],
     "routes": [
-      { "src": "/(.*)", "dest": "/" }
-    ]
+      { "src": "/(.*)", "dest": "/build/index.html" }
+    ],
+    "installCommand": "npm install",
+    "buildCommand": "npm run build",
+    "outputDirectory": "build"
   }
   

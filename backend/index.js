@@ -42,7 +42,7 @@ app.use('/api/auth', authRoute);
 app.use('/api', clubRoute); 
 app.use('/api/events', eventRoutes);
 app.use('/api', paymentRoute);
-app.use('/user', userRoute);
+app.use('/api/user', userRoute);
 app.use('/api/propose', proposeRoutes);
 app.use('/api/members', memberRoute);
 app.use('/api/proposals', facultyMentorRoute);
