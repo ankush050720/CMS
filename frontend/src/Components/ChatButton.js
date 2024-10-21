@@ -24,7 +24,7 @@ const ChatButton = () => {
   }, []);
 
   const handleChatRedirect = () => {
-    const chatRelayUrl = `http://localhost:3001/?email=${encodeURIComponent(userEmail)}`;
+    const chatRelayUrl = `${process.env.REACT_APP_CHAT_FRONTEND_URL}/?email=${encodeURIComponent(userEmail)}`;
     window.location.href = chatRelayUrl; // Redirect to chat relay
   };
 

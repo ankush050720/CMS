@@ -26,7 +26,11 @@ app.use(cookieParser());
 //Init cross-origin request handlers
 // Update your CORS configuration
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:8080'], // Allow frontend of both systems
+  origin: [
+    process.env.FRONTEND_URL, 
+    process.env.CHAT_FRONTEND_URL, 
+    process.env.CHAT_BACKEND_URL
+  ], // Allow frontend of both systems
   credentials: true, // Allow credentials (cookies)
 }));
 
