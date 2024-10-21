@@ -110,7 +110,7 @@ const Signup = ({ userEmail }) => { // Accept userEmail as prop
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
-      data.append("upload_preset", "cf4fsu55");
+      data.append("upload_preset", process.env.REACT_APP_CLOUDINARY_PRESET);
       data.append("cloud_name", "dsailrfh1");
       fetch("https://api.cloudinary.com/v1_1/dsailrfh1/image/upload", {
         method: "post",
