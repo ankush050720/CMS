@@ -16,7 +16,7 @@ import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
 
 // Updated endpoint to match backend server port
-const ENDPOINT = "http://localhost:8080"; 
+const ENDPOINT = `${process.env.REACT_APP_BACKEND_URL}`;
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -54,7 +54,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
       // Fetch messages from the API
       const { data } = await axios.get(
-        `http://localhost:8080/api/message/${selectedChat._id}`,
+        `/api/message/${selectedChat._id}`,
         config
       );
       setMessages(data);
@@ -85,7 +85,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
         };
         const { data } = await axios.post(
-          "http://localhost:8080/api/message",
+          "/api/message",
           {
             content: newMessage,
             chatId: selectedChat,

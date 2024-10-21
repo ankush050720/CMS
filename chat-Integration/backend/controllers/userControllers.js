@@ -38,10 +38,10 @@ const allUsers = asyncHandler(async (req, res) => {
     : {};
 
   try {
-    const response = await axios.get(`http://localhost:5000/api/chat/getClubIdByEmail/${req.user.email}`);
+    const response = await axios.get(`${process.env.CMS_URL}/api/chat/getClubIdByEmail/${req.user.email}`);
     const { clubId } = response.data;
 
-    const membersResponse = await axios.get(`http://localhost:5000/api/chat/${clubId}/members`);
+    const membersResponse = await axios.get(`${process.env.CMS_URL}/api/chat/${clubId}/members`);
     const clubMembers = membersResponse.data;
 
     const users = await User.find({

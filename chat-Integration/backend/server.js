@@ -14,7 +14,7 @@ const app = express();
 
 // Enable CORS for the frontend
 app.use(cors({
-  origin: "http://localhost:3001",  // Allow requests from the frontend running on port 3000
+  origin: process.env.FRONTEND_URL,  // Allow requests from the frontend running on port 3000
   credentials: true,                // Allow credentials if needed
 }));
 
@@ -57,7 +57,7 @@ const server = app.listen(
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3001",  // Allow the frontend to connect to the socket
+    origin: process.env.FRONTEND_URL,  // Allow the frontend to connect to the socket
     credentials: true,
   },
 });
