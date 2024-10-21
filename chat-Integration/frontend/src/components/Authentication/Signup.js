@@ -61,7 +61,7 @@ const Signup = ({ userEmail }) => { // Accept userEmail as prop
         },
       };
       const { data } = await axios.post(
-        "/api/user",
+        `${process.env.REACT_APP_BACKEND_URL}/api/user`,
         {
           name,
           email,

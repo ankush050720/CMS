@@ -56,10 +56,11 @@ const Login = ({ userEmail }) => {  // Accept userEmail as prop
       };
 
       const { data } = await axios.post(
-        "/api/user/login",
-        { email: email, password }, 
+        `${process.env.REACT_APP_BACKEND_URL}/api/user/login`,
+        { email, password }, 
         config
       );
+      
 
       toast({
         title: "Login Successful",

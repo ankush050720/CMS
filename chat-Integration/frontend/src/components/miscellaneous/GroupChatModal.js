@@ -59,7 +59,7 @@ const GroupChatModal = ({ children }) => {
 
       console.log(`Searching for users with query: ${query}`);
 
-      const { data } = await axios.get(`/api/user?search=${query}`, config);
+      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/user?search=${query}`, config);
       console.log("Search Results:", data);
 
       // Exclude the current user from the search results
@@ -102,7 +102,7 @@ const GroupChatModal = ({ children }) => {
         },
       };
       const { data } = await axios.post(
-        `/api/chat/group`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/chat/group`,
         {
           name: groupChatName,
           users: JSON.stringify(selectedUsers.map((u) => u._id)),
