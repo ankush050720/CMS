@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
   try {
     const user = await User.findOne({
       $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
-    }).populate('club');
+    }).populate('club'); // Populate the club details if necessary
 
     if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
 
@@ -39,8 +39,8 @@ exports.login = async (req, res) => {
         userId: user._id, 
         role: user.role, 
         email: user.email,
-        phone: user.phone,
-        club: user.club ? user.club : null
+        phone: user.phone,  // Phone number in JWT payload
+        club: user.club ? user.club : null // Add club to JWT payload (null if no club)
       },
       process.env.JWT_SECRET,
       {
@@ -48,21 +48,27 @@ exports.login = async (req, res) => {
       }
     );
 
-    // Set the cookie using setHeader
-    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''} SameSite=Strict; Path=/; Max-Age=10800`);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'None',
+      domain: 'https://cms-frontend-ankush-jhas-projects.vercel.app',
+      path: '/'
+    });
 
-    // Send response without token in the body
-    res.json({ role: user.role, club: user.club });
+    res.json({ token, role: user.role, club: user.club }); // Add club to response
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
   }
 };
 
+
 exports.logout = (req, res) => {
   res.cookie('token', '', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'Strict',
+    sameSite: 'None',
+    domain: 'https://cms-frontend-ankush-jhas-projects.vercel.app',
     expires: new Date(0), // Set the expiry date in the past to clear the cookie
   });
   res.json({ msg: 'Logged out successfully' });
