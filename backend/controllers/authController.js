@@ -52,7 +52,6 @@ exports.login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'None',
-      domain: 'https://cms-frontend-ankush-jhas-projects.vercel.app',
       path: '/'
     });
 
@@ -68,7 +67,6 @@ exports.logout = (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'None',
-    domain: 'https://cms-frontend-ankush-jhas-projects.vercel.app',
     expires: new Date(0), // Set the expiry date in the past to clear the cookie
   });
   res.json({ msg: 'Logged out successfully' });
