@@ -51,8 +51,7 @@ exports.login = async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'None',
-      path: '/'
+      sameSite: 'Strict',
     });
 
     res.json({ token, role: user.role, club: user.club }); // Add club to response
@@ -66,7 +65,7 @@ exports.logout = (req, res) => {
   res.cookie('token', '', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'None',
+    sameSite: 'Strict',
     expires: new Date(0),
   });
   res.json({ msg: 'Logged out successfully' });
