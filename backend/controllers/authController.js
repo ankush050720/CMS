@@ -67,7 +67,7 @@ exports.logout = (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'None',
-    expires: new Date(0), // Set the expiry date in the past to clear the cookie
+    expires: new Date(0),
   });
   res.json({ msg: 'Logged out successfully' });
 };
