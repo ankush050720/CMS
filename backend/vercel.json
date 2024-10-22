@@ -1,19 +1,16 @@
 {
-    "version": 2,
-    "builds": [
+  "version": 2,
+  "builds": [
       {
-        "src": "/index.js",
-        "use": "@vercel/node"
+          "src": "/index.js",
+          "use": "@vercel/node"
       }
-    ],
-    "routes": [
+  ],
+  "routes": [
       {
-        "src": "/api/(.*)",
-        "dest": "/index.js",
-        "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-        "headers": {
-          "Access-Control-Allow-Origin": "*"
-        }
+          "src": "/(.*)",
+          "dest": "/index.js"
       }
-    ]
-  }
+  ],
+  "installCommand": "npm install"
+}
