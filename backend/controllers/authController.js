@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
       path: '/'
     });
 
-    res.json({ token, role: user.role, club: user.club }); // Add club to response
+    res.json({ token, role: user.role, club: user.club });
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
   }
