@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
   try {
     const user = await User.findOne({
       $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
-    }).populate('club'); // Populate the club details if necessary
+    }).populate('club');
 
     if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
 
@@ -39,8 +39,8 @@ exports.login = async (req, res) => {
         userId: user._id, 
         role: user.role, 
         email: user.email,
-        phone: user.phone,  // Phone number in JWT payload
-        club: user.club ? user.club : null // Add club to JWT payload (null if no club)
+        phone: user.phone,
+        club: user.club ? user.club : null
       },
       process.env.JWT_SECRET,
       {
@@ -48,18 +48,15 @@ exports.login = async (req, res) => {
       }
     );
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict',
-    });
+    // Set the cookie using setHeader
+    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''} SameSite=Strict; Path=/; Max-Age=10800`);
 
-    res.json({ token, role: user.role, club: user.club }); // Add club to response
+    // Send response without token in the body
+    res.json({ role: user.role, club: user.club });
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
   }
 };
-
 
 exports.logout = (req, res) => {
   res.cookie('token', '', {
