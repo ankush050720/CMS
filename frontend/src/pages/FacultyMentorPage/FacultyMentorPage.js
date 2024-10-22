@@ -42,11 +42,11 @@ import {
 } from "../../services/facultyMentorService";
 import { fetchClubMembers } from "../../services/memberService"; // used for member fetching
 import styles from "./FacultyMentorPage.module.css"; // Add appropriate styles
-import Header from "../../Components/AdminHeader/AdminHeader";
+import Header from "../../components/AdminHeader/AdminHeader";
 import RateEventPage from "../RateEventPage/RateEventPage";
-import BookedVenues from "../../Components/bookedVenues";
-import ChatButton from "../../Components/ChatButton";
-import EventsRegistry from "../../Components/eventsRegistry";
+import BookedVenues from "../../components/bookedVenues";
+import ChatButton from "../../components/ChatButton";
+import EventsRegistry from "../../components/eventsRegistry";
 
 const FacultyMentorPage = () => {
   const [selectedAction, setSelectedAction] = useState("");

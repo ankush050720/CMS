@@ -12,7 +12,7 @@ import {
     MenuItem
 } from "@mui/material";
 import ImageUpload from "../utils/ImageUpload"; // Import your ImageUpload component
-import EventPage from "../Pages/RenderEventPage/RenderEventPage"; // Adjust the import path as needed
+import EventPage from "../pages/RenderEventPage/RenderEventPage"; // Adjust the import path as needed
 import {uploadImageToCloudinary} from "../utils/cloudinaryUpload";
 import { addEvent, getClubEvents, removeEvent, getUpcomingEvents, getOngoingEvents, getClosedEvents, closeRegistration, closeEvent, closeFeedback } from "../services/eventService";
 

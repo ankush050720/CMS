@@ -3,7 +3,7 @@ import { Grid, Typography, Paper, Box } from "@mui/material";
 import PhoneIcon from "@mui/icons-material/Phone";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EmailIcon from "@mui/icons-material/Email";
-import Header from "../../Components/HomeHeader/HomeHeader";
+import Header from "../../components/HomeHeader/HomeHeader";
 
 // Define styles for the page using MUI's sx prop
 const Contact = () => {

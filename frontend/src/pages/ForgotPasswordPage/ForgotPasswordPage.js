@@ -1,4 +1,4 @@
-import ForgotPasswordForm from '../../Components/ForgotPassword/ForgotPasswordForm';
+import ForgotPasswordForm from '../../components/ForgotPassword/ForgotPasswordForm';
 
 const ForgotPasswordPage = () => {
   return (

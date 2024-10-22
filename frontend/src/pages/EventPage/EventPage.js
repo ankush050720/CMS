@@ -5,11 +5,11 @@ import { Navigation, EffectCoverflow } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-coverflow";
-import EventCard from "../../Components/EventCard/EventCard";
-import EventModal from "../../Components/EventModal/EventModal";
+import EventCard from "../../components/EventCard/EventCard";
+import EventModal from "../../components/EventModal/EventModal";
 import { getAllEvents } from "../../services/eventService";
 import { getAllClubs } from "../../services/clubService";
-import Header from "../../Components/HomeHeader/HomeHeader";
+import Header from "../../components/HomeHeader/HomeHeader";
 import SwiperCore from "swiper";
 import "./EventPage.css";
 

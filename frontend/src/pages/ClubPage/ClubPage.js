@@ -13,7 +13,7 @@ import {
   Avatar,
 } from "@mui/material";
 import "./ClubPage.css"; // Import the CSS file
-import Header from "../../Components/HomeHeader/HomeHeader";
+import Header from "../../components/HomeHeader/HomeHeader";
 
 
 const ClubPage = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Card, CardContent } from '@mui/material';
-import Header from "../../Components/HomeHeader/HomeHeader";
+import Header from "../../components/HomeHeader/HomeHeader";
 
 const About = () => {
   return (

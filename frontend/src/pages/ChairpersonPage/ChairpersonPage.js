@@ -40,7 +40,7 @@ import ImageUpload from "../../utils/ImageUpload";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { getUserInfo } from "../../services/userService";
-import Header from "../../Components/Header/Header";
+import Header from "../../components/Header/Header";
 import { submitProposal, getProposal } from "../../services/proposeService";
 import {
   fetchClubMembers,
@@ -62,10 +62,10 @@ import {
 } from "../../services/clubService";
 import EditIcon from "@mui/icons-material/Edit";
 import { uploadImageToCloudinary } from "../../utils/cloudinaryUpload";
-import ActionCards from "../../Components/eventActionCard"; // Adjust the import path as needed
-import BookedVenues from "../../Components/bookedVenues";
-import ChatButton from "../../Components/ChatButton";
-import EventsRegistry from "../../Components/eventsRegistry";
+import ActionCards from "../../components/eventActionCard"; // Adjust the import path as needed
+import BookedVenues from "../../components/bookedVenues";
+import ChatButton from "../../components/ChatButton";
+import EventsRegistry from "../../components/eventsRegistry";
 import styles from "./ChairpersonPage.module.css";
 
 const ChairpersonPage = () => {

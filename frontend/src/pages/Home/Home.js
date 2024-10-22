@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
-import ClubCard from "../../Components/ClubCard/ClubCard";
-import ClubModal from "../../Components/ClubModal/ClubModal";
-import EventCard from "../../Components/EventCard/EventCard";
-import EventModal from "../../Components/EventModal/EventModal";
+import ClubCard from "../../components/ClubCard/ClubCard";
+import ClubModal from "../../components/ClubModal/ClubModal";
+import EventCard from "../../components/EventCard/EventCard";
+import EventModal from "../../components/EventModal/EventModal";
 import { getAllClubs } from "../../services/clubService";
 import { getAllEvents } from "../../services/eventService";
-import Header from "../../Components/HomeHeader/HomeHeader";
-import Footer from "../../Components/Footer";
+import Header from "../../components/HomeHeader/HomeHeader";
+import Footer from "../../components/Footer";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import "./Home.css";
 

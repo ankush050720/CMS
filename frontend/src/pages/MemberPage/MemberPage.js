@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../Components/Header/Header";
+import Header from "../../components/Header/Header";
 import { getUserInfo } from "../../services/userService";
 import EventPage from "../RenderEventPage/RenderEventPage";
 import { Box, Typography, Paper, Card, CardContent } from "@mui/material";
-import ChatButton from "../../Components/ChatButton";
+import ChatButton from "../../components/ChatButton";
 import "./MemberPage.css";
 
 const MemberPage = () => {

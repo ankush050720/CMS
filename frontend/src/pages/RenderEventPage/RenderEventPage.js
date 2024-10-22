@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Grid, Select, MenuItem, Paper } from "@mui/material";
-import EventCard from "../../Components/EventCard/EventCard";
-import EventModal from "../../Components/EventModal/EventModal";
+import EventCard from "../../components/EventCard/EventCard";
+import EventModal from "../../components/EventModal/EventModal";
 import { getAllEvents } from "../../services/eventService";
 import { getAllClubs } from "../../services/clubService";
 // import "./RenderEventPage.css";

@@ -1,23 +1,23 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Loader from './Components/Loader/Loader';
-import LoginPage from './Pages/LoginPage/LoginPage';
-import RegisterPage from './Pages/RegisterPage/RegisterPage';
-import ForgotPasswordPage from './Pages/ForgotPasswordPage/ForgotPasswordPage';
-import ResetPasswordPage from './Pages/ResetPasswordPage/ResetPasswordPage';
-import Home from './Pages/Home/Home';
-import ClubPage from './Pages/ClubPage/ClubPage';
-import EventPage from './Pages/EventPage/EventPage';
-import GuestPage from './Pages/GuestPage/GuestPage';
-import MemberPage from './Pages/MemberPage/MemberPage';
-import ChairpersonPage from './Pages/ChairpersonPage/ChairpersonPage';
-import FacultyMentorPage from './Pages/FacultyMentorPage/FacultyMentorPage';
-import AdminPage from './Pages/AdminPage/AdminPage';
-import Profile from './Pages/ProfilePage/ProfilePage';
-import RegisteredEvents from './Pages/RegisteredEventPage/RegisteredEventPage';
-import AcceptInvitation from './Pages/AcceptInvitationPage/AcceptInvitationPage';
-import FeedbackForm from './Pages/FeedbackForm';
-import About from './Pages/AboutPage/AboutPage';
-import Contact from './Pages/ContactPage/ContactPage';
+import Loader from './components/Loader/Loader';
+import LoginPage from './pages/LoginPage/LoginPage';
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage/ResetPasswordPage';
+import Home from './pages/Home/Home';
+import ClubPage from './pages/ClubPage/ClubPage';
+import EventPage from './pages/EventPage/EventPage';
+import GuestPage from './pages/GuestPage/GuestPage';
+import MemberPage from './pages/MemberPage/MemberPage';
+import ChairpersonPage from './pages/ChairpersonPage/ChairpersonPage';
+import FacultyMentorPage from './pages/FacultyMentorPage/FacultyMentorPage';
+import AdminPage from './pages/AdminPage/AdminPage';
+import Profile from './pages/ProfilePage/ProfilePage';
+import RegisteredEvents from './pages/RegisteredEventPage/RegisteredEventPage';
+import AcceptInvitation from './pages/AcceptInvitationPage/AcceptInvitationPage';
+import FeedbackForm from './pages/FeedbackForm';
+import About from './pages/AboutPage/AboutPage';
+import Contact from './pages/ContactPage/ContactPage';
 
 const App = () => {
   return (

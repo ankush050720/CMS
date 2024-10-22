@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../Components/Header/Header";
+import Header from "../../components/Header/Header";
 import { getUserInfo } from "../../services/userService";
 import EventPage from "../RenderEventPage/RenderEventPage";
 import { Box, Typography, Paper, Card, CardContent } from "@mui/material";

@@ -32,7 +32,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import styles from './AdminPage.module.css'; // Add appropriate styles
-import Header from "../../Components/AdminHeader/AdminHeader";
+import Header from "../../components/AdminHeader/AdminHeader";
 import {
   getProposal,
   updateProposalStatus,
@@ -47,8 +47,8 @@ import {
 import { getUserInfo } from "../../services/userService";
 import { getAllClubs } from "../../services/clubService";
 import RateEventPage from "../RateEventPage/RateEventPage";
-import BookedVenues from "../../Components/bookedVenues";
-import EventsRegistry from "../../Components/eventsRegistry";
+import BookedVenues from "../../components/bookedVenues";
+import EventsRegistry from "../../components/eventsRegistry";
 
 const AdminPage = () => {
   const [selectedAction, setSelectedAction] = useState("");
