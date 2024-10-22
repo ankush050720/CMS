@@ -25,13 +25,25 @@ app.use(cookieParser());
 
 //Init cross-origin request handlers
 // Update your CORS configuration
+// app.use(cors({
+//   origin: [
+//     process.env.FRONTEND_URL, 
+//     process.env.CHAT_FRONTEND_URL, 
+//     process.env.CHAT_BACKEND_URL
+//   ], // Allow frontend of both systems
+//   credentials: true, // Allow credentials (cookies)
+// }));
+
+// Set your frontend URL as a CORS origin
+const allowedOrigins = [
+  'https://cms-frontend-ankush-jhas-projects.vercel.app',
+  // Add other allowed origins if necessary
+];
+
+// Use CORS middleware
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL, 
-    process.env.CHAT_FRONTEND_URL, 
-    process.env.CHAT_BACKEND_URL
-  ], // Allow frontend of both systems
-  credentials: true, // Allow credentials (cookies)
+  origin: allowedOrigins,
+  credentials: true // Allow credentials (cookies, etc.)
 }));
 
 // Connect to Database
