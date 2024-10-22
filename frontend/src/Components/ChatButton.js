@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';  // Material UI Button
 import CircularProgress from '@mui/material/CircularProgress'; // Spinner for loading
 import { Box } from '@mui/material'; // For layout
 
+// chatbutton component
 const ChatButton = () => {
   const [userEmail, setUserEmail] = useState("");
   const [loading, setLoading] = useState(true); // Loading state
