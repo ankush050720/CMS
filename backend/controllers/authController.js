@@ -44,7 +44,7 @@ exports.login = async (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: '1h',
+        expiresIn: '3h',
       }
     );
 
@@ -84,7 +84,7 @@ exports.forgotPassword = async (req, res) => {
     await user.save();
 
     // Send email
-    const resetURL = `http://localhost:3000/reset-password?token=${resetToken}`;
+    const resetURL = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
     const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to the following link to reset your password: \n\n ${resetURL}`;
 
     await sendEmail({
