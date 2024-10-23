@@ -35,16 +35,27 @@ const Home = () => {
 
   useEffect(() => {
     const fetchClubs = async () => {
-      const data = await getAllClubs();
-      setClubs(data);
-      setIsLoadingClubs(false); // Set loading to false after clubs are fetched
+      try {
+        const data = await getAllClubs();
+        setClubs(data);
+      } catch (error) {
+        console.error("Error fetching clubs:", error);
+      } finally {
+        setIsLoadingClubs(false); // Set loading to false whether there's an error or not
+      }
     };
-
+  
     const fetchEvents = async () => {
-      const data = await getAllEvents();
-      setEvents(data);
-      setIsLoadingEvents(false); // Set loading to false after events are fetched
+      try {
+        const data = await getAllEvents();
+        setEvents(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setIsLoadingEvents(false); // Set loading to false whether there's an error or not
+      }
     };
+  
     fetchClubs();
     fetchEvents();
   }, []);
@@ -321,11 +332,7 @@ const Home = () => {
           </button>
         </div>
         <div className="club-carousel">
-          {isLoadingClubs ? (
-            <div className="loading-container">
-              <CircularProgress />
-            </div> // Show loading spinner while fetching clubs
-          ) : (
+          {!isLoadingClubs ? (
             clubs
               .filter((club) => club.type && club.type === selectedType)
               .map((club, index) => (
@@ -339,6 +346,10 @@ const Home = () => {
                   onMoreDetailsClick={() => openClubModal(club)}
                 />
               ))
+          ) : (
+            <div className="loading-container">
+              <CircularProgress />
+            </div>
           )}
         </div>
       </div>
@@ -346,30 +357,32 @@ const Home = () => {
       {/* Events Section */}
       <div className="events-section" ref={eventSectionRef}>
         <h1>Upcoming Events</h1>
-        <div className="event-cards">
-          {isLoadingEvents ? (
-            <div className="loading-container">
-              <CircularProgress />
-            </div> // Show loading spinner while fetching events
-          ) : (
-            events
-              .filter((event) => event.status === "upcoming")
-              .slice(0, 6) // Limit to a maximum of 6 events
-              .map((event, index) => (
-                <EventCard
-                  key={index}
-                  event={event}
-                  onClick={() => openEventModal(event)}
-                />
-              ))
-          )}
-        </div>
-        <button
-          className="button show-more-button"
-          onClick={() => navigate("/events")}
-        >
-          Show More
-        </button>
+        {!isLoadingEvents ? (
+          <>
+            <div className="event-cards">
+              {events
+                .filter((event) => event.status === "upcoming")
+                .slice(0, 6) // Limit to a maximum of 6 events
+                .map((event, index) => (
+                  <EventCard
+                    key={index}
+                    event={event}
+                    onClick={() => openEventModal(event)}
+                  />
+                ))}
+            </div>
+            <button
+              className="button show-more-button"
+              onClick={() => navigate("/events")}
+            >
+              Show More
+            </button>
+          </>
+        ) : (
+          <div className="loading-container">
+            <CircularProgress />
+          </div>
+        )}
         <Footer />
       </div>
 

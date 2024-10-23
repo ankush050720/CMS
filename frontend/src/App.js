@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Loader from './components/Loader/Loader';
 import LoginPage from './pages/LoginPage/LoginPage';
@@ -19,7 +20,20 @@ import FeedbackForm from './pages/FeedbackForm';
 import About from './pages/AboutPage/AboutPage';
 import Contact from './pages/ContactPage/ContactPage';
 
+// Import isMobile from react-device-detect
+import { isMobile } from 'react-device-detect';
+
 const App = () => {
+  if (isMobile) {
+    // Show a message or block mobile users here
+    return (
+      <div style={styles.blockedContainer}>
+        <h2>This app is not available on mobile devices. Please use a desktop.</h2>
+      </div>
+    );
+  }
+
+  // Render the main desktop app if the user is not on mobile
   return (
     <Router>
       <Loader>
@@ -48,6 +62,18 @@ const App = () => {
       </Loader>
     </Router>
   );
+};
+
+// Styling for the mobile block message
+const styles = {
+  blockedContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    textAlign: 'center',
+    backgroundColor: '#f0f0f0',
+  }
 };
 
 export default App;
