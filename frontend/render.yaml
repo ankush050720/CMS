@@ -1,7 +1,7 @@
 redirects:
   - from: /
-    to: /frontend/build/index.html
+    to: /index.html
     status: 200
-  - from: /*  # Catch all routes
-    to: /frontend/build/index.html
+  - from: /*
+    to: /index.html
     status: 200
