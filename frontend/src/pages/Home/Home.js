@@ -322,7 +322,9 @@ const Home = () => {
         </div>
         <div className="club-carousel">
           {isLoadingClubs ? (
-            <CircularProgress /> // Show loading spinner while fetching clubs
+            <div className="loading-container">
+              <CircularProgress />
+            </div> // Show loading spinner while fetching clubs
           ) : (
             clubs
               .filter((club) => club.type && club.type === selectedType)
@@ -346,7 +348,9 @@ const Home = () => {
         <h1>Upcoming Events</h1>
         <div className="event-cards">
           {isLoadingEvents ? (
-            <CircularProgress /> // Show loading spinner while fetching events
+            <div className="loading-container">
+              <CircularProgress />
+            </div> // Show loading spinner while fetching events
           ) : (
             events
               .filter((event) => event.status === "upcoming")

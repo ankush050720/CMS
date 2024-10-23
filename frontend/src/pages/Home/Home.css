@@ -377,6 +377,13 @@
   opacity: 1;
 }
 
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px; /* Adjust height as needed to fit the spinner in its section */
+}
+
 .cursive-text {
   font-family: 'Dancing Script', cursive; /* Apply the Google Font */
   font-size: 2rem;
