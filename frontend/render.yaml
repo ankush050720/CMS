@@ -1,4 +1,6 @@
-redirects:
-  - source: '/*'
-    destination: '/'
-    status: 200
+static:
+  publish: ./build # or your correct build path
+  redirects:
+    - source: '/*'
+      destination: '/index.html'
+      status: 200
