@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_URL } from '../utils/config';
+import { navigate } from 'react-router-dom'; // Import navigate
 
 const AuthService = {
   checkAuthStatus: async () => {
@@ -13,7 +12,7 @@ const AuthService = {
   },
 
   redirectToLogin: () => {
-    window.location.href = '/login';
+    navigate('/login'); // Use navigate here
   },
 };
 

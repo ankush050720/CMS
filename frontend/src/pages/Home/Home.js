@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 import Slider from "react-slick";
 import ClubCard from "../../components/ClubCard/ClubCard";
 import ClubModal from "../../components/ClubModal/ClubModal";
@@ -12,6 +13,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import "./Home.css";
 
 const Home = () => {
+  const navigate = useNavigate();
   const videoUrl =
     "https://www.youtube-nocookie.com/embed/s7aD_mhYf98?si=3MzOKJITxUd5C-iH&controls=0";
   const [clubs, setClubs] = useState([]);
@@ -241,13 +243,13 @@ const Home = () => {
           <div className="button-container">
             <button
               className="button login-button"
-              onClick={() => (window.location.href = "/login")}
+              onClick={() => navigate("/login")}
             >
               Login
             </button>
             <button
               className="button signup-button"
-              onClick={() => (window.location.href = "/register")}
+              onClick={() => navigate("/register")}
             >
               SignUp
             </button>
@@ -347,7 +349,7 @@ const Home = () => {
         </div>
         <button
           className="button show-more-button"
-          onClick={() => (window.location.href = "/events")}
+          onClick={() => navigate("/events")}
         >
           Show More
         </button>
