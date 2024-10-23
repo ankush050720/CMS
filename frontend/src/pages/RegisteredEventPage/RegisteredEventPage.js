@@ -16,6 +16,7 @@ import {
   Grid,
 } from "@mui/material";
 import "./RegisteredEventPage.css";
+import CircularProgress from "@mui/material/CircularProgress"; // Spinner for loading
 
 const RegisteredEvents = () => {
   const [team, setTeam] = useState(null);
@@ -24,6 +25,7 @@ const RegisteredEvents = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [registeredEvents, setRegisteredEvents] = useState([]);
+  const [isLoadingEvents, setIsLoadingEvents] = useState(true);
 
   useEffect(() => {
     const fetchTeamAndEvents = async () => {
@@ -32,11 +34,14 @@ const RegisteredEvents = () => {
         setTeam(teamData || null);
         setNewTeamName(teamData?.name || "");
 
+        setIsLoadingEvents(true); // Start loading
         const { registeredEvents } = await eventService.getRegisteredEvents();
         setRegisteredEvents(registeredEvents || []);
+        setIsLoadingEvents(false); // Stop loading
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Error fetching data");
+        setIsLoadingEvents(false); // Stop loading even on error
       }
     };
 
@@ -95,8 +100,15 @@ const RegisteredEvents = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4, marginBottom: 4 }}>
-      <Card sx={{ width: "80%", maxWidth: "800px", boxShadow: 5 }}> 
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 4,
+        marginBottom: 4,
+      }}
+    >
+      <Card sx={{ width: "80%", maxWidth: "800px", boxShadow: 5 }}>
         <CardContent>
           <Typography variant="h4" gutterBottom>
             Team Details
@@ -183,13 +195,17 @@ const RegisteredEvents = () => {
           <Typography variant="h5" sx={{ marginTop: 4 }}>
             Events Registered
           </Typography>
-          {registeredEvents.length > 0 ? (
+          {isLoadingEvents ? (
+            <CircularProgress sx={{ marginTop: 2 }} />
+          ) : registeredEvents.length > 0 ? (
             <List>
               {registeredEvents.map((event) => (
                 <ListItem key={event._id}>
                   <ListItemText
                     primary={event.name}
-                    secondary={`${new Date(event.date).toLocaleDateString()} at ${event.time}`}
+                    secondary={`${new Date(
+                      event.date
+                    ).toLocaleDateString()} at ${event.time}`}
                   />
                 </ListItem>
               ))}

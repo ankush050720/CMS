@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import ClubCard from "../../components/ClubCard/ClubCard";
 import ClubModal from "../../components/ClubModal/ClubModal";
@@ -9,7 +9,8 @@ import { getAllClubs } from "../../services/clubService";
 import { getAllEvents } from "../../services/eventService";
 import Header from "../../components/HomeHeader/HomeHeader";
 import Footer from "../../components/Footer";
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import CircularProgress from "@mui/material/CircularProgress"; // Spinner for loading
 import "./Home.css";
 
 const Home = () => {
@@ -24,6 +25,8 @@ const Home = () => {
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [selectedType, setSelectedType] = useState("club"); // Default is 'club'
   const [showScrollTopButton, setShowScrollTopButton] = useState(false); // For scroll-to-top button
+  const [isLoadingClubs, setIsLoadingClubs] = useState(true);
+  const [isLoadingEvents, setIsLoadingEvents] = useState(true);
   const introRef = useRef();
   const carouselRef = useRef();
   const eventSectionRef = useRef();
@@ -34,10 +37,13 @@ const Home = () => {
     const fetchClubs = async () => {
       const data = await getAllClubs();
       setClubs(data);
+      setIsLoadingClubs(false); // Set loading to false after clubs are fetched
     };
+
     const fetchEvents = async () => {
       const data = await getAllEvents();
       setEvents(data);
+      setIsLoadingEvents(false); // Set loading to false after events are fetched
     };
     fetchClubs();
     fetchEvents();
@@ -48,44 +54,44 @@ const Home = () => {
       <div
         className="video-player"
         style={{
-          position: 'relative',
-          minHeight: '1000px',
-          width: '100%',
+          position: "relative",
+          minHeight: "1000px",
+          width: "100%",
           backgroundImage: 'url("/video-bg.jpg")',
-          backgroundPosition: 'center top',
-          backgroundSize: '100% 50%',
-          backgroundRepeat: 'no-repeat',
-          zIndex: '1',
+          backgroundPosition: "center top",
+          backgroundSize: "100% 50%",
+          backgroundRepeat: "no-repeat",
+          zIndex: "1",
           opacity: 1, // Set to 1 for always visible
-          transform: 'translateY(0)', // No translation needed
+          transform: "translateY(0)", // No translation needed
         }}
       >
         <h2
           style={{
-            fontFamily: 'Poppins, sans-serif',
-            position: 'absolute',
-            top: '12%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            color: 'white',
-            fontSize: '2.5rem',
+            fontFamily: "Poppins, sans-serif",
+            position: "absolute",
+            top: "12%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            color: "white",
+            fontSize: "2.5rem",
             zIndex: 3,
-            textAlign: 'center',
+            textAlign: "center",
           }}
         >
           Know Our Campus
         </h2>
-  
+
         <div
           style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '70%',
-            height: 'auto',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "70%",
+            height: "auto",
             zIndex: 2,
-            marginTop: '75px',
+            marginTop: "75px",
           }}
         >
           <iframe
@@ -98,18 +104,18 @@ const Home = () => {
             allowFullScreen
           ></iframe>
         </div>
-  
+
         <div
           style={{
-            position: 'absolute',
-            top: '50%',
-            width: '100%',
-            height: '50%',
-            backgroundColor: '#FBECFC',
+            position: "absolute",
+            top: "50%",
+            width: "100%",
+            height: "50%",
+            backgroundColor: "#FBECFC",
             zIndex: 1,
           }}
         ></div>
-  
+
         <style>{`
           .video-player {
             opacity: 1; /* Always visible */
@@ -152,7 +158,6 @@ const Home = () => {
       </div>
     );
   };
-  
 
   const openClubModal = (club) => {
     setSelectedClub(club);
@@ -233,7 +238,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
-    <Header />
+      <Header />
       <div className="fixed-container"></div>
       <div className="intro" ref={introRef}>
         <div className="intro-header">
@@ -258,39 +263,39 @@ const Home = () => {
       </div>
 
       <div className="dean-container" ref={deanSectionRef}>
-      <h4>| FROM THE DESK OF DEAN</h4>
-        <div className='dean-body'>
-        <div className="dean-image">
-          <img src="/dean-image.jpg" alt="Dean" />
-          <div className="dean-details">
-            <h4>Dr. Indrajeet Gupta</h4>
-            <p>Dean, School of CS – AI</p>
+        <h4>| FROM THE DESK OF DEAN</h4>
+        <div className="dean-body">
+          <div className="dean-image">
+            <img src="/dean-image.jpg" alt="Dean" />
+            <div className="dean-details">
+              <h4>Dr. Indrajeet Gupta</h4>
+              <p>Dean, School of CS – AI</p>
+            </div>
           </div>
-        </div>
-        <div className="dean-message">
-          <h1>Importance Of Societies & Clubs</h1>
-          <p>
-            In our ever-evolving educational landscape, societies and clubs play
-            a crucial role in fostering community, personal growth, and
-            collaboration. They provide a platform for students to explore their
-            interests, develop leadership skills, and engage in meaningful
-            projects. Participation in these organizations not only enriches the
-            academic experience but also cultivates lifelong friendships and
-            networking opportunities. It is essential to recognize and support
-            these groups, as they contribute significantly to a vibrant campus
-            life and prepare students for future challenges. Encouraging
-            involvement in societies and clubs is a key aspect of our mission.
-            Let us strive to create an inclusive environment where every student
-            feels empowered to share their passions and make a difference.
-          </p>
-        </div>
+          <div className="dean-message">
+            <h1>Importance Of Societies & Clubs</h1>
+            <p>
+              In our ever-evolving educational landscape, societies and clubs
+              play a crucial role in fostering community, personal growth, and
+              collaboration. They provide a platform for students to explore
+              their interests, develop leadership skills, and engage in
+              meaningful projects. Participation in these organizations not only
+              enriches the academic experience but also cultivates lifelong
+              friendships and networking opportunities. It is essential to
+              recognize and support these groups, as they contribute
+              significantly to a vibrant campus life and prepare students for
+              future challenges. Encouraging involvement in societies and clubs
+              is a key aspect of our mission. Let us strive to create an
+              inclusive environment where every student feels empowered to share
+              their passions and make a difference.
+            </p>
+          </div>
         </div>
       </div>
 
       <div className="video-container" ref={videoSectionRef}>
         <VideoPlayer videoUrl={videoUrl} />
       </div>
-      
 
       <div className="carousel" ref={carouselRef}>
         <h1>
@@ -316,19 +321,23 @@ const Home = () => {
           </button>
         </div>
         <div className="club-carousel">
-          {clubs
-            .filter((club) => club.type && club.type === selectedType)
-            .map((club, index) => (
-              <ClubCard
-                key={index}
-                name={club.name}
-                logo={club.clubLogo}
-                type={club.type}
-                facultyLead={club.facultyCoordinator}
-                studentLead={club.studentChair}
-                onMoreDetailsClick={() => openClubModal(club)}
-              />
-            ))}
+          {isLoadingClubs ? (
+            <CircularProgress /> // Show loading spinner while fetching clubs
+          ) : (
+            clubs
+              .filter((club) => club.type && club.type === selectedType)
+              .map((club, index) => (
+                <ClubCard
+                  key={index}
+                  name={club.name}
+                  logo={club.clubLogo}
+                  type={club.type}
+                  facultyLead={club.facultyCoordinator}
+                  studentLead={club.studentChair}
+                  onMoreDetailsClick={() => openClubModal(club)}
+                />
+              ))
+          )}
         </div>
       </div>
 
@@ -336,16 +345,20 @@ const Home = () => {
       <div className="events-section" ref={eventSectionRef}>
         <h1>Upcoming Events</h1>
         <div className="event-cards">
-          {events
-            .filter((event) => event.status === "upcoming")
-            .slice(0, 6) // Limit to a maximum of 6 events
-            .map((event, index) => (
-              <EventCard
-                key={index}
-                event={event}
-                onClick={() => openEventModal(event)}
-              />
-            ))}
+          {isLoadingEvents ? (
+            <CircularProgress /> // Show loading spinner while fetching events
+          ) : (
+            events
+              .filter((event) => event.status === "upcoming")
+              .slice(0, 6) // Limit to a maximum of 6 events
+              .map((event, index) => (
+                <EventCard
+                  key={index}
+                  event={event}
+                  onClick={() => openEventModal(event)}
+                />
+              ))
+          )}
         </div>
         <button
           className="button show-more-button"
@@ -375,7 +388,7 @@ const Home = () => {
       {/* Scroll to top button */}
       {showScrollTopButton && (
         <button className="scroll-to-top" onClick={scrollToTop}>
-          <KeyboardArrowUpIcon fontSize="large"/>
+          <KeyboardArrowUpIcon fontSize="large" />
         </button>
       )}
     </div>
