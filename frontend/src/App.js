@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Loader from './components/Loader/Loader';
+import CookiePopup from './components/CookiePopup'; // Import CookiePopup
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
@@ -19,25 +20,44 @@ import AcceptInvitation from './pages/AcceptInvitationPage/AcceptInvitationPage'
 import FeedbackForm from './pages/FeedbackForm';
 import About from './pages/AboutPage/AboutPage';
 import Contact from './pages/ContactPage/ContactPage';
-
-// Import isMobile from react-device-detect
 import { isMobile } from 'react-device-detect';
 
 const App = () => {
-  if (isMobile) {
-    // Show a message or block mobile users here
-    return (
-      <div style={styles.blockedContainer}>
-        <h2>This app is not available on mobile devices. Please use a desktop.</h2>
-      </div>
-    );
-  }
+  const [cookiesEnabled, setCookiesEnabled] = useState(true);
 
-  // Render the main desktop app if the user is not on mobile
+  useEffect(() => {
+    // Check if cookies are enabled
+    if (navigator.cookieEnabled === false) {
+      setCookiesEnabled(false);
+    }
+
+    // Scale the content to simulate desktop view on mobile
+    if (isMobile) {
+      document.body.style.transform = 'scale(0.8)';
+      document.body.style.transformOrigin = 'top left';
+      document.body.style.width = '125%';
+    } else {
+      // Reset styles when not on mobile
+      document.body.style.transform = '';
+      document.body.style.transformOrigin = '';
+      document.body.style.width = '';
+    }
+  }, []);
+
+  const handleAcceptCookies = () => {
+    // Set cookiesEnabled to true when the user accepts cookies
+    if (navigator.cookieEnabled) {
+      setCookiesEnabled(true);
+    }
+  };
+
   return (
     <Router>
       <Loader>
         <div>
+          {/* Show the cookie popup if cookies are not enabled */}
+          {!cookiesEnabled && <CookiePopup onAccept={handleAcceptCookies} />}
+
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />
@@ -62,18 +82,6 @@ const App = () => {
       </Loader>
     </Router>
   );
-};
-
-// Styling for the mobile block message
-const styles = {
-  blockedContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    textAlign: 'center',
-    backgroundColor: '#f0f0f0',
-  }
 };
 
 export default App;
