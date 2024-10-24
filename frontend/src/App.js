@@ -53,13 +53,25 @@ const App = () => {
       document.body.appendChild(iframe);
 
       iframe.onload = () => {
-        const cookieCheck = iframe.contentWindow.document.cookie.includes('thirdPartyTest');
+        try {
+          const cookieCheck = iframe.contentWindow.document.cookie.includes('thirdPartyTest');
 
-        // Clean up
-        document.body.removeChild(iframe);
+          // Clean up
+          document.body.removeChild(iframe);
 
-        setCookiesEnabled(cookieCheck);
-        setShowCookiePopup(!cookieCheck); // Show the popup if cookies are not enabled
+          if (cookieCheck) {
+            setCookiesEnabled(true); // Cookies are enabled
+            setShowCookiePopup(false); // No need to show popup
+          } else {
+            setCookiesEnabled(false); // Cookies are not enabled
+            setShowCookiePopup(true); // Show the popup
+          }
+        } catch (error) {
+          // This will catch if there's a cross-origin error (indicating 3rd party cookies are blocked)
+          setCookiesEnabled(false);
+          setShowCookiePopup(true); // Show the popup if cookies are blocked
+          document.body.removeChild(iframe);
+        }
       };
 
       // Set a timeout to handle cases where the iframe fails to load
@@ -69,18 +81,24 @@ const App = () => {
           setCookiesEnabled(false);
           setShowCookiePopup(true); // Show the popup if iframe fails
         }
-      }, 3000); // 3 seconds
+      }, 3000); // 3 seconds timeout for iframe to load
     };
 
     checkThirdPartyCookies();
   }, []);
+
+  const handleCookieAccept = () => {
+    localStorage.setItem('cookieAccepted', 'true');
+    setCookiesEnabled(true);
+    setShowCookiePopup(false);
+  };
 
   return (
     <Router>
       <Loader>
         <div>
           {/* Show the cookie popup if third-party cookies are not enabled */}
-          {showCookiePopup && <CookiePopup onAccept={() => { setCookiesEnabled(true); setShowCookiePopup(false); }} />}
+          {showCookiePopup && <CookiePopup onAccept={handleCookieAccept} />}
 
           {/* Block mobile users */}
           {isMobile ? (
