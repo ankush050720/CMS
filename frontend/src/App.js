@@ -41,63 +41,27 @@ const MobileBlocker = () => (
 );
 
 const App = () => {
-  const [cookiesEnabled, setCookiesEnabled] = useState(true);
   const [showCookiePopup, setShowCookiePopup] = useState(false);
 
+  // Check if cookies have been accepted
   useEffect(() => {
-    const checkThirdPartyCookies = () => {
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = `${process.env.REACT_APP_API_URL}/set-cookie`; // Change to your server's URL
-
-      document.body.appendChild(iframe);
-
-      iframe.onload = () => {
-        try {
-          const cookieCheck = iframe.contentWindow.document.cookie.includes('thirdPartyTest');
-
-          // Clean up
-          document.body.removeChild(iframe);
-
-          if (cookieCheck) {
-            setCookiesEnabled(true); // Cookies are enabled
-            setShowCookiePopup(false); // No need to show popup
-          } else {
-            setCookiesEnabled(false); // Cookies are not enabled
-            setShowCookiePopup(true); // Show the popup
-          }
-        } catch (error) {
-          // This will catch if there's a cross-origin error (indicating 3rd party cookies are blocked)
-          setCookiesEnabled(false);
-          setShowCookiePopup(true); // Show the popup if cookies are blocked
-          document.body.removeChild(iframe);
-        }
-      };
-
-      // Set a timeout to handle cases where the iframe fails to load
-      setTimeout(() => {
-        if (document.body.contains(iframe)) {
-          document.body.removeChild(iframe);
-          setCookiesEnabled(false);
-          setShowCookiePopup(true); // Show the popup if iframe fails
-        }
-      }, 3000); // 3 seconds timeout for iframe to load
-    };
-
-    checkThirdPartyCookies();
+    const cookieAccepted = localStorage.getItem('cookieAccepted');
+    
+    if (!cookieAccepted) {
+      setShowCookiePopup(true); // Show the popup if cookies haven't been accepted yet
+    }
   }, []);
 
   const handleCookieAccept = () => {
-    localStorage.setItem('cookieAccepted', 'true');
-    setCookiesEnabled(true);
-    setShowCookiePopup(false);
+    localStorage.setItem('cookieAccepted', 'true'); // Store in localStorage
+    setShowCookiePopup(false); // Hide the popup
   };
 
   return (
     <Router>
       <Loader>
         <div>
-          {/* Show the cookie popup if third-party cookies are not enabled */}
+          {/* Show the cookie popup if it hasn't been accepted */}
           {showCookiePopup && <CookiePopup onAccept={handleCookieAccept} />}
 
           {/* Block mobile users */}

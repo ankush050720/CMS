@@ -55,14 +55,6 @@ app.get('/', (req, res) => {
   res.send('Hello from backend!');
 });
 
-app.get('/set-cookie', (req, res) => {
-  res.cookie('thirdPartyTest', 'test', {
-    sameSite: 'None',
-    secure: true,
-  });
-  res.send('Cookie set');
-});
-
 // Listen on a port
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

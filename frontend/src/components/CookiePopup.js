@@ -4,8 +4,11 @@ const CookiePopup = ({ onAccept }) => {
   return (
     <div style={styles.container}>
       <div style={styles.messageBox}>
-        <h2>Cookies Required</h2>
-        <p>This website requires cookies to function properly. Please enable cookies in your browser settings.</p>
+        <h2>Cookies Are Required to Continue</h2>
+        <p>
+          This website relies on cookies, including third-party cookies, for essential functions like user login and personalized features. 
+          Without enabling cookies, you will not be able to log in or access certain parts of the site. Please enable cookies in your browser settings to proceed.
+        </p>
         <button onClick={onAccept} style={styles.button}>I have enabled cookies</button>
       </div>
     </div>
