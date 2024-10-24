@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Loader from './components/Loader/Loader';
-import CookiePopup from './components/CookiePopup'; // Import CookiePopup
+import CookiePopup from './components/CookiePopup';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
@@ -27,7 +27,7 @@ const App = () => {
 
   useEffect(() => {
     // Check if cookies are enabled
-    if (navigator.cookieEnabled === false) {
+    if (!navigator.cookieEnabled) {
       setCookiesEnabled(false);
     }
 
@@ -36,16 +36,30 @@ const App = () => {
       document.body.style.transform = 'scale(0.8)';
       document.body.style.transformOrigin = 'top left';
       document.body.style.width = '125%';
+
+      // Adjust viewport for better scaling
+      let metaTag = document.querySelector('meta[name="viewport"]');
+      if (!metaTag) {
+        metaTag = document.createElement('meta');
+        metaTag.name = 'viewport';
+        document.head.appendChild(metaTag);
+      }
+      metaTag.content = 'width=1280, user-scalable=no';
     } else {
       // Reset styles when not on mobile
       document.body.style.transform = '';
       document.body.style.transformOrigin = '';
       document.body.style.width = '';
+
+      // Reset viewport
+      let metaTag = document.querySelector('meta[name="viewport"]');
+      if (metaTag) {
+        metaTag.content = 'width=device-width, initial-scale=1';
+      }
     }
   }, []);
 
   const handleAcceptCookies = () => {
-    // Set cookiesEnabled to true when the user accepts cookies
     if (navigator.cookieEnabled) {
       setCookiesEnabled(true);
     }
