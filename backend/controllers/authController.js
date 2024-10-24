@@ -7,7 +7,8 @@ const Team = require('../models/Team');
 
 // Register a new user
 exports.register = async (req, res) => {
-  const { email, phone, password } = req.body;
+  let { email, phone, password } = req.body;
+  email = email.toLowerCase(); // Convert email to lowercase
   console.log(email, phone);
   try {
     let user = await User.findOne({ $or: [{ email }, { phone }] });
@@ -21,9 +22,9 @@ exports.register = async (req, res) => {
   }
 };
 
-
 exports.login = async (req, res) => {
-  const { emailOrPhone, password } = req.body;
+  let { emailOrPhone, password } = req.body;
+  emailOrPhone = emailOrPhone.toLowerCase(); // Convert email to lowercase if it's an email
   try {
     const user = await User.findOne({
       $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
@@ -35,12 +36,12 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
     const token = jwt.sign(
-      { 
-        userId: user._id, 
-        role: user.role, 
+      {
+        userId: user._id,
+        role: user.role,
         email: user.email,
-        phone: user.phone,  // Phone number in JWT payload
-        club: user.club ? user.club : null // Add club to JWT payload (null if no club)
+        phone: user.phone, // Phone number in JWT payload
+        club: user.club ? user.club : null, // Add club to JWT payload (null if no club)
       },
       process.env.JWT_SECRET,
       {
@@ -52,8 +53,7 @@ exports.login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'None',
-      // domain: '.onrender.com',
-      path: '/' 
+      path: '/',
     });
 
     res.json({ token, role: user.role, club: user.club }); // Add club to response
@@ -61,7 +61,6 @@ exports.login = async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 };
-
 
 exports.logout = (req, res) => {
   res.cookie('token', '', {
@@ -77,7 +76,8 @@ exports.logout = (req, res) => {
 
 // Forgot password
 exports.forgotPassword = async (req, res) => {
-  const { email } = req.body;
+  let { email } = req.body;
+  email = email.toLowerCase(); // Convert email to lowercase
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ msg: 'User not found' });
@@ -127,6 +127,6 @@ exports.resetPassword = async (req, res) => {
 // authController.js
 exports.checkAuth = (req, res) => {
   // If the request reaches here, the user is authenticated
-  console.log("user is logged in");
+  console.log('User is logged in');
   res.status(200).json({ isAuthenticated: true, user: req.user });
 };
