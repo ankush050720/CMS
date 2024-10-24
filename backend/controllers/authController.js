@@ -52,7 +52,7 @@ exports.login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'None',
-      domain: '.onrender.com',
+      // domain: '.onrender.com',
       path: '/' 
     });
 
