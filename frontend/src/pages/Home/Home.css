@@ -5,9 +5,9 @@
 .home-container {
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
   position: relative;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .fixed-container {
