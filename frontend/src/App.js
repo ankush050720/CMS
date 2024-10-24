@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Loader from './components/Loader/Loader';
 import CookiePopup from './components/CookiePopup';
 import LoginPage from './pages/LoginPage/LoginPage';
@@ -42,80 +42,75 @@ const MobileBlocker = () => (
 
 const App = () => {
   const [cookiesEnabled, setCookiesEnabled] = useState(true);
-  const location = useLocation();
+  const [showCookiePopup, setShowCookiePopup] = useState(false);
 
   useEffect(() => {
-    if (location.pathname === '/') {
-      const checkThirdPartyCookies = () => {
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = `${process.env.REACT_APP_API_URL}/set-cookie`; // Change to your server's URL
+    const checkThirdPartyCookies = () => {
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = `${process.env.REACT_APP_API_URL}/set-cookie`; // Change to your server's URL
 
-        document.body.appendChild(iframe);
+      document.body.appendChild(iframe);
 
-        iframe.onload = () => {
-          const cookieCheck = iframe.contentWindow.document.cookie.includes('thirdPartyTest');
+      iframe.onload = () => {
+        const cookieCheck = iframe.contentWindow.document.cookie.includes('thirdPartyTest');
 
-          // Clean up
-          document.body.removeChild(iframe);
+        // Clean up
+        document.body.removeChild(iframe);
 
-          setCookiesEnabled(cookieCheck);
-        };
-
-        // Set a timeout to handle cases where the iframe fails to load
-        setTimeout(() => {
-          if (document.body.contains(iframe)) {
-            document.body.removeChild(iframe);
-            setCookiesEnabled(false);
-          }
-        }, 3000); // 3 seconds
+        setCookiesEnabled(cookieCheck);
+        setShowCookiePopup(!cookieCheck); // Show the popup if cookies are not enabled
       };
 
-      checkThirdPartyCookies();
-    }
-  }, [location.pathname]); // Depend on pathname to trigger when it changes
+      // Set a timeout to handle cases where the iframe fails to load
+      setTimeout(() => {
+        if (document.body.contains(iframe)) {
+          document.body.removeChild(iframe);
+          setCookiesEnabled(false);
+          setShowCookiePopup(true); // Show the popup if iframe fails
+        }
+      }, 3000); // 3 seconds
+    };
+
+    checkThirdPartyCookies();
+  }, []);
 
   return (
-    <div>
-      {/* Show the cookie popup if third-party cookies are not enabled */}
-      {!cookiesEnabled && <CookiePopup onAccept={() => setCookiesEnabled(true)} />}
+    <Router>
+      <Loader>
+        <div>
+          {/* Show the cookie popup if third-party cookies are not enabled */}
+          {showCookiePopup && <CookiePopup onAccept={() => { setCookiesEnabled(true); setShowCookiePopup(false); }} />}
 
-      {/* Block mobile users */}
-      {isMobile ? (
-        <MobileBlocker />
-      ) : (
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/events" element={<EventPage />} />
-          <Route path="/:clubName" element={<ClubPage />} />
-          <Route path="/feedback/:eventId" element={<FeedbackForm />} />
-          <Route path="/guest" element={<GuestPage />} />
-          <Route path="/member" element={<MemberPage />} />
-          <Route path="/chairperson" element={<ChairpersonPage />} />
-          <Route path="/faculty-mentor" element={<FacultyMentorPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/profile" element={<Profile email="user@example.com" phoneNumber="123-456-7890" role="Member" />} />
-          <Route path="/registered-events" element={<RegisteredEvents />} />
-          <Route path="/accept-invitation" element={<AcceptInvitation />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/contact' element={<Contact />} />
-        </Routes>
-      )}
-    </div>
+          {/* Block mobile users */}
+          {isMobile ? (
+            <MobileBlocker />
+          ) : (
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/events" element={<EventPage />} />
+              <Route path="/:clubName" element={<ClubPage />} />
+              <Route path="/feedback/:eventId" element={<FeedbackForm />} />
+              <Route path="/guest" element={<GuestPage />} />
+              <Route path="/member" element={<MemberPage />} />
+              <Route path="/chairperson" element={<ChairpersonPage />} />
+              <Route path="/faculty-mentor" element={<FacultyMentorPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/profile" element={<Profile email="user@example.com" phoneNumber="123-456-7890" role="Member" />} />
+              <Route path="/registered-events" element={<RegisteredEvents />} />
+              <Route path="/accept-invitation" element={<AcceptInvitation />} />
+              <Route path='/about' element={<About />} />
+              <Route path='/contact' element={<Contact />} />
+            </Routes>
+          )}
+        </div>
+      </Loader>
+    </Router>
   );
 };
 
-// Wrap the App component with Router
-const Main = () => (
-  <Router>
-    <Loader>
-      <App />
-    </Loader>
-  </Router>
-);
-
-export default Main;
+export default App;
