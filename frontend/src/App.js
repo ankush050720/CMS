@@ -43,9 +43,9 @@ const MobileBlocker = () => (
 const App = () => {
   const [showCookiePopup, setShowCookiePopup] = useState(false);
 
-  // Check if cookies have been accepted
+  // Check if cookies have been accepted using sessionStorage
   useEffect(() => {
-    const cookieAccepted = localStorage.getItem('cookieAccepted');
+    const cookieAccepted = sessionStorage.getItem('cookieAccepted');
     
     if (!cookieAccepted) {
       setShowCookiePopup(true); // Show the popup if cookies haven't been accepted yet
@@ -53,7 +53,7 @@ const App = () => {
   }, []);
 
   const handleCookieAccept = () => {
-    localStorage.setItem('cookieAccepted', 'true'); // Store in localStorage
+    sessionStorage.setItem('cookieAccepted', 'true'); // Store in sessionStorage
     setShowCookiePopup(false); // Hide the popup
   };
 
