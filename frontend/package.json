@@ -42,6 +42,30 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "keywords": [
+    "club management",
+    "university portal",
+    "student organization",
+    "event management",
+    "membership management",
+    "student engagement",
+    "MERN",
+    "React",
+    "Node.js",
+    "Express",
+    "MongoDB",
+    "full-stack development",
+    "web application",
+    "SR University",
+    "SRU Club",
+    "student clubs",
+    "club events",
+    "activity tracking",
+    "user management",
+    "admin dashboard",
+    "event scheduling"
+  ],
+  "author": "Ankush Jha",
   "eslintConfig": {
     "extends": [
       "react-app",
