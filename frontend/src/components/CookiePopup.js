@@ -1,15 +1,17 @@
+import { Height } from '@mui/icons-material';
 import React from 'react';
 
 const CookiePopup = ({ onAccept }) => {
   return (
     <div style={styles.container}>
       <div style={styles.messageBox}>
-        <h2>Cookies Are Required to Continue</h2>
+        <h2>Cookie Notice</h2>
         <p>
-          This website relies on cookies, including third-party cookies, for essential functions like user login and personalized features. 
-          Without enabling cookies, you will not be able to log in or access certain parts of the site. Please enable cookies in your browser settings to proceed.
+          Our website uses cookies, including third-party cookies, to enhance your browsing experience and provide personalized features. 
+          By accepting cookies, you help us improve our services and ensure a smoother experience on our platform. 
+          You can manage your cookie preferences in your browser settings at any time.
         </p>
-        <button onClick={onAccept} style={styles.button}>I have enabled cookies</button>
+        <button onClick={onAccept} style={styles.button}>I Understand</button>
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import "./ClubPage.css"; // Import the CSS file
 import Header from "../../components/HomeHeader/HomeHeader";
+import Footer from "../../components/Footer";
 
 
 const ClubPage = () => {
@@ -309,6 +310,7 @@ const ClubPage = () => {
         </Box>
       )}
     </div>
+    <Footer />
     </div>
   );
 };

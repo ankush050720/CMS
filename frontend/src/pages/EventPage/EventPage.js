@@ -10,7 +10,9 @@ import EventModal from "../../components/EventModal/EventModal";
 import { getAllEvents } from "../../services/eventService";
 import { getAllClubs } from "../../services/clubService";
 import Header from "../../components/HomeHeader/HomeHeader";
+import Footer from "../../components/Footer";
 import SwiperCore from "swiper";
+
 import "./EventPage.css";
 
 // Initialize Swiper with the navigation and effect modules
@@ -51,10 +53,12 @@ const EventPage = () => {
       : events.filter((event) => event.club === selectedClub);
 
   return (
+    <div>
     <Container
       maxWidth={false} // Make sure it spans the full width
       sx={{
-        paddingY: 4,
+        paddingTop: 4,
+        paddingBottom: 8,
         marginTop: 0, // Remove margin to ensure it spans from the top
         minHeight: "100vh", // Ensure it covers the full viewport height
       }}
@@ -138,7 +142,10 @@ const EventPage = () => {
           onRequestClose={closeEventModal}
         />
       )}
+
     </Container>
+    <Footer />
+    </div>
   );
 };
 

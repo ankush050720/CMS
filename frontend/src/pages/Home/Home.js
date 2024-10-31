@@ -383,8 +383,9 @@ const Home = () => {
             <CircularProgress />
           </div>
         )}
-        <Footer />
       </div>
+
+      <Footer />
 
       {/* Modals */}
       {selectedClub && (

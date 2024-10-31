@@ -21,6 +21,9 @@ import FeedbackForm from './pages/FeedbackForm';
 import About from './pages/AboutPage/AboutPage';
 import Contact from './pages/ContactPage/ContactPage';
 import { isMobile } from 'react-device-detect';
+import TermsAndConditions from './pages/Policy/TermsPage';
+import PrivacyPolicy from './pages/Policy/PolicyPage';
+import RefundsAndCancellations from './pages/Policy/RefundsPage';
 
 const MobileBlocker = () => (
   <div style={{
@@ -61,33 +64,38 @@ const App = () => {
     <Router>
       <Loader>
         <div>
-          {/* Show the cookie popup if it hasn't been accepted */}
-          {showCookiePopup && <CookiePopup onAccept={handleCookieAccept} />}
-
           {/* Block mobile users */}
           {isMobile ? (
             <MobileBlocker />
           ) : (
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/reset-password" element={<ResetPasswordPage />} />
-              <Route path="/events" element={<EventPage />} />
-              <Route path="/:clubName" element={<ClubPage />} />
-              <Route path="/feedback/:eventId" element={<FeedbackForm />} />
-              <Route path="/guest" element={<GuestPage />} />
-              <Route path="/member" element={<MemberPage />} />
-              <Route path="/chairperson" element={<ChairpersonPage />} />
-              <Route path="/faculty-mentor" element={<FacultyMentorPage />} />
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/profile" element={<Profile email="user@example.com" phoneNumber="123-456-7890" role="Member" />} />
-              <Route path="/registered-events" element={<RegisteredEvents />} />
-              <Route path="/accept-invitation" element={<AcceptInvitation />} />
-              <Route path='/about' element={<About />} />
-              <Route path='/contact' element={<Contact />} />
-            </Routes>
+            <>
+              {/* Show the cookie popup if it hasn't been accepted and the device is not mobile */}
+              {showCookiePopup && <CookiePopup onAccept={handleCookieAccept} />}
+  
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
+                <Route path="/events" element={<EventPage />} />
+                <Route path="/:clubName" element={<ClubPage />} />
+                <Route path="/feedback/:eventId" element={<FeedbackForm />} />
+                <Route path="/guest" element={<GuestPage />} />
+                <Route path="/member" element={<MemberPage />} />
+                <Route path="/chairperson" element={<ChairpersonPage />} />
+                <Route path="/faculty-mentor" element={<FacultyMentorPage />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/profile" element={<Profile email="user@example.com" phoneNumber="123-456-7890" role="Member" />} />
+                <Route path="/registered-events" element={<RegisteredEvents />} />
+                <Route path="/accept-invitation" element={<AcceptInvitation />} />
+                <Route path='/about' element={<About />} />
+                <Route path='/contact' element={<Contact />} />
+                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/refunds-and-cancellations" element={<RefundsAndCancellations />} />
+              </Routes>
+            </>
           )}
         </div>
       </Loader>

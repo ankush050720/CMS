@@ -1,9 +1,11 @@
 import React from 'react';
 import { Box, Typography, Card, CardContent } from '@mui/material';
 import Header from "../../components/HomeHeader/HomeHeader";
+import Footer from "../../components/Footer";
 
 const About = () => {
   return (
+    <div>
     <Box sx={{ py:3, px: 10, backgroundColor: "#f7f7f7" }}>
       <Header />
       <Card elevation={3} style={{ marginTop: '100px' , marginBottom: '20px', padding: '20px' }}>
@@ -105,7 +107,10 @@ const About = () => {
           </Typography>
         </CardContent>
       </Card>
+      
     </Box>
+    <Footer />
+    </div>
   );
 };
 
