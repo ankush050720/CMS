@@ -25,7 +25,7 @@ const RefundPolicy = () => {
 
         <Typography variant="h6" gutterBottom>3. Process</Typography>
         <Typography paragraph>
-          Refund requests should be submitted through the portal or by contacting our support team. Refunds will be processed within 3-5 business days and credited back to the original payment method.
+          Refund requests should be submitted through the portal or by contacting our support team. Refunds will be processed within 5-7 business days and credited back to the original payment method.
         </Typography>
 
         <Typography variant="h6" gutterBottom>4. Non-Refundable Fees</Typography>
