@@ -51,8 +51,7 @@ exports.login = async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === 'production',
-      secure:true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'None',
       path: '/',
     });
@@ -66,8 +65,7 @@ exports.login = async (req, res) => {
 exports.logout = (req, res) => {
   res.cookie('token', '', {
     httpOnly: true,
-    // secure: process.env.NODE_ENV === 'production',
-    secure:true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'None', // Match this with the sameSite value used in login
     path: '/', // Ensure the path matches the login cookie
     expires: new Date(0), // Expire the cookie immediately
