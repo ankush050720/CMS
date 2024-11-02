@@ -21,7 +21,8 @@ const {
   closeFeedback,
   checkVenue,
   getEventsByUserClub,
-  getAllEventsWithTeams
+  getAllEventsWithTeams,
+  cancelRegistration
 } = require('../controllers/eventController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -48,6 +49,7 @@ router.post('/leave-team', authMiddleware, leaveTeam);                // Leave a
 router.get('/team/registered', authMiddleware, getRegisteredEvents);   // Get all events user is registered for
 router.get('/team/details', authMiddleware, getTeamDetails);          // Get details of the user's team
 router.post('/team/add-member', authMiddleware, addMemberToTeam);     // Add new member to team
+router.delete('/team/:teamId/event/:eventId/cancel', authMiddleware, cancelRegistration);
 
 // Invitation routes
 router.post('/accept-invitation', acceptInvitation);                  // Accept invitation to join a team

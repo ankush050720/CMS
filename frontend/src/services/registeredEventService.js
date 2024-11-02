@@ -7,4 +7,9 @@ const getRegisteredEvents = async () => {
   return response.data;
 };
 
-export default { getRegisteredEvents };
+const cancelRegistration = async (teamId, eventId) => {
+  const response = await axios.delete(`${API_URL}/api/events/team/${teamId}/event/${eventId}/cancel`);
+  return response.data;
+};
+
+export default { getRegisteredEvents, cancelRegistration };

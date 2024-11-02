@@ -35,8 +35,8 @@ const RegisteredEvents = () => {
         setNewTeamName(teamData?.name || "");
 
         setIsLoadingEvents(true); // Start loading
-        const { registeredEvents } = await eventService.getRegisteredEvents();
-        setRegisteredEvents(registeredEvents || []);
+        const registeredEvents = await eventService.getRegisteredEvents();
+        setRegisteredEvents(registeredEvents.events || []);
         setIsLoadingEvents(false); // Stop loading
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -96,6 +96,42 @@ const RegisteredEvents = () => {
     } catch (err) {
       setError(err.response?.data?.message || "Error updating team name");
       setSuccess("");
+    }
+  };
+
+  const handleCancelRegistration = async (eventId) => {
+
+    // Confirm cancellation
+    const isConfirmed = window.confirm(
+      "Are you sure you want to cancel the registration?"
+    );
+    if (!isConfirmed) return;
+
+    try {
+      // Call the service to cancel registration
+      const response = await eventService.cancelRegistration(team._id, eventId);
+
+      // Check if the response is successful
+      if (response.success) {
+        // Show success message
+        alert(
+          "Your event registration has been cancelled. Your refund has been processed and will be reflected back in your account in 5-7 working days."
+        );
+
+        // Update the UI by removing the cancelled event from registeredEvents
+        setRegisteredEvents((prevEvents) =>
+          prevEvents.filter((event) => event._id !== eventId)
+        );
+      } else {
+        // Handle the case where the cancellation failed
+        alert("Failed to cancel registration. Please try again.");
+      }
+    } catch (error) {
+      // Handle any errors from the service call
+      console.error("Error cancelling registration:", error);
+      alert(
+        "An error occurred while cancelling registration. Please try again later."
+      );
     }
   };
 
@@ -199,16 +235,30 @@ const RegisteredEvents = () => {
             <CircularProgress sx={{ marginTop: 2 }} />
           ) : registeredEvents.length > 0 ? (
             <List>
-              {registeredEvents.map((event) => (
-                <ListItem key={event._id}>
-                  <ListItemText
-                    primary={event.name}
-                    secondary={`${new Date(
-                      event.date
-                    ).toLocaleDateString()} at ${event.time}`}
-                  />
-                </ListItem>
-              ))}
+              {registeredEvents.map((event) => {
+                return (
+                  <ListItem key={event._id}>
+                    <ListItemText
+                      primary={event.name}
+                      secondary={`${new Date(
+                        event.date
+                      ).toLocaleDateString()} at ${event.time}`}
+                    />
+                    {event.status === "upcoming" && (
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        sx={{ marginLeft: 2 }}
+                        onClick={() =>
+                          handleCancelRegistration(event._id)
+                        }
+                      >
+                        Cancel Registration
+                      </Button>
+                    )}
+                  </ListItem>
+                );
+              })}
             </List>
           ) : (
             <Typography>No events registered.</Typography>

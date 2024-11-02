@@ -53,8 +53,8 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.onload = () => resolve(true);
       script.onerror = () => resolve(false);
       document.body.appendChild(script);
@@ -80,7 +80,7 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
     if (!scores) {
       return <Typography>Loading scores...</Typography>; // Loading state
     }
-  
+
     const data = [
       {
         name: "Guest",
@@ -91,23 +91,25 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
       { name: "Faculty Mentor", value: scores.faculty || 0 },
       { name: "Dean", value: scores.admin || 0 },
     ];
-  
+
     // Filter out entries where the value is zero to avoid overlapping legends
     const filteredData = data.filter((entry) => entry.value > 0);
-  
+
     return (
       <>
         <Typography variant="h6">Average Scores</Typography>
-        <PieChart width={500} height={500}> {/* Increased size */}
+        <PieChart width={500} height={500}>
+          {" "}
+          {/* Increased size */}
           <Pie
             data={filteredData}
-            cx={290}  // Centering X
-            cy={250}  // Centering Y
-            outerRadius={120}  // Increased outer radius
+            cx={290} // Centering X
+            cy={250} // Centering Y
+            outerRadius={120} // Increased outer radius
             fill="#8884d8"
             dataKey="value"
             label={({ name, value }) => `${name}: ${value.toFixed(1)}`}
-            paddingAngle={5}  // Adding space between slices
+            paddingAngle={5} // Adding space between slices
           >
             {filteredData.map((entry, index) => (
               <Cell
@@ -116,7 +118,6 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
               />
             ))}
           </Pie>
-  
           {/* Tooltip for displaying additional info */}
           <Tooltip
             formatter={(value, name) => [`${value.toFixed(1)}`, `${name}`]}
@@ -126,36 +127,45 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
       </>
     );
   };
-  
+
   const handlePayment = async () => {
     try {
       const userInfo = await getUserInfo();
       if (!userInfo) {
-        console.log('Unauthorized user, redirecting to login...')
-        navigate('/login');
+        console.log("Unauthorized user, redirecting to login...");
+        navigate("/login");
         return;
       }
-  
-      const orderId = await PaymentService.processPayment(event.fee, userInfo.email, event._id);
-  
+
+      const orderId = await PaymentService.processPayment(
+        event.fee,
+        userInfo.email,
+        event._id
+      );
       const scriptLoaded = await loadRazorpayScript();
-  
+
       if (!scriptLoaded) {
-        alert('Failed to load Razorpay SDK. Are you online?');
+        alert("Failed to load Razorpay SDK. Are you online?");
         return;
       }
-  
+
       const options = {
-        key: process.env.REACT_APP_RAZORPAY_KEY_ID, // Your Razorpay key ID
+        key: process.env.REACT_APP_RAZORPAY_KEY_ID,
         amount: event.fee * 100,
         currency: "INR",
         name: "Event Registration",
         description: "Event Registration Fee",
         order_id: orderId,
         handler: async (response) => {
-          // Handle successful payment here
+          // Successful payment
           alert("Payment Successful!");
-          const registrationResult = await EventRegService.registerTeamForEvent(event._id, userInfo.email);
+          const transactionId = response.razorpay_payment_id; // Capture transaction ID
+          const registrationResult = await EventRegService.registerTeamForEvent(
+            event._id,
+            userInfo.email,
+            transactionId
+          );
+
           if (registrationResult.alreadyRegistered) {
             alert("Team is already registered for this event.");
           } else {
@@ -168,13 +178,14 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
           email: userInfo.email,
         },
         notes: {
-          address: "Sample Address",
+          address:
+            "Paying to SR University, Ananthasagar, Hasanparthy Hanumakonda 506371, Telangana, India",
         },
         theme: {
           color: "#F37254",
         },
       };
-  
+
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     } catch (error) {
@@ -318,7 +329,10 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
 
       {/* Feedback modal */}
       {feedbackModalOpen && (
-        <Dialog open={feedbackModalOpen} onClose={() => setFeedbackModalOpen(false)}>
+        <Dialog
+          open={feedbackModalOpen}
+          onClose={() => setFeedbackModalOpen(false)}
+        >
           <DialogTitle>Event Feedback</DialogTitle>
           <DialogContent>{renderFeedbackContent()}</DialogContent>
           <DialogActions>

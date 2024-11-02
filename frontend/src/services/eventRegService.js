@@ -2,9 +2,8 @@ import axios from 'axios';
 import { API_URL } from '../utils/config';
 
 const EventRegService = {
-  registerTeamForEvent: async (eventId, userEmail) => {
+  registerTeamForEvent: async (eventId, userEmail, transactionId) => {
     try {
-      // Fetch the team based on the user's email
       const teamResponse = await axios.get(`${API_URL}/api/events/team/get-team?userEmail=${userEmail}`);
       const team = teamResponse.data;
 
@@ -12,10 +11,10 @@ const EventRegService = {
         throw new Error('Team not found for the logged-in user');
       }
 
-      // Register the team for the event
       const response = await axios.post(`${API_URL}/api/events/${eventId}/register-team`, {
         teamId: team._id,
-        teamMembers: team.members, // Send team members to backend for registration
+        teamMembers: team.members,
+        transactionId // Pass transactionId to the backend
       });
 
       return response.data.success;

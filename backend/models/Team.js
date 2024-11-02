@@ -6,20 +6,23 @@ const teamSchema = new mongoose.Schema({
     required: true,
   },
   members: {
-    type: [String],  // Array of user emails
+    type: [String], // Array of user emails
     ref: 'User',
     required: true,
   },
-  registeredEvents: [{
-    type: mongoose.Schema.Types.ObjectId, // Use ObjectId for event references
-    ref: 'Event',
-    default: [] // Default value set to an empty array
-  }],
-  eventId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Event',
-    required: false,
-  }
+  registeredEvents: [
+    {
+      eventId: {
+        type: mongoose.Schema.Types.ObjectId, // Event reference
+        ref: 'Event',
+        required: true,
+      },
+      transactionId: {
+        type: String, // Razorpay transaction ID for refund
+        required: true,
+      }
+    }
+  ],
 }, { timestamps: true });
 
 module.exports = mongoose.model('Team', teamSchema);
