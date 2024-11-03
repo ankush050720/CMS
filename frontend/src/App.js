@@ -24,6 +24,7 @@ import { isMobile } from 'react-device-detect';
 import TermsAndConditions from './pages/Policy/TermsPage';
 import PrivacyPolicy from './pages/Policy/PolicyPage';
 import RefundsAndCancellations from './pages/Policy/RefundsPage';
+import ScrollToTop from './utils/ScrollToTop';
 
 const MobileBlocker = () => (
   <div style={{
@@ -71,7 +72,7 @@ const App = () => {
             <>
               {/* Show the cookie popup if it hasn't been accepted and the device is not mobile */}
               {showCookiePopup && <CookiePopup onAccept={handleCookieAccept} />}
-  
+              <ScrollToTop />
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<LoginPage />} />
