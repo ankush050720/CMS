@@ -15,10 +15,17 @@ exports.simplePaymentGateway = async (req, res) => {
       return res.status(404).json({ message: 'Event or team not found' });
     }
 
-    // Check if the team is already registered for the event
-    if (team.registeredEvents.includes(eventId)) {
-      return res.status(400).json({ message: 'Team is already registered for this event' });
+    if (team.registeredEvents.some((reg) => reg.eventId.equals(eventId))) {
+      return res
+        .status(400)
+        .json({ message: "Team is already registered for this event" });
     }
+
+    // Check if the team is already registered for the event
+    // if (team.registeredEvents.includes(eventId)) {
+    //   console.log('Event already registered');
+    //   return res.status(400).json({ message: 'Team is already registered for this event' });
+    // }
 
     const options = {
       amount: amount * 100, // Convert amount to paise
