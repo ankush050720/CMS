@@ -21,12 +21,6 @@ exports.simplePaymentGateway = async (req, res) => {
         .json({ message: "Team is already registered for this event" });
     }
 
-    // Check if the team is already registered for the event
-    // if (team.registeredEvents.includes(eventId)) {
-    //   console.log('Event already registered');
-    //   return res.status(400).json({ message: 'Team is already registered for this event' });
-    // }
-
     const options = {
       amount: amount * 100, // Convert amount to paise
       currency: "INR",
