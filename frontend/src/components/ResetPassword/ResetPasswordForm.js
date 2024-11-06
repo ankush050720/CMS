@@ -19,17 +19,8 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <div className='container'> 
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'flex-start', // Align form to the left
-        alignItems: 'center', // Center vertically
-        paddingLeft: '5%', // Space from the left
-      }}
-    >
-      <Box sx={{ maxWidth: 400 }}> {/* Restrict form width */}
+    <div className="container">
+      <Box className="form-content">
         <Typography variant="h4" gutterBottom>
           Reset Password
         </Typography>
@@ -46,13 +37,7 @@ const ResetPasswordForm = () => {
             autoComplete="off"
             size="small" // Compact field size
           />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            type="submit"
-            sx={{ mt: 2 }}
-          >
+          <Button fullWidth variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
             Submit
           </Button>
 
@@ -63,7 +48,6 @@ const ResetPasswordForm = () => {
           )}
         </form>
       </Box>
-    </Box>
     </div>
   );
 };

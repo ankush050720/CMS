@@ -45,9 +45,25 @@ const Header = ({ email, className }) => {
   };
 
   return (
-    <AppBar className = {className} position="static" sx={{ width: '100%', margin: '0 auto', backgroundColor: 'primary.main' }}> {/* Set original color */}
-      <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+    <AppBar
+      className={className}
+      position="static"
+      sx={{
+        width: '100%',
+        margin: '0 auto',
+        backgroundColor: 'primary.main',
+        paddingX: { xs: 1, md: 2 }, // Reduce padding on small screens
+        zIndex: '1'
+      }}
+    >
+      <Toolbar sx={{ justifyContent: 'space-between', paddingX: { xs: 1, md: 2 } }}>
+        <Typography
+          variant="h6"
+          sx={{
+            flexGrow: 1,
+            fontSize: { xs: '1rem', sm: '1.25rem' }, // Smaller font size on <768px
+          }}
+        >
           Logged in as: {email || 'Guest'}
         </Typography>
 
@@ -56,6 +72,9 @@ const Header = ({ email, className }) => {
           color="inherit"
           aria-label="menu"
           onClick={handleMenuClick}
+          sx={{
+            padding: { xs: 0.5, sm: 1 }, // Reduce button padding on small screens
+          }}
         >
           <FontAwesomeIcon icon={faCog} />
         </IconButton>
@@ -72,7 +91,7 @@ const Header = ({ email, className }) => {
               <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
             </>
           ) : (
-            <MenuItem onClick={handleLoginClick}>Login</MenuItem>
+            <MenuItem onClick={handleLoginClick} sx={{ minWidth: '150px' }}>Login</MenuItem>
           )}
         </Menu>
       </Toolbar>

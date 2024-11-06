@@ -20,29 +20,10 @@ import AcceptInvitation from './pages/AcceptInvitationPage/AcceptInvitationPage'
 import FeedbackForm from './pages/FeedbackForm';
 import About from './pages/AboutPage/AboutPage';
 import Contact from './pages/ContactPage/ContactPage';
-import { isMobile } from 'react-device-detect';
 import TermsAndConditions from './pages/Policy/TermsPage';
 import PrivacyPolicy from './pages/Policy/PolicyPage';
 import RefundsAndCancellations from './pages/Policy/RefundsPage';
 import ScrollToTop from './utils/ScrollToTop';
-
-const MobileBlocker = () => (
-  <div style={{
-    textAlign: 'center',
-    padding: '20px',
-    backgroundColor: '#f8d7da',
-    color: '#721c24',
-    fontWeight: 'bold',
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-  }}>
-    <h1>Mobile Access Blocked</h1>
-    <p>Our site is best viewed on a desktop. Please switch to desktop mode or use a PC to continue.</p>
-  </div>
-);
 
 const App = () => {
   const [showCookiePopup, setShowCookiePopup] = useState(false);
@@ -65,12 +46,6 @@ const App = () => {
     <Router>
       <Loader>
         <div>
-          {/* Block mobile users */}
-          {isMobile ? (
-            <MobileBlocker />
-          ) : (
-            <>
-              {/* Show the cookie popup if it hasn't been accepted and the device is not mobile */}
               {showCookiePopup && <CookiePopup onAccept={handleCookieAccept} />}
               <ScrollToTop />
               <Routes>
@@ -96,8 +71,6 @@ const App = () => {
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/refunds-and-cancellations" element={<RefundsAndCancellations />} />
               </Routes>
-            </>
-          )}
         </div>
       </Loader>
     </Router>

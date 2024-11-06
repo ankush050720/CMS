@@ -12,40 +12,42 @@ const EventCard = ({ event, onClick }) => {
   return (
     <Card
       sx={{
-        background: 'linear-gradient(135deg, #42a5f5, #1e88e5)', // Gradient background for added depth
+        background: 'linear-gradient(135deg, #2196f3, #1e88e5)',
         color: '#fff',
         borderRadius: '12px',
-        padding: '25px',
-        boxShadow: '0 12px 24px rgba(0, 0, 0, 0.3)', // Enhanced shadow depth
+        padding: '20px',
+        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
         cursor: 'pointer',
-        transition: 'transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease',
-        maxWidth: 320,
-        margin: '15px',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+        maxWidth: '250px',
         textAlign: 'center',
+        overflow: 'hidden',
         '&:hover': {
-          transform: 'scale(1.08)',
-          boxShadow: '0 16px 32px rgba(0, 0, 0, 0.4)', // More pronounced shadow on hover
-          background: 'linear-gradient(135deg, #64b5f6, #2196f3)', // Change gradient on hover
-        },
-        '&:hover .event-title': {
-          fontSize: '30px',
-        },
-        '&:hover .event-details': {
-          fontSize: '10px',
+          transform: 'scale(1.05)',
+          boxShadow: '0 12px 24px rgba(0, 0, 0, 0.3)',
+          '& .event-title': {
+            fontSize: { xs: '20px', sm: '24px' }, // Enlarged title on hover
+          },
+          '& .event-detail-text': {
+            fontSize: { xs: '12px', sm: '14px' }, // Reduced text size for other details on hover
+          },
         },
       }}
       onClick={onClick}
     >
-      <CardContent>
+      <CardContent sx={{ padding: '16px', overflow: 'hidden' }}>
         <Typography
-          variant="h5"
+          variant="h6"
           component="div"
           className="event-title"
           sx={{
-            marginBottom: '15px',
             fontWeight: 600,
-            transition: 'font-size 0.3s ease',
-            fontSize: '22px', // Default font size
+            marginBottom: '8px',
+            fontSize: { xs: '18px', sm: '20px' }, // Default title size
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            transition: 'font-size 0.3s ease', // Smooth size transition for title
           }}
         >
           {event.name}
@@ -57,52 +59,80 @@ const EventCard = ({ event, onClick }) => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '12px', // More space between elements
-            fontSize: '16px',
-            transition: 'font-size 0.3s ease',
+            gap: '12px',
+            fontSize: { xs: '14px', sm: '16px' }, // Default size for details
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', transition: 'transform 0.3s ease' }}>
-            <EventIcon
+          {/* Date Section */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              '&:hover .event-icon-date': { color: 'yellow' }, // Change icon color on hover
+            }}
+          >
+            <EventIcon className="event-icon-date" fontSize="small" sx={{ transition: 'color 0.3s ease' }} />
+            <Typography
+              variant="body2"
+              className="event-detail-text"
               sx={{
-                marginRight: '8px',
-                fontSize: '24px',
-                transition: 'color 0.3s ease, transform 0.3s ease',
-                '&:hover': {
-                  color: '#ffeb3b', // Change color on hover
-                  transform: 'scale(1.2)', // Slightly enlarge icon on hover
-                },
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                transition: 'font-size 0.3s ease', // Smooth size transition for detail text
               }}
-            />
-            {formatDate(event.date)}
+            >
+              {formatDate(event.date)}
+            </Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', transition: 'transform 0.3s ease' }}>
-            <AttachMoneyIcon
+
+          {/* Fee Section */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              '&:hover .event-icon-fee': { color: 'yellow' }, // Change icon color on hover
+            }}
+          >
+            <AttachMoneyIcon className="event-icon-fee" fontSize="small" sx={{ transition: 'color 0.3s ease' }} />
+            <Typography
+              variant="body2"
+              className="event-detail-text"
               sx={{
-                marginRight: '8px',
-                fontSize: '24px',
-                transition: 'color 0.3s ease, transform 0.3s ease',
-                '&:hover': {
-                  color: '#ffeb3b',
-                  transform: 'scale(1.2)',
-                },
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                transition: 'font-size 0.3s ease', // Smooth size transition for detail text
               }}
-            />
-            {event.fee}
+            >
+              {event.fee}
+            </Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', transition: 'transform 0.3s ease' }}>
-            <PeopleIcon
+
+          {/* Members Section */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              '&:hover .event-icon-members': { color: 'yellow' }, // Change icon color on hover
+            }}
+          >
+            <PeopleIcon className="event-icon-members" fontSize="small" sx={{ transition: 'color 0.3s ease' }} />
+            <Typography
+              variant="body2"
+              className="event-detail-text"
               sx={{
-                marginRight: '8px',
-                fontSize: '24px',
-                transition: 'color 0.3s ease, transform 0.3s ease',
-                '&:hover': {
-                  color: '#ffeb3b',
-                  transform: 'scale(1.2)',
-                },
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                transition: 'font-size 0.3s ease', // Smooth size transition for detail text
               }}
-            />
-            {event.members}
+            >
+              {event.members}
+            </Typography>
           </Box>
         </Box>
       </CardContent>

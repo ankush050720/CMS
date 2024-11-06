@@ -1,9 +1,14 @@
-
 .guest-header {
   width: 80% !important;
-  margin: 0 auto !important;
+  left: 50%; /* Centering horizontally */
+  transform: translateX(-50%); /* Move left by half its width */
   border-radius: 8px;
   position: fixed !important;
   top: 20px !important;
 }
 
+@media (max-width: 768px) {
+  .guest-header {
+    width: 90% !important;
+  } 
+}

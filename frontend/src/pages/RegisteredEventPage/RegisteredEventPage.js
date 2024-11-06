@@ -14,9 +14,10 @@ import {
   ListItemText,
   Alert,
   Grid,
+  CircularProgress,
 } from "@mui/material";
+import { useMediaQuery } from "@mui/material"; // Import for media query
 import "./RegisteredEventPage.css";
-import CircularProgress from "@mui/material/CircularProgress"; // Spinner for loading
 
 const RegisteredEvents = () => {
   const [team, setTeam] = useState(null);
@@ -27,6 +28,9 @@ const RegisteredEvents = () => {
   const [registeredEvents, setRegisteredEvents] = useState([]);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
 
+  // Check if screen width is less than 768px
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
+
   useEffect(() => {
     const fetchTeamAndEvents = async () => {
       try {
@@ -34,14 +38,14 @@ const RegisteredEvents = () => {
         setTeam(teamData || null);
         setNewTeamName(teamData?.name || "");
 
-        setIsLoadingEvents(true); // Start loading
+        setIsLoadingEvents(true);
         const registeredEvents = await eventService.getRegisteredEvents();
         setRegisteredEvents(registeredEvents.events || []);
-        setIsLoadingEvents(false); // Stop loading
+        setIsLoadingEvents(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Error fetching data");
-        setIsLoadingEvents(false); // Stop loading even on error
+        setIsLoadingEvents(false);
       }
     };
 
@@ -100,34 +104,26 @@ const RegisteredEvents = () => {
   };
 
   const handleCancelRegistration = async (eventId) => {
-
-    // Confirm cancellation
     const isConfirmed = window.confirm(
       "Are you sure you want to cancel the registration?"
     );
     if (!isConfirmed) return;
 
     try {
-      // Call the service to cancel registration
       const response = await eventService.cancelRegistration(team._id, eventId);
 
-      // Check if the response is successful
       if (response.success) {
-        // Show success message
         alert(
           "Your event registration has been cancelled. Your refund has been processed and will be reflected back in your account in 5-7 working days."
         );
 
-        // Update the UI by removing the cancelled event from registeredEvents
         setRegisteredEvents((prevEvents) =>
           prevEvents.filter((event) => event._id !== eventId)
         );
       } else {
-        // Handle the case where the cancellation failed
         alert("Failed to cancel registration. Please try again.");
       }
     } catch (error) {
-      // Handle any errors from the service call
       console.error("Error cancelling registration:", error);
       alert(
         "An error occurred while cancelling registration. Please try again later."
@@ -144,7 +140,13 @@ const RegisteredEvents = () => {
         marginBottom: 4,
       }}
     >
-      <Card sx={{ width: "80%", maxWidth: "800px", boxShadow: 5 }}>
+      <Card
+        sx={{
+          width: isSmallScreen ? "95%" : "80%", // Use 95% width for small screens
+          maxWidth: "800px",
+          boxShadow: 5,
+        }}
+      >
         <CardContent>
           <Typography variant="h4" gutterBottom>
             Team Details

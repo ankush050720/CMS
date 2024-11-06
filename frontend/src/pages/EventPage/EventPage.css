@@ -86,14 +86,53 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
+  /* Club Event Card Styling */
+  .club-event-card {
+    width: 100%; /* Full width on small screens */
+    padding: 12px; /* Slightly reduced padding for compact layout */
+    background-color: #0bb6cd30 !important;
+    border-radius: 8px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    min-height: 300px; /* Reduced min-height for mobile */
+    max-width: 100%;
+  }
+
+  /* Swiper Controls */
   .swiper-button-next,
   .swiper-button-prev {
-    font-size: 14px; /* Further decrease arrow size on mobile devices */
+    font-size: 12px; /* Smaller arrow size for compact screens */
+    top: 200px; /* Center arrows vertically */
+    transform: translateY(-50%);
+    z-index: 10;
   }
-  
-  .club-event-card {
-    width: 100%; /* Ensure full width on mobile */
-    padding: 10px; /* Reduce padding for smaller screens */
+
+  .swiper-button-next {
+    right: 20px; /* Adjust spacing from card */
   }
+
+  .swiper-button-prev {
+    left: 20px; /* Adjust spacing from card */
+  }
+
+  /* Event Grid */
+  .event-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column for small screens */
+    gap: 16px; /* Reduced gap for compact layout */
+  }
+
+  /* Text & Typography Adjustments */
+  .event-title {
+    font-size: 1.1rem; /* Slightly reduced font size */
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: center; /* Center-align text for better readability */
+  }
+
+  .event-detail-text {
+    font-size: 0.9rem; /* Smaller detail text for compact display */
+    text-align: center;
+  }
+
 }

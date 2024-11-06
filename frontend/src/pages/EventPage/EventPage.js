@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Paper } from "@mui/material";
+import { Container, Typography, Paper, Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, EffectCoverflow } from "swiper/modules";
 import "swiper/css";
@@ -54,103 +54,125 @@ const EventPage = () => {
 
   return (
     <div>
-    <Container
-      maxWidth={false} // Make sure it spans the full width
-      sx={{
-        paddingTop: 4,
-        paddingBottom: 8,
-        marginTop: 0, // Remove margin to ensure it spans from the top
-        minHeight: "100vh", // Ensure it covers the full viewport height
-      }}
-      style={{
-        backgroundImage: 'url("eventBg.avif")',
-        backgroundSize: "cover", // Cover the entire area
-        backgroundPosition: "center", // Center the background image
-        backgroundRepeat: "no-repeat", // Prevent background repeat
-      }}
-    >
-    <Header />
-      <Typography
-        variant="h4"
-        gutterBottom
-        align="center"
-        mt={10}
-        mb={10}
-        style={{ fontWeight: "bolder", color:"#4086ea", fontSize: "3rem" }}
-      >
-        Check Out Our Events...
-      </Typography>
-
-      <Swiper
-        spaceBetween={50}
-        slidesPerView={1.5} // Adjust this value as needed
-        centeredSlides={true} // Ensure slides are centered
-        navigation
-        effect="coverflow"
-        grabCursor={true}
-        coverflowEffect={{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
+      <Container
+        maxWidth={false} // Make sure it spans the full width
+        sx={{
+          paddingTop: 4,
+          paddingBottom: 8,
+          marginTop: 0, // Remove margin to ensure it spans from the top
+          minHeight: "100vh", // Ensure it covers the full viewport height
         }}
-        loop={true}
+        style={{
+          backgroundImage: 'url("eventBg.avif")',
+          backgroundSize: "cover", // Cover the entire area
+          backgroundPosition: "center", // Center the background image
+          backgroundRepeat: "no-repeat", // Prevent background repeat
+        }}
       >
-        {clubs.map((club) => (
-          <SwiperSlide key={club._id} className="swiper">
-            <Paper elevation={5} className="club-event-card">
-              <Typography variant="h5" gutterBottom>
-                {club.name}
-              </Typography>
+        <Header />
+        <Typography
+          variant="h4"
+          gutterBottom
+          align="center"
+          mt={10}
+          mb={10}
+          style={{ fontWeight: "bolder", color: "#4086ea", fontSize: "3rem" }}
+        >
+          Check Out Our Events...
+        </Typography>
 
-              {/* Upcoming Events */}
-              <Section
-                title="Upcoming"
-                events={filteredEvents}
-                clubName={club.name}
-                status="upcoming"
-                openEventModal={openEventModal}
-              />
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={1.5} // Default setting for larger screens
+          centeredSlides={true}
+          navigation
+          effect="coverflow"
+          grabCursor={true}
+          coverflowEffect={{
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+          }}
+          loop={true}
+          breakpoints={{
+            576: {
+              // For screens 576px and above
+              slidesPerView: 1.5,
+              coverflowEffect: {
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+              },
+            },
+            0: {
+              // For screens below 576px
+              slidesPerView: 1,
+              coverflowEffect: {
+                rotate: 0,
+                stretch: 0,
+                depth: 0,
+                modifier: 0,
+                slideShadows: false,
+              },
+            },
+          }}
+        >
+          {clubs.map((club) => (
+            <SwiperSlide key={club._id} className="swiper">
+              <Paper elevation={5} className="club-event-card">
+                <Typography variant="h5" gutterBottom>
+                  {club.name}
+                </Typography>
 
-              {/* Ongoing Events */}
-              <Section
-                title="Ongoing"
-                events={filteredEvents}
-                clubName={club.name}
-                status="ongoing"
-                openEventModal={openEventModal}
-              />
+                {/* Upcoming Events */}
+                <Section
+                  title="Upcoming"
+                  events={filteredEvents}
+                  clubName={club.name}
+                  status="upcoming"
+                  openEventModal={openEventModal}
+                />
 
-              {/* Completed Events */}
-              <Section
-                title="Completed"
-                events={filteredEvents}
-                clubName={club.name}
-                status={["completed", "feedbackClosed"]}
-                openEventModal={openEventModal}
-              />
-            </Paper>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+                {/* Ongoing Events */}
+                <Section
+                  title="Ongoing"
+                  events={filteredEvents}
+                  clubName={club.name}
+                  status="ongoing"
+                  openEventModal={openEventModal}
+                />
 
-      {selectedEvent && (
-        <EventModal
-          event={selectedEvent}
-          isOpen={isEventModalOpen}
-          onRequestClose={closeEventModal}
-        />
-      )}
+                {/* Completed Events */}
+                <Section
+                  title="Completed"
+                  events={filteredEvents}
+                  clubName={club.name}
+                  status={["completed", "feedbackClosed"]}
+                  openEventModal={openEventModal}
+                />
+              </Paper>
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-    </Container>
-    <Footer />
+        {selectedEvent && (
+          <EventModal
+            event={selectedEvent}
+            isOpen={isEventModalOpen}
+            onRequestClose={closeEventModal}
+          />
+        )}
+      </Container>
+      <Footer />
     </div>
   );
 };
 
 const Section = ({ title, events, clubName, status, openEventModal }) => {
-  // Check if status is an array, and filter accordingly
   const filteredEvents = events.filter(
     (event) =>
       event.club === clubName &&
@@ -160,7 +182,7 @@ const Section = ({ title, events, clubName, status, openEventModal }) => {
   );
 
   return filteredEvents.length > 0 ? (
-    <div>
+    <Box sx={{ mb: 4 }}> {/* Added margin-bottom */}
       <Typography variant="h6" gutterBottom>
         {title}
       </Typography>
@@ -173,9 +195,9 @@ const Section = ({ title, events, clubName, status, openEventModal }) => {
           />
         ))}
       </div>
-    </div>
+    </Box>
   ) : (
-    <Typography variant="body1" align="center">
+    <Typography variant="body1" align="center" sx={{ mb: 4 }}>
       No {title.toLowerCase()} events right now, check back later.
     </Typography>
   );

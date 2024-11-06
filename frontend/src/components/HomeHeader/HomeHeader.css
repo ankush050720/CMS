@@ -1,55 +1,85 @@
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%; 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px); /* Optional: adds a blur effect behind the header */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for separation */
-    z-index: 1000; /* Ensure the header stays on top */
-    min-height: 60px;
-  }
-  
-  .logo-container {
-    margin-left: 30px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo {
-    height: 40px; /* Adjust size as needed */
-  }
-  
-  .nav {
-    display: flex;
-    margin-right: 80px; /* Adjust this value to move links to the left */
-  }
-  
-  .nav-link {
-    margin-left: 50px;
-    text-decoration: none;
-    color: #1c73a6; /* Dark text color for contrast */
-    font-size: 16px;
-    font-weight: bold;
-    transition: color 0.3s;
-  }
-  
-  .nav-link:hover {
-    color: #a597f1; /* Change color on hover */
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-height: 60px;
+}
 
-  @media (max-width: 768px) {
-    /* .header {
-      flex-direction: column; 
-      align-items: center;
-    } */
-  
-    .nav-link {
-      font-size: 14px;
-    }
+.logo-container {
+  margin-left: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+}
+
+.nav {
+  display: flex;
+  margin-right: 80px;
+  transition: max-height 0.3s ease;
+}
+
+.nav-link {
+  margin-left: 50px;
+  text-decoration: none;
+  color: #1c73a6;
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #a597f1;
+}
+
+/* Styles for smaller screens */
+.menu-icon {
+  display: none;
+  font-size: 30px;
+  color: #1c73a6;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  /* Hide the nav links and show the menu icon */
+  .nav {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 0;
+    min-width: 150px;
+    overflow: hidden;
+
   }
+
+  /* Show nav links when the menu is open */
+  .nav.open {
+    max-height: 200px; /* Adjust height based on content */
+    border: 1px solid #ddd;
+  }
+
+  .nav-link {
+    margin: 10px 0;
+    font-size: 18px;
+  }
+
+  .menu-icon {
+    display: block;
+    margin-right: 50px;
+  }
+}

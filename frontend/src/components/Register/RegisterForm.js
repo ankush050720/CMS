@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { register } from '../../services/registerService';
 import { TextField, Button, Typography, Box } from '@mui/material';
-import './RegisterForm.css'; // Assuming you have a CSS file for background image
+import './RegisterForm.css';
 
 const RegisterForm = () => {
   const [email, setEmail] = useState('');
@@ -21,24 +21,11 @@ const RegisterForm = () => {
 
   return (
     <div className="container">
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'flex-start', // Align form to the left
-        alignItems: 'center', // Vertically center form
-        paddingLeft: '5%', // Adjust to position the form on the left
-      }}
-    >
-      <Box sx={{ maxWidth: 400 }}> {/* Set a max width for smaller form fields */}
+      <Box className="form-content">
         <Typography variant="h4" gutterBottom>
           Register
         </Typography>
-        
-        {/* Dummy hidden fields to prevent autofill */}
-        <input type="text" name="fake-username" style={{ display: 'none' }} />
-        <input type="password" name="fake-password" style={{ display: 'none' }} />
-
+        {/* Registration Form */}
         <form onSubmit={handleRegister} autoComplete="off">
           <TextField
             fullWidth
@@ -49,8 +36,8 @@ const RegisterForm = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             name="real-email"
-            autoComplete="new-email" // Prevent autofill
-            size="small" // Make the field smaller
+            autoComplete="new-email"
+            size="small"
           />
           <TextField
             fullWidth
@@ -61,8 +48,8 @@ const RegisterForm = () => {
             onChange={(e) => setPhone(e.target.value)}
             required
             name="real-phone"
-            autoComplete="new-phone" // Prevent autofill
-            size="small" // Make the field smaller
+            autoComplete="new-phone"
+            size="small"
           />
           <TextField
             fullWidth
@@ -74,27 +61,19 @@ const RegisterForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             name="real-password"
-            autoComplete="new-password" // Prevent autofill
-            size="small" // Make the field smaller
+            autoComplete="new-password"
+            size="small"
           />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            type="submit"
-            sx={{ mt: 2 }}
-          >
+          <Button fullWidth variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
             Register
           </Button>
         </form>
-
-        <Box sx={{ mt: 2, textAlign: 'left' }}> {/* Align the text to the left */}
+        <Box sx={{ mt: 2, textAlign: 'left' }}>
           <Typography variant="body2">
             <a href="/login">Already have an account? Login</a>
           </Typography>
         </Box>
       </Box>
-    </Box>
     </div>
   );
 };

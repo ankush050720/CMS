@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Slider from "react-slick";
 import ClubCard from "../../components/ClubCard/ClubCard";
 import ClubModal from "../../components/ClubModal/ClubModal";
 import EventCard from "../../components/EventCard/EventCard";
@@ -66,13 +65,12 @@ const Home = () => {
         className="video-player"
         style={{
           position: "relative",
-          minHeight: "1000px",
           width: "100%",
           backgroundImage: 'url("/video-bg.jpg")',
           backgroundPosition: "center top",
           backgroundSize: "100% 50%",
           backgroundRepeat: "no-repeat",
-          zIndex: "1",
+          zIndex: 1,
           opacity: 1, // Set to 1 for always visible
           transform: "translateY(0)", // No translation needed
         }}
@@ -81,12 +79,12 @@ const Home = () => {
           style={{
             fontFamily: "Poppins, sans-serif",
             position: "absolute",
-            top: "12%",
+            top: "8%",
             left: "50%",
             transform: "translateX(-50%)",
             color: "white",
             fontSize: "2.5rem",
-            zIndex: 3,
+            zIndex: 2,
             textAlign: "center",
           }}
         >
@@ -96,18 +94,16 @@ const Home = () => {
         <div
           style={{
             position: "absolute",
-            top: "50%",
+            top: "45%",
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: "70%",
-            height: "auto",
-            zIndex: 2,
+            zIndex: 3,
             marginTop: "75px",
           }}
         >
           <iframe
             width="100%"
-            height="550px"
             src={videoUrl}
             title="YouTube video player"
             frameBorder="0"
@@ -129,46 +125,51 @@ const Home = () => {
 
         <style>{`
           .video-player {
-            opacity: 1; /* Always visible */
-            transform: translateY(0); /* No transform needed */
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* Keep transition for potential future use */
+            min-height: 800px; /* Base height for larger screens */
           }
-  
+
+          .video-player iframe {
+            height: 80vh; /* Default iframe height */
+          }
+
           @media (max-width: 900px) {
             .video-player {
-              min-height: 600px; /* Adjusted min-height for smaller screens */
-              background-size: cover; /* Change to cover for better fitting */
+              min-height: 100vh; /* Reduce min-height for smaller screens */
+              background-size: cover;
             }
-  
+            
             h2 {
-              font-size: 1.8rem; /* Smaller font size for the title */
-              top: 10%;
+              font-size: 1.8rem !important;
+              top: 8%;
             }
-  
-            iframe {
-              height: 300px;
+
+            .video-player iframe {
+              height: 60vh; /* Responsive iframe height */
+              margin-top: 35%;
+              margin-bottom: 12rem;
             }
           }
-  
-          @media (min-width: 900px) and (max-width: 1024px) {
+
+          @media (max-width: 600px) {
             .video-player {
-              min-height: 800px; /* Adjusted min-height for smaller screens */
-              background-size: cover; /* Change to cover for better fitting */
+              min-height: 100vh; /* Further reduce for smaller screens */
             }
-  
+
             h2 {
-              font-size: 2rem; /* Smaller font size for the title */
-              top: 20%;
+              font-size: 1.4rem !important;
+              top: 8%;
             }
-  
-            iframe {
-              height: 500px;
+
+            .video-player iframe {
+              height: 50vh;
+              margin-top: 10%;
+              margin-bottom: 5rem;
             }
           }
         `}</style>
       </div>
     );
-  };
+};
 
   const openClubModal = (club) => {
     setSelectedClub(club);

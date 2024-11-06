@@ -24,8 +24,9 @@ const MemberPage = () => {
 
   return (
     <div style={{ backgroundColor: "whitesmoke", paddingTop:"40px", paddingBottom:"50px" }}>
-    <div style={{ width: "80%", margin: "0 auto"}}>
-      <Header email={email} className="member-header" />
+    <Header email={email} className="member-header" />
+    <div style={{ width: window.innerWidth < 768 ? "95%" : "80%",
+          margin: "0 auto" }}>
       <Box mt={14} mb={4} sx={{ width: "100%" }}>
         <Paper elevation={3} sx={{ padding: 4, borderRadius: 2 }}>
           <Typography variant="h4" align="center" gutterBottom mb={3}>

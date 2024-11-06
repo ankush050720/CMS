@@ -118,7 +118,7 @@
   padding: 40px 20px 20px 110px;
   height: 700px;
   background-color: #FBECFC;
-  z-index:1;
+  z-index: 1;
 }
 
 .dean-body {
@@ -189,7 +189,6 @@
   margin-bottom: 10px;
 }
 
-
 /* Carousel Section */
 
 .carousel {
@@ -205,8 +204,8 @@
 
 .club-carousel {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   justify-items: center;
   padding: 20px; /* Padding around the grid */
   margin: 0 auto; /* Centers the grid itself */
@@ -283,6 +282,7 @@
 
 .event-cards {
   display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
   max-width: 1050px;
   width: 100%;
@@ -403,204 +403,140 @@
   }
 }
 
-
-/* Medium Devices (Tablets) */
-/* Medium Devices (Tablets) */
-/* Medium Devices (Tablets) */
-
-
-@media (min-width:480px) {
-  .carousel {
-    padding-bottom: 30px;
-  }
-}
-
-@media (min-width: 1025px) and (max-width: 1500px) {
-  .club-carousel {
-    grid-template-columns: repeat(3, 1fr); /* Adjust to two columns */
-    gap: 10px; /* Space between items */
-    padding: 10px; /* Less padding around grid */
-  }
-}
-
-
-@media (max-width: 1024px) {
-
-  .dean-container {
-    padding: 40px 10px; /* Adjust padding */
-    height: auto; /* Allow height to adjust based on content */
-    text-align: center; /* Center align text */
-  }
-
-  .dean-body {
-    flex-direction: column; /* Stack content vertically */
-    align-items: center; /* Center align content */
-  }
-
-  .dean-image {
-    margin-bottom: 20px; /* Space below image */
-  }
-
-  .dean-message h1 {
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 26px; /* Smaller heading size */
-    margin-bottom: 20px; /* Space below heading */
-  }
-
-  .dean-message p {
-    font-size: 14px; /* Adjust paragraph size */
-    line-height: 1.5; /* Improve line height for readability */
-  }
-
-  .carousel h1 {
-    font-size: 2rem; /* Reduce heading size */
-    margin: 20px auto; /* Space for smaller screens */
-    padding: 5px; /* Less padding */
-  }
-
-  .club-carousel {
-    grid-template-columns: repeat(2, 1fr); /* Adjust to two columns */
-    gap: 10px; /* Space between items */
-    padding: 10px; /* Less padding around grid */
-  }
-
-  .show-more-button {
-    height: 40px !important;
-    width: 150px !important;  /* Reduce button width */
-    font-size: 1rem; /* Smaller font size */
-  }
-}
-
-/* Small Devices (Mobile Phones) */
+/* Smaller than 768px */
 @media (max-width: 768px) {
+  .intro {
+    padding: 15px;
+    text-align: center;
+  }
+
+  .intro-header {
+    margin-left: 0;
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .intro-header h1 {
+    font-size: 2.5rem;
+    line-height: 50px;
+  }
+
+  .intro-header p {
+    font-size: 1.5rem;
+  }
+
+  .button {
+    width: 100px;
+    padding: 10px;
+  }
 
   .dean-container {
-    padding: 20px; /* Adjust padding */
-    height: auto; /* Adjust height based on content */
+    padding: 20px;
+    height: auto;
   }
 
   .dean-body {
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center align items */
-  }
-
-  .dean-message h1 {
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 24px; /* Smaller heading size */
-    margin-bottom: 15px; /* Space below heading */
-  }
-
-  .dean-message p {
-    font-size: 12px; /* Adjust paragraph size */
-    text-align: center; /* Center text */
-    line-height: 1.5; /* Improve line height */
+    margin-top: 30px;
+    flex-direction: column;
+    align-items: center;
   }
 
   .dean-image img {
-    width: 100%; /* Full width image */
-    height: auto; /* Maintain aspect ratio */
-    margin-bottom: 15px; /* Space below image */
+    width: 250px;
+  }
+
+  .dean-message {
+    margin-left: 0;
+    max-width: 90%;
+    margin-bottom: 20px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dean-message h1 {
+    font-size: 30px;
+    margin-bottom: 0;
+  }
+
+  .dean-message p {
+    font-size: 14px;
   }
 
   .carousel h1 {
-    font-size: 1.5rem; /* Further reduce heading size */
-    margin: 15px auto; /* Adjust margin */
-    padding: 5px; /* Less padding */
+    font-size: 2rem;
   }
 
   .club-carousel {
-    grid-template-columns: 1fr; /* Stack items in a single column */
-    padding: 0; /* Remove extra padding */
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .event-cards {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 15px;
   }
 }
 
-/* Extra Small Devices (Very Small Phones) */
+/* Smaller than 480px */
 @media (max-width: 480px) {
 
-  .dean-container {
-    padding: 20px; /* Adjust padding */
-    text-align: center; /* Center align text */
+  .intro-header {
+    align-items: center;
   }
 
-  .dean-body {
-    flex-direction: column; /* Stack content vertically */
-    align-items: center; /* Center align content */
+  .intro-header h1 {
+    font-size: 2rem;
+    line-height: 40px;
   }
 
-  .dean-message h1 {
-    font-size: 20px; /* Smaller heading size */
-    margin-bottom: 10px; /* Space below heading */
+  .button {
+    width: 90px;
+    font-size: 0.9rem;
   }
 
-  .dean-message p {
-    font-size: 12px; /* Adjust paragraph size */
-    text-align: center; /* Center text */
-    line-height: 1.5; /* Improve line height */
+  .dean-container h4 {
+    font-size: 1rem;
   }
 
   .dean-image img {
-    width: 100%; /* Full width image */
-    height: auto; /* Maintain aspect ratio */
-    margin-bottom: 10px; /* Space below image */
+    width: 200px;
   }
 
-  .carousel h1 {
-    font-size: 1.25rem; /* Adjust heading size for small screens */
-    margin: 10px auto; /* Adjust margin */
-    padding: 5px; /* Less padding */
+  .dean-message h1 {
+    font-size: 24px;
   }
 
-  .club-carousel {
-    grid-template-columns: 1fr; /* Stack items in a single column */
-    padding: 0; /* Remove padding */
+  .dean-message p {
+    font-size: 13px;
+    padding: 10px;
   }
-}
 
+  .dean-details h4 {
+    font-size: 18px;
+  }
 
-@media (max-width: 768px) {
-    .event-cards {
-      display: grid; /* Ensure grid is displayed */
-      grid-template-columns: repeat(1, minmax(250px, 1fr)) !important; /* One column */
-      grid-template-rows: minmax(220px, auto) !important;
-      gap: 20px !important; /* Space between cards */
-      justify-items: center; /* Center items horizontally */
-      margin: 0 auto; /* Center the grid within its container */
-    }
-
-  .show-more-button {
-    margin-top: 50px;
+  .dean-details p {
+    font-size: 13px;
   }
 
   .events-section h1 {
-    font-size: 1.5rem !important;
+    font-size: 2rem;
+    padding: 5px 10px;
   }
-}
-@media (min-width: 769px) and (max-width: 1024px) {
+
   .event-cards {
-    grid-template-columns: repeat(2, minmax(200px, 1fr));
-    gap: 20px;
-  }
-
-  .events-section h1 {
-    font-size: 2rem !important;
+    grid-template-columns: 1fr !important;
   }
 }
 
-@media (min-width: 1025px) {
-  .event-cards {
-    grid-template-columns: repeat(3, minmax(200px, 1fr));
-    gap: 30px;
-  }
-}
-
-/* intro */
-@media (max-width: 1200px) {
+/* Between 768px and 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
   .intro-header {
-    margin-left: 150px;
+    margin-left: 100px;
     padding: 30px;
-    max-width: 320px;
   }
 
   .intro-header h1 {
@@ -608,30 +544,38 @@
     line-height: 60px;
   }
 
-  .intro-header p {
-    font-size: 1.8rem;
+  .dean-container {
+    padding: 30px 15px 15px 90px; /* Slightly reduce padding */
   }
-}
-
-@media (max-width: 992px) {
-  .intro-header {
-    margin-left: 100px;
-    padding: 25px;
-    max-width: 280px;
+  
+  .dean-message {
+    max-width: 600px; /* Reduce width to fit comfortably */
+    padding: 10px; /* Adjust padding to avoid overflow */
   }
 
-  .intro-header h1 {
-    font-size: 2.8rem;
-    line-height: 55px;
+  .dean-message h1 {
+    font-size: 36px; /* Reduce font size slightly */
+  }
+  
+  .dean-message p {
+    font-size: 15px; /* Adjust font size for readability */
+  }
+  
+  .dean-image img {
+    width: 250px; /* Scale down image */
+  }
+  
+  .club-carousel {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
   }
 
-  .intro-header p {
-    font-size: 1.6rem;
+  .event-cards {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
   }
-}
 
-@media (max-width: 768px) {
-  .login-button, .signup-button {
-    margin-right: 5px;
+  .carousel h1 {
+    font-size: 2.2rem;
   }
 }

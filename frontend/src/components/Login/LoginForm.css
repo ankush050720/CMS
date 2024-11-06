@@ -1,7 +1,7 @@
 /* Container for the full-screen background and form */
 .login-form-container {
   display: flex;
-  align-items: center;        /* Center vertically */
+  align-items: center;         /* Center vertically */
   justify-content: flex-start; /* Align form to the left */
   height: 100vh;               /* Full screen height */
   width: 100vw;                /* Full screen width */
@@ -17,4 +17,17 @@
   max-width: 400px;            /* Ensure the form doesn't stretch too much */
   width: 100%;
   text-align: left;            /* Align text to the left */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 576px) {
+  .login-form-container {
+    padding-left: 0;         /* Remove left padding */
+    justify-content: center; /* Center the form horizontally */
+  }
+
+  .login-form-content {
+    max-width: 90%;          /* Reduce max width to fit smaller screens */
+    padding: 20px;           /* Add padding for better spacing */
+  }
 }

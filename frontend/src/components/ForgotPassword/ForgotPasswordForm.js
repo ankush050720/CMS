@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { sendForgotPasswordLink } from '../../services/forgotPasswordService';
 import { TextField, Button, Typography, Box } from '@mui/material';
-import './ForgotPasswordForm.css'; // Assuming you have a CSS file for background image
+import './ForgotPasswordForm.css';
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState('');
@@ -18,17 +18,8 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <div className='container'>
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'flex-start', // Align form to the left
-        alignItems: 'center', // Vertically center the form
-        paddingLeft: '5%', // Adjust to position the form on the left
-      }}
-    >
-      <Box sx={{ maxWidth: 400 }}> {/* Set max width for smaller form */}
+    <div className="container">
+      <Box className="form-content">
         <Typography variant="h4" gutterBottom>
           Forgot Password
         </Typography>
@@ -42,26 +33,18 @@ const ForgotPasswordForm = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="off"
-            size="small" // Smaller form field
+            size="small"
           />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            type="submit"
-            sx={{ mt: 2 }}
-          >
+          <Button fullWidth variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
             Send Reset Link
           </Button>
         </form>
-
-        <Box sx={{ mt: 2, textAlign: 'left' }}> {/* Align the text to the left */}
+        <Box sx={{ mt: 2, textAlign: 'left' }}>
           <Typography variant="body2">
             <a href="/login">Back to Login</a>
           </Typography>
         </Box>
       </Box>
-    </Box>
     </div>
   );
 };

@@ -7,10 +7,10 @@ const Footer = () => {
     <Box sx={{ zIndex: '100' }}>
       <Box
         sx={{
-          backgroundColor: "#0B1F38", // Set background color
-          color: "#978989", // Text color for contrast
-          paddingTop: 6,
-          paddingBottom: 4,
+          backgroundColor: "#0B1F38", // Background color
+          color: "#978989", // Text color
+          paddingTop: { xs: 3, md: 6 }, // Responsive padding
+          paddingBottom: { xs: 2, md: 4 },
           textAlign: "center",
           boxShadow: "none",
           borderTop: "none",
@@ -21,10 +21,10 @@ const Footer = () => {
           sx={{
             fontWeight: "bold",
             letterSpacing: "1.5px",
-            fontSize: "1.5rem",
+            fontSize: { xs: "1.2rem", md: "1.5rem" }, // Responsive font size
             textTransform: "uppercase",
             mb: 1,
-            color: "#ffffff" // Light text color for visibility
+            color: "#ffffff" // Light text color
           }}
         >
           &copy; 2024 SR University
@@ -32,8 +32,8 @@ const Footer = () => {
         
         <Box
           sx={{
-            borderBottom: "1px solid rgba(255, 255, 255, 0.5)", // Light border for subtle separation
-            width: "200px",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.5)", // Light border for separation
+            width: { xs: "100px", md: "200px" }, // Responsive width
             margin: "0 auto",
             mb: 2,
           }}
@@ -42,9 +42,9 @@ const Footer = () => {
         <Typography
           variant="body2"
           sx={{
-            fontSize: "1rem",
+            fontSize: { xs: "0.9rem", md: "1rem" }, // Responsive font size
             opacity: 0.8,
-            color:'#A0A7B1'
+            color: '#A0A7B1',
           }}
         >
           School of CS&AI
@@ -54,9 +54,11 @@ const Footer = () => {
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", md: "row" }, // Stack vertically on small screens
+            alignItems: "center",
             justifyContent: "center",
             mt: 2,
-            gap: 3, // Space between links
+            gap: { xs: 1, md: 3 }, // Adjust gap for different screen sizes
           }}
         >
           <Link
@@ -67,7 +69,7 @@ const Footer = () => {
               color: "#C4C9D2",
               fontSize: "0.9rem",
               "&:hover": {
-                color: "#ffffff", // Change color on hover for effect
+                color: "#ffffff", // Hover color
               }
             }}
           >

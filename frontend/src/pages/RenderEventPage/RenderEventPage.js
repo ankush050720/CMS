@@ -45,7 +45,12 @@ const EventPage = () => {
       : events.filter((event) => event.club === selectedClub);
 
   return (
-    <Container maxWidth="lg" sx={{ paddingY: 4 }}>
+    <Container
+    sx={{
+      paddingY: 4,
+      paddingX: { xs: 0, sm: 2 }, // No padding on <768px, standard on larger screens
+      maxWidth: { xs: '100%', sm: "lg" }, // Full-width container on screens <768px
+    }}>
       <Typography variant="h4" gutterBottom align="center">
         Events
       </Typography>
@@ -67,7 +72,7 @@ const EventPage = () => {
 
       {selectedClub === "All Clubs" ? (
         clubs.map((club) => (
-          <Paper key={club._id} elevation={2} sx={{ padding: 2, marginBottom: 4 }}>
+          <Paper key={club._id} elevation={2} sx={{ paddingY:2, paddingX: { xs: 0, sm: 2 }, marginBottom: 4 }}>
             <Typography variant="h5" gutterBottom>
               {club.name}
             </Typography>
@@ -83,7 +88,7 @@ const EventPage = () => {
           </Paper>
         ))
       ) : (
-        <Paper elevation={2} sx={{ padding: 2, marginBottom: 4 }}>
+        <Paper elevation={2} sx={{ paddingY: 2, paddingX: { xs: 0, sm: 2 }, marginBottom: 4 }}>
           <Typography variant="h5" gutterBottom>
             {selectedClub}
           </Typography>
@@ -113,7 +118,7 @@ const EventPage = () => {
 // Section Component for Event Status
 const Section = ({ title, events, clubName, status, openEventModal }) => {
   return (
-    <Paper elevation={1} sx={{ padding: 2, marginY: 2 }}>
+    <Paper elevation={1} sx={{ paddingY: 2, paddingX: { xs: 1, sm: 2 }, marginY: 2 }}>
       <Typography variant="h6" gutterBottom>
         {title}
       </Typography>
@@ -129,9 +134,23 @@ const EventGrid = ({ events, clubName, status, openEventModal }) => {
     : events.filter(event => event.club === clubName && event.status === status);
 
   return filteredEvents.length > 0 ? (
-    <Grid container spacing={3}>
+    <Grid 
+      container 
+      spacing={3}
+      sx={{
+        paddingX: { xs: 0, sm: 3 },
+        paddingY: { xs: 2, sm: 3 },
+      }}
+    >
       {filteredEvents.map(event => (
-        <Grid item xs={12} sm={6} md={4} key={event._id} sx={{ minWidth: '280px' }}>
+        <Grid 
+          item 
+          xs={12} 
+          sm={6} 
+          md={4} 
+          key={event._id} 
+          sx={{ minWidth: { xs: '100%', sm: '280px' } }}
+        >
           <EventCard event={event} onClick={() => openEventModal(event)} />
         </Grid>
       ))}

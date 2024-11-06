@@ -8,17 +8,16 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        width: 290,
+        width: { xs: '100%', sm: '290px' }, // Adjust width for smaller screens
         backgroundColor: '#f4f4f4',
         borderRadius: '15px',
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
         padding: 1,
-        margin: 2,
-        height: 470,
+        margin: { xs: 1, sm: 2 }, // Adjust margin for smaller screens
+        height: 'auto', // Allow height to adjust with content
         textAlign: 'left',
       }}
     >
-      {/* Club Logo */}
       <Avatar
         src={logo}
         alt={`${name} logo`}
@@ -26,7 +25,7 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
         sx={{
           marginTop: '5px',
           width: '98%',
-          height: 160,
+          height: { xs: 140, sm: 160 }, // Adjust height for smaller screens
           borderRadius: '15px',
           backgroundColor: '#fff',
           objectFit: 'cover',
@@ -37,7 +36,6 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
       />
 
       <CardContent sx={{ paddingLeft: 1, paddingRight: 1, flexGrow: 1 }}>
-        {/* Club Type */}
         <Chip
           label={type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}
           sx={{
@@ -53,7 +51,6 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
           }}
         />
 
-        {/* Club Name */}
         <Typography
           variant="h5"
           component="div"
@@ -61,7 +58,7 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
             width: '80%',
             fontFamily: 'Poppins, sans-serif',
             fontWeight: '800',
-            fontSize: '1.6rem',
+            fontSize: { xs: '1.4rem', sm: '1.6rem' }, // Adjust font size for smaller screens
             color: '#333',
             marginBottom: '20px',
             lineHeight: 1.2,
@@ -70,7 +67,6 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
           {name}
         </Typography>
 
-        {/* Faculty Lead */}
         <Typography
           variant="body2"
           color="text.secondary"
@@ -84,7 +80,6 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
           Faculty Advisor: <strong>{facultyLead}</strong>
         </Typography>
 
-        {/* Student Lead */}
         <Typography
           variant="body2"
           color="text.secondary"
@@ -98,20 +93,18 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
         </Typography>
       </CardContent>
 
-      {/* Light Grey Rule Above More Details */}
       <Box sx={{ textAlign: 'center', marginBottom: 1 }}>
         <Box
           sx={{
             height: '1px',
-            backgroundColor: '#d3d3d3', // Light grey color
-            width: '80%', // Adjust the width as needed
-            margin: '0 auto', // Center the rule
-            marginBottom: 1, // Space below the line
+            backgroundColor: '#d3d3d3',
+            width: '80%',
+            margin: '0 auto',
+            marginBottom: 1,
           }}
         />
       </Box>
 
-      {/* More Details Button */}
       <Box sx={{ textAlign: 'center', marginBottom: 2 }}>
         <Button
           variant="contained"
