@@ -213,6 +213,7 @@ const ClubPage = () => {
                   borderRadius: "100%",
                   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
                   overflow: "hidden",
+                  width: "250px",
                   height: "250px", // Fixed height for uniformity
                   transition: "transform 0.3s ease",
                   "&:hover": {

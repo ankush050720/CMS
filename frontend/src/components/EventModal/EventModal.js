@@ -10,15 +10,17 @@ import {
   Button,
   Divider,
   Slide,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { getUserInfo } from "../../services/userService";
 import PaymentService from "../../services/paymentService";
 import EventRegService from "../../services/eventRegService";
-import { getScore } from "../../services/scoreService"; // Import the getScore function
-import { PieChart, Pie, Cell, Tooltip } from "recharts"; // Import the pie chart components
+import { getScore } from "../../services/scoreService";
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
-// Create a Slide transition component
+// Slide transition component
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -27,21 +29,10 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
-  // const [role, setRole] = useState("");
-  const [scores, setScores] = useState(null); // State to hold score data
-
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     try {
-  //       const userInfo = await getUserInfo();
-  //       setRole(userInfo.role);
-  //     } catch (error) {
-  //       console.error("Failed to fetch user info:", error);
-  //     }
-  //   };
-
-  //   fetchUserInfo();
-  // }, []);
+  const [scores, setScores] = useState(null);
+  
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (isOpen) {
@@ -64,7 +55,7 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
   const fetchScores = async () => {
     try {
       const scoreData = await getScore(event._id);
-      setScores(scoreData); // Assuming scoreData has the required structure
+      setScores(scoreData);
     } catch (error) {
       console.error("Error fetching scores:", error);
     }
@@ -72,13 +63,13 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
 
   useEffect(() => {
     if (feedbackModalOpen) {
-      fetchScores(); // Fetch scores when feedback modal is opened
+      fetchScores();
     }
   }, [feedbackModalOpen]);
 
   const renderFeedbackContent = () => {
     if (!scores) {
-      return <Typography>Loading scores...</Typography>; // Loading state
+      return <Typography>Loading scores...</Typography>;
     }
 
     const data = [
@@ -92,24 +83,21 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
       { name: "Dean", value: scores.admin || 0 },
     ];
 
-    // Filter out entries where the value is zero to avoid overlapping legends
     const filteredData = data.filter((entry) => entry.value > 0);
 
     return (
       <>
         <Typography variant="h6">Average Scores</Typography>
         <PieChart width={500} height={500}>
-          {" "}
-          {/* Increased size */}
           <Pie
             data={filteredData}
-            cx={290} // Centering X
-            cy={250} // Centering Y
-            outerRadius={120} // Increased outer radius
+            cx={290}
+            cy={250}
+            outerRadius={120}
             fill="#8884d8"
             dataKey="value"
             label={({ name, value }) => `${name}: ${value.toFixed(1)}`}
-            paddingAngle={5} // Adding space between slices
+            paddingAngle={5}
           >
             {filteredData.map((entry, index) => (
               <Cell
@@ -118,7 +106,6 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
               />
             ))}
           </Pie>
-          {/* Tooltip for displaying additional info */}
           <Tooltip
             formatter={(value, name) => [`${value.toFixed(1)}`, `${name}`]}
             wrapperStyle={{ fontSize: "14px", whiteSpace: "nowrap" }}
@@ -132,7 +119,6 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
     try {
       const userInfo = await getUserInfo();
       if (!userInfo) {
-        console.log("Unauthorized user, redirecting to login...");
         navigate("/login");
         return;
       }
@@ -157,9 +143,8 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
         description: "Event Registration Fee",
         order_id: orderId,
         handler: async (response) => {
-          // Successful payment
           alert("Payment Successful!");
-          const transactionId = response.razorpay_payment_id; // Capture transaction ID
+          const transactionId = response.razorpay_payment_id;
           const registrationResult = await EventRegService.registerTeamForEvent(
             event._id,
             userInfo.email,
@@ -201,7 +186,7 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
         window.location.replace("/login");
         return;
       }
-      navigate(`/feedback/${event._id}`); // Include the event ID in the URL
+      navigate(`/feedback/${event._id}`);
     } catch (error) {
       if (error.message === "Unauthorized") {
         window.location.replace("/login");
@@ -213,7 +198,7 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
   };
 
   const handleShowFeedback = () => {
-    setFeedbackModalOpen(true); // Open the feedback modal
+    setFeedbackModalOpen(true);
   };
 
   const formatDate = (dateString) => {
@@ -263,7 +248,7 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
         onClose={onRequestClose}
         maxWidth="sm"
         fullWidth
-        TransitionComponent={Transition} // Apply the Slide transition
+        TransitionComponent={Transition}
         TransitionProps={{ onEntered: () => setIsActive(true) }}
       >
         <DialogTitle sx={{ position: "relative", fontWeight: 700 }}>
@@ -286,7 +271,7 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
         <DialogContent>
           <div
             style={{
-              display: "flex",
+              display: isSmallScreen ? "block" : "flex",
               alignItems: "center",
               gap: "24px",
               marginTop: "20px",
@@ -300,6 +285,7 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
                 height: "180px",
                 borderRadius: "8px",
                 objectFit: "cover",
+                marginBottom: isSmallScreen ? "16px" : "0",
               }}
             />
             <div>
@@ -316,30 +302,28 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
               <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
                 📍 {event.venue}
               </Typography>
-              <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-                💰 {event.fee}
+              <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                🎫 {event.fee > 0 ? `₹${event.fee}` : "Free"}
               </Typography>
             </div>
           </div>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "flex-end", px: 3, pb: 2 }}>
-          {renderButton()}
+        <DialogActions sx={{ padding: "16px" }}>{renderButton()}</DialogActions>
+      </Dialog>
+      <Dialog
+        open={feedbackModalOpen}
+        onClose={() => setFeedbackModalOpen(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>Feedback Results</DialogTitle>
+        <DialogContent>{renderFeedbackContent()}</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setFeedbackModalOpen(false)} color="primary">
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
-
-      {/* Feedback modal */}
-      {feedbackModalOpen && (
-        <Dialog
-          open={feedbackModalOpen}
-          onClose={() => setFeedbackModalOpen(false)}
-        >
-          <DialogTitle>Event Feedback</DialogTitle>
-          <DialogContent>{renderFeedbackContent()}</DialogContent>
-          <DialogActions>
-            <Button onClick={() => setFeedbackModalOpen(false)}>Close</Button>
-          </DialogActions>
-        </Dialog>
-      )}
     </>
   );
 };

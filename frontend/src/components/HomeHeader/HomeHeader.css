@@ -73,6 +73,10 @@
     border: 1px solid #ddd;
   }
 
+  .logo-container {
+    margin-left: 15px;
+  }
+
   .nav-link {
     margin: 10px 0;
     font-size: 18px;

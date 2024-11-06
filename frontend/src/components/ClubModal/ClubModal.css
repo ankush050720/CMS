@@ -23,16 +23,16 @@
 /* Modal content */
 .modal-content {
   background: #ffffff;
-  border-radius: 12px; /* More rounded corners for elegance */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); /* Deeper shadow for a lifted look */
-  width: 90%;
-  max-width: 600px; /* Maintain larger max-width for better readability */
-  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  width: 80%; /* Reduced width */
+  max-width: 500px; /* Smaller max width */
+  padding: 25px; /* Reduced padding */
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translateY(-30px); /* Subtle entrance animation */
+  transform: translateY(-30px);
   opacity: 0;
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
@@ -45,15 +45,15 @@
 /* Close button */
 .close-button {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   background: none;
   border: none;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 22px;
-  color: rgba(136, 136, 136, 0.9); /* Darker grey for better visibility */
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  color: rgba(136, 136, 136, 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,8 +62,8 @@
 }
 
 .close-button:hover {
-  background: rgba(255, 255, 255, 0.9); /* White background on hover for contrast */
-  color: #dc3545; /* Red color on hover for attention */
+  background: rgba(255, 255, 255, 0.9);
+  color: #dc3545;
 }
 
 /* Modal header */
@@ -71,24 +71,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .club-logo {
-  height: 150px; /* Maintain height for better visual hierarchy */
-  margin-bottom: 15px;
-  border-radius: 8px; /* Slight rounding for logos */
-  overflow: hidden; /* Crop any overflow */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  height: 100px; /* Smaller height */
+  margin-bottom: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .modal-header h2 {
-  font-size: 1.75rem; /* Prominent heading size */
-  margin-top: 0;
+  font-size: 1.5rem;
   color: #333;
-  padding-top: 20px;
-  margin-bottom: 0;
-  text-align: center; /* Center text for better visual balance */
+  text-align: center;
 }
 
 /* Modal body */
@@ -97,54 +94,87 @@
 }
 
 .modal-body p {
-  margin-top: 0;
   color: #666;
-  font-size: 1rem; /* Clear and readable font size */
-  line-height: 1.5; /* Increased line height for better readability */
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 /* Modal footer */
 .modal-footer {
-  margin-top: 20px;
+  margin-top: 15px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   width: 100%;
 }
 
 .read-more-button {
-  padding: 12px 24px;
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for scaling */
+  transition: background-color 0.3s ease, transform 0.2s ease;
   background-color: #007bff;
   color: white;
-  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2); /* Subtle shadow for depth */
-  outline: none; /* Remove default outline */
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+  outline: none;
 }
 
 .read-more-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  transform: translateY(-2px); /* Slight lift on hover for interactivity */
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
 .read-more-button:focus {
-  outline: 2px solid #0056b3; /* Custom focus outline for accessibility */
-  outline-offset: 2px; /* Space between the outline and button */
+  outline: 2px solid #0056b3;
+  outline-offset: 2px;
 }
 
 /* Responsive Styles */
 @media (max-width: 768px) {
   .modal-content {
-    padding: 20px; /* Reduce padding for smaller screens */
+    width: 90%;
+    padding: 15px;
+    max-width: 90%;
   }
 
   .modal-header h2 {
-    font-size: 1.5rem; /* Smaller title size on mobile */
+    font-size: 1.2rem;
+  }
+
+  .club-logo {
+    height: 80px;
+  }
+
+  .modal-body p {
+    font-size: 0.9rem;
   }
 
   .read-more-button {
-    width: 100%; /* Full width button on mobile */
+    width: 100%; /* Full width on smaller screens */
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 10px;
+  }
+
+  .modal-header h2 {
+    font-size: 1rem;
+  }
+
+  .club-logo {
+    height: 60px;
+  }
+
+  .modal-body p {
+    font-size: 0.85rem;
+  }
+
+  .close-button {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
   }
 }

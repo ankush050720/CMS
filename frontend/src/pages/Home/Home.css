@@ -408,6 +408,7 @@
   .intro {
     padding: 15px;
     text-align: center;
+    align-items: center;
   }
 
   .intro-header {
@@ -529,6 +530,14 @@
 
   .event-cards {
     grid-template-columns: 1fr !important;
+    justify-items: center;
+    gap: 15px;
+    margin: 0 auto;
+  }
+
+  .event-cards > * {
+    width: 250px; /* Set a fixed width for each card */
+    max-width: 100%; /* Ensure it doesn't exceed the container width */
   }
 }
 
