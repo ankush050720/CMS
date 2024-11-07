@@ -19,13 +19,14 @@ const CookiePopup = ({ onAccept }) => {
 const styles = {
   container: {
     position: 'fixed',
-    bottom: '0',
+    bottom: 0,
     width: '100%',
     backgroundColor: '#333',
     color: '#fff',
     textAlign: 'center',
-    padding: '20px',
-    zIndex: '1000',
+    padding: '15px 10px', // Reduced padding for smaller screens
+    zIndex: 1000,
+    boxSizing: 'border-box',
   },
   messageBox: {
     maxWidth: '600px',
@@ -35,7 +36,7 @@ const styles = {
     width: '100%',
   },
   heading: {
-    fontSize: '24px',
+    fontSize: '20px',
     marginBottom: '10px',
     color: '#fff',
   },
@@ -50,24 +51,33 @@ const styles = {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-    fontSize: '16px',
-  },
-  '@media (max-width: 768px)': {
-    container: {
-      padding: '15px',
-    },
-    messageBox: {
-      width: '90%',
-      padding: '10px',
-    },
-    heading: {
-      fontSize: '20px',
-    },
-    button: {
-      fontSize: '14px',
-      padding: '8px 16px',
-    },
+    fontSize: '14px',
+    marginTop: '10px',
   },
 };
+
+// Inline media queries for handling smaller screens
+const containerMediaQuery = `
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+    }
+    .messageBox {
+      width: 90%;
+      padding: 10px;
+    }
+    .heading {
+      font-size: 18px;
+    }
+    .button {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  }
+`;
+
+// Insert media query styles dynamically
+const styleSheet = document.styleSheets[0];
+styleSheet.insertRule(containerMediaQuery, styleSheet.cssRules.length);
 
 export default CookiePopup;
