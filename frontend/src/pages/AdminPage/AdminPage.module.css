@@ -103,6 +103,32 @@
   color: #ffffff;
 }
 
+:global(.MuiMenu-paper) {
+  max-height: 200px;       /* Set max height for the dropdown menu */
+  overflow-y: auto;        /* Enable vertical scrolling */
+  display: flex;           /* Allow flexbox to stretch menu items fully */
+  flex-direction: column;  /* Stack the items vertically */
+}
+
+/* Ensures the MenuItem takes the full width of the parent */
+:global(.MuiMenuItem-root) {
+  width: 100%;
+  display: block;
+}
+
+/* Optional: Truncate text with ellipsis */
+:global(.MuiMenuItem-root) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Make the hover effect work across the entire item */
+:global(.MuiMenuItem-root:hover) {
+  background-color: #16a085;
+  color: white;
+}
+
 .dashboard-content {
   flex-grow: 1;
   padding: 20px;
