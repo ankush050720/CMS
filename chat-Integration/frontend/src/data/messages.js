@@ -5,7 +5,7 @@ export const messages = [
     sender: {
       pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       _id: "1",
-      name: "Rithika",
+      name: "bob",
     },
     content: "Hello There",
     chat: "60a3de1ff381d830b884998d",
@@ -19,7 +19,7 @@ export const messages = [
     sender: {
       pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       _id: "2",
-      name: "Navaneeth",
+      name: "alice",
     },
     content: "Yo Wassup!",
     chat: "60a3de1ff381d830b884998d",
@@ -33,7 +33,7 @@ export const messages = [
     sender: {
       pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       _id: "2",
-      name: "Navaneeth",
+      name: "alice",
     },
     content: "How's it going!",
     chat: "60a3de1ff381d830b884998d",
@@ -47,7 +47,7 @@ export const messages = [
     sender: {
       pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       _id: "1",
-      name: "Rithika",
+      name: "bob",
     },
     content: "All good!",
     chat: "60a3de1ff381d830b884998d",
@@ -61,7 +61,7 @@ export const messages = [
     sender: {
       pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       _id: "1",
-      name: "Rithika",
+      name: "bob",
     },
     content: "What About You?",
     chat: "60a3de1ff381d830b884998d",
@@ -75,7 +75,7 @@ export const messages = [
     sender: {
       pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       _id: "2",
-      name: "Navaneeth",
+      name: "alice",
     },
     content: "Same, Thank You!",
     chat: "60a3de1ff381d830b884998d",
@@ -89,7 +89,7 @@ export const messages = [
     sender: {
       pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       _id: "2",
-      name: "Navaneeth",
+      name: "alice",
     },
     content: "What Techonologies are you learning these days?",
     chat: "60a3de1ff381d830b884998d",
@@ -103,7 +103,7 @@ export const messages = [
     sender: {
       pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       _id: "1",
-      name: "Rithika",
+      name: "bob",
     },
     content: "Just the MERN Stack",
     chat: "60a3de1ff381d830b884998d",
@@ -117,7 +117,7 @@ export const messages = [
     sender: {
       pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       _id: "2",
-      name: "Navaneeth",
+      name: "alice",
     },
     content: "From where?Apna College?",
     chat: "60a3de1ff381d830b884998d",
@@ -131,7 +131,7 @@ export const messages = [
     sender: {
       pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
       _id: "60a281bc502ec30428fb6bb0",
-      name: "Rithika",
+      name: "bob",
     },
     content: "Yea boiii..",
     chat: "60a3de1ff381d830b884998d",
