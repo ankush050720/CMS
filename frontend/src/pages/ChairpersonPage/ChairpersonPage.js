@@ -61,6 +61,7 @@ import {
   getClubEvents,
 } from "../../services/clubService";
 import EditIcon from "@mui/icons-material/Edit";
+import MenuIcon from '@mui/icons-material/Menu';
 import { uploadImageToCloudinary } from "../../utils/cloudinaryUpload";
 import ActionCards from "../../components/eventActionCard"; // Adjust the import path as needed
 import BookedVenues from "../../components/bookedVenues";
@@ -125,6 +126,11 @@ const ChairpersonPage = () => {
   const [editedMembers, setEditedMembers] = useState([]);
   const [events, setEvents] = useState([]);
   const [newEvents, setNewEvents] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -614,7 +620,7 @@ const ChairpersonPage = () => {
 
   return (
     <div className={styles["dashboard-container"]}>
-      <div className={styles.sidebar}>
+      <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
         <Typography variant="h6" gutterBottom>
           Chairperson Dashboard
         </Typography>
@@ -1979,6 +1985,9 @@ const ChairpersonPage = () => {
         <EventsRegistry className={styles["details-card"]} selectedAction={selectedAction} role={"chairperson"}/>
         </div>
         </div>
+        <div className={styles["hamburger-icon"]} onClick={toggleSidebar}>
+        <MenuIcon />
+      </div>
         </div>
   );
 };

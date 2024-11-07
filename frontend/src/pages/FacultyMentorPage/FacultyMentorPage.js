@@ -29,6 +29,7 @@ import {
   PersonAdd as PersonAddIcon, 
   PersonRemove as PersonRemoveIcon 
 } from '@mui/icons-material'; // Material-UI icons
+import MenuIcon from '@mui/icons-material/Menu';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { getUserInfo } from "../../services/userService";
@@ -63,6 +64,11 @@ const FacultyMentorPage = () => {
     chairperson: null,
     viceChairperson: null,
   });
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   useEffect(() => {
     const fetchClubLeaders = async () => {
@@ -197,7 +203,7 @@ const FacultyMentorPage = () => {
 
   return (
     <div className={styles["dashboard-container"]}>
-      <div className={styles.sidebar}>
+      <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
         <Typography variant="h6" gutterBottom>
           Faculty Mentor Dashboard
         </Typography>
@@ -711,6 +717,9 @@ const FacultyMentorPage = () => {
         <BookedVenues className={styles["details-card"]} selectedAction={selectedAction}/>
         <EventsRegistry className={styles["details-card"]} selectedAction={selectedAction} role={"faculty mentor"}/>
         </div>
+      </div>
+      <div className={styles["hamburger-icon"]} onClick={toggleSidebar}>
+        <MenuIcon />
       </div>
       </div>
   );

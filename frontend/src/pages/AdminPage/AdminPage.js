@@ -73,6 +73,11 @@ const AdminPage = () => {
   // for removing faculty
   const [selectedFacultyToRemove, setSelectedFacultyToRemove] = useState("");
   const [faculties, setFaculties] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   useEffect(() => {
     const fetchFaculty = async () => {
@@ -248,7 +253,7 @@ const AdminPage = () => {
 
   return (
     <div className={styles["dashboard-container"]}>
-      <div className={styles.sidebar}>
+      <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
         <Typography variant="h6" gutterBottom>
           Admin Dashboard
         </Typography>
@@ -845,6 +850,10 @@ const AdminPage = () => {
         <EventsRegistry className={styles["details-card"]} selectedAction={selectedAction} role={"admin"} />
         {/* Continue rendering other sections as per selectedAction */}
       </div>
+      </div>
+       {/* Floating Hamburger Icon */}
+      <div className={styles["hamburger-icon"]} onClick={toggleSidebar}>
+        <MenuIcon />
       </div>
       </div>
   );
