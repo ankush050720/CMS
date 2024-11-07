@@ -219,8 +219,6 @@
   font-family: Poppins, sans-serif;
   color: white;
   padding: 10px 20px;
-  border-radius: 10px;
-  box-shadow: 0 10px 8px rgba(0, 0, 0, 0.182);
 }
 
 .carousel h1 span {
@@ -276,8 +274,6 @@
   color: #019CB8;
   margin-bottom: 50px;
   padding: 10px 20px;
-  border-radius: 2px;
-  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.182);
 }
 
 .event-cards {

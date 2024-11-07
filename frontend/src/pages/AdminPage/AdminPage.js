@@ -30,6 +30,7 @@ import {
   PersonRemove as PersonRemoveIcon 
 } from '@mui/icons-material'; // Material-UI icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MenuIcon from '@mui/icons-material/Menu';
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import styles from './AdminPage.module.css'; // Add appropriate styles
 import Header from "../../components/AdminHeader/AdminHeader";

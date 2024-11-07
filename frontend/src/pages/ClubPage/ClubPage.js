@@ -282,7 +282,7 @@ const ClubPage = () => {
                 style={{
                   padding: "2rem",
                   textAlign: "center",
-                  height: "200px", // Consistent height for event cards
+                  width: "200px", // Consistent width for event cards
                   backgroundColor: "rgba(11,182,205,0.05)"
                 }}
               >

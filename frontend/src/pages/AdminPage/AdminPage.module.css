@@ -1,26 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 /* Layout for the dashboard */
 .dashboard-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .dashboard-body {
   display: flex;
-  height:fit-content;
+  height: fit-content;
   flex-direction: column;
   flex-grow: 1;
-  padding-top: 10px;
-  padding-left: 50px;
-  padding-right: 30px;
-  padding-bottom: 20px;
-  margin: 0 20px 10px 270px;
+  margin: 0 40px 10px 315px;
 }
 
 /* Header styling - now fixed */
 .adminPage-header {
   position: fixed !important;
-  left: 340px !important;
-  width: calc(100% - 400px) !important;
+  left: 310px !important;
+  width: calc(100% - 345px) !important;
   border-radius: 8px;
   padding: 15px;
   z-index: 100;
@@ -30,88 +29,88 @@
 .sidebar {
   width: 250px;
   background-color: #2c3e50;
-  color: white;
+  color: #ecf0f1;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
   position: fixed;
   height: 100%;
+  overflow-y: scroll;
   transition: width 0.3s ease;
 }
 
 .sidebar h6 {
-  margin-bottom: 20px;
-  font-size: 1.2rem; /* Slightly larger and bold */
+  margin-bottom: 5px;
+  font-size: 1.1rem;
+  font-weight: 500;
   color: #ecf0f1;
-}
-
-.sidebar :global(.MuiMenuList-root) {
-  padding-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  font-family: 'Open Sans', sans-serif;
+  word-break: break-word;
 }
 
 .sidebar :global(.MuiMenuItem-root) {
-  color: white;
-  margin-bottom: 10px;
-  padding: 12px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s;
+  color: #bdc3c7;
   display: flex;
-  align-items: center;
+  margin-bottom: 3px;
+  border-radius: 4px;
+  align-items: flex-start;
+  overflow-wrap: break-word;
+  transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.2s;
+}
+
+.sidebar :global(.MuiMenuItem-root:last-child) {
+  margin-bottom: 20px;
+}
+
+.sidebar :global(.css-1edfpdg-MuiTypography-root) {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
 }
 
 .sidebar :global(.MuiMenuItem-root:hover) {
-  background-color: #1abc9c;
-  transform: translateX(5px); /* Small hover effect */
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+  background-color: #16a085;
+  color:white;
+  transform: translateX(3px);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Sidebar icons */
 .sidebar :global(.MuiSvgIcon-root) {
-  margin-right: 10px; 
-  font-size: 1.5rem;
-  color: rgb(214, 102, 102);
+  font-size: 1.3rem;
+  color: #e74c3c;
+  transition: color 0.2s;
 }
 
-:global(.MuiMenuList-root) {
-  padding-top: 10px;
-}
-
-:global(.MuiMenuItem-root) {
-  color: white;
-  margin-bottom: 10px;
-  padding: 12px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s;
-  display: flex;
-  align-items: center;
-}
-
-:global(.MuiMenuItem-root:hover) {
-  background-color: #1abc9c;
-  transform: translateX(5px); /* Small hover effect */
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+.sidebar :global(.MuiMenuItem-root:hover .MuiSvgIcon-root) {
+  color: #ffffff;
 }
 
 .dashboard-content {
   flex-grow: 1;
-  padding: 30px;
+  padding: 20px;
   margin-top: 120px;
   background-color: #f1f2f6;
   border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) ;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Welcome card styling */
 .welcome-card {
+  word-break: break-word;
   text-align: center;
   margin-bottom: 50px;
   padding: 30px;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  font-size: 1.5rem;
   color: #2c3e50;
+}
+
+.welcome-card h4 {
+  font-size: 2rem;
 }
 
 /* Action grid and card styling */
@@ -138,7 +137,7 @@
 .action-card:hover {
   background-color: #1abc9c !important;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2) !important;
-  transform: scale(1.05); /* Subtle hover zoom effect */
+  transform: scale(1.05);
 }
 
 .action-card h6 {
@@ -147,70 +146,71 @@
 
 /* Details card styling */
 .details-card {
-  margin-top: 30px;
+  margin-top: 20px;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Adjust button styles */
-button, :global(.MuiButton-root) {
-  color:white;
-  background-color: #1976d2;
-  border:none;
+/* Button styles */
+button {
   padding: 10px 20px;
   font-size: 1rem;
   border-radius: 5px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-button:hover, :global(.MuiButton-root:hover) {
+button:hover {
   background-color: #16a085;
   transform: translateY(-3px);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-
-
-@media (max-width: 1200px) {
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
   .dashboard-container {
     flex-direction: column;
-    overflow-x: hidden;
+    height: auto;
+    width: 100vw;
   }
 
-  .dashboard-body {
-    margin-right: 0;
-    margin-left: 30px;
-    padding: 10px auto;
-    padding-left: 0;
+  .welcome-card h4{
+    font-size: 1.5rem;
   }
 
   .sidebar {
-    position: static;
-    margin-top: 100px;
     width: 100%;
+    position: static;
     height: auto;
-    margin-bottom: 20px;
+    margin-top: 100px;
     box-shadow: none;
+    margin-bottom: 10px;
+    overflow: visible;
+  }
+
+  .sidebar h6 {
+    font-size: 1rem;
+  }
+
+  .sidebar :global(.css-1edfpdg-MuiTypography-root) {
+    font-size: 0.8rem;
+  }
+
+  .dashboard-body {
+    padding: 10px;
+    margin: 0;
   }
 
   .adminPage-header {
-    left: 0 !important; /* Remove the left offset */
-    width: 100% !important; /* Make the header full width */
-    top: 0 !important; /* Ensure the header is fixed at the top */
+    left: 0 !important;
+    width: 100% !important;
+    top: 0 !important;
     border-radius: 0;
   }
 
-
   .dashboard-content {
+    margin-top: 0;
     margin-left: 0;
-    margin-top: 70px; /* Add margin for the fixed header height */
-    padding: 20px !important;
-  }
-
-  .details-card {
-    display: flex !important;
-    flex-direction: column !important;
-    overflow-wrap: break-word;
+    padding: 10px;
   }
 }
