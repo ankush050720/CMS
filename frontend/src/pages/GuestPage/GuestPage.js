@@ -39,7 +39,7 @@ const GuestPage = () => {
         <Box mt={14} mb={4} sx={{ width: "100%" }}>
           <Paper elevation={3} sx={{ padding: 4, borderRadius: 2 }}>
             <Typography variant="h4" align="center" gutterBottom mb={3}>
-              Welcome, Guest!
+              Welcome, Student!
             </Typography>
           </Paper>
         </Box>

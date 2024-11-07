@@ -206,7 +206,7 @@ const ClubPage = () => {
         </Typography>
         <Grid container spacing={5}>
           {club.addMembers.map((member, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+            <Grid item xs={12} sm={6} md={4} key={index} display="flex" justifyContent="center">
               <Box
                 sx={{
                   position: "relative",
