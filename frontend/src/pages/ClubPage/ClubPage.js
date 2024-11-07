@@ -276,7 +276,7 @@ const ClubPage = () => {
         </Typography>
         <Grid container gap={5}>
           {club.events.map((event, index) => (
-            <Grid item xs={12} sm={6} md={4} key={event._id}>
+            <Grid item xs={12} sm={6} md={4} key={event._id} display="flex" justifyContent="center">
               <Paper
                 elevation={3}
                 style={{
