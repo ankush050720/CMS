@@ -68,39 +68,76 @@
 }
 
 .sidebar :global(.MuiMenuItem-root) {
-  color: #bdc3c7;
-  display: flex;
-  margin-bottom: 3px;
-  border-radius: 4px;
-  align-items: flex-start;
-  overflow-wrap: break-word;
-  transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.2s;
+  color: #bdc3c7 !important;
+  display: flex !important;
+  margin-bottom: 3px !important;
+  border-radius: 4px !important;
+  align-items: flex-start !important;
+  overflow-wrap: break-word !important;
+  transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.2s !important;
 }
 
 .sidebar :global(.MuiMenuItem-root:last-child) {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 
-.sidebar :global(.css-1edfpdg-MuiTypography-root) {
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.9rem;
+.sidebar :global(.MuiTypography-root) {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 0.9rem !important;
 }
 
 .sidebar :global(.MuiMenuItem-root:hover) {
-  background-color: #16a085;
-  color:white;
-  transform: translateX(3px);
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+  background-color: #16a085 !important;
+  color:white !important;
+  transform: translateX(3px) !important;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
 .sidebar :global(.MuiSvgIcon-root) {
-  font-size: 1.3rem;
-  color: #e74c3c;
-  transition: color 0.2s;
+  font-size: 1.3rem !important;
+  color: #e74c3c !important;
+  transition: color 0.2s !important;
 }
 
 .sidebar :global(.MuiMenuItem-root:hover .MuiSvgIcon-root) {
-  color: #ffffff;
+  color: #ffffff !important;
+}
+
+:global(.MuiMenu-paper) {
+  max-height: 200px !important;       
+  overflow-y: auto !important;       
+  display: flex !important;           
+  flex-direction: column !important;  
+}
+
+:global(.MuiMenuList-root) {
+  padding-top: 10px !important;
+}
+
+/* Ensures the MenuItem takes the full width of the parent */
+:global(.MuiMenuItem-root) {
+  width: 100% !important;
+  display: block !important;          /* Make sure each item is block-level to fill the container */
+}
+
+/* Optional: Truncate text with ellipsis */
+:global(.MuiMenuItem-root) {
+  margin-bottom: 10px !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
+  transition: background-color 0.3s ease, transform 0.2s !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Make the hover effect work across the entire item */
+:global(.MuiMenuItem-root:hover) {
+  background-color: #1abc9c !important;
+  transform: translateX(5px) !important; 
+  color: white !important;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 
 .dashboard-content {
@@ -215,11 +252,11 @@ button:hover {
   }
 
   .sidebar h6 {
-    font-size: 1rem;
+    font-size: 1rem !important;
   }
 
-  .sidebar :global(.css-1edfpdg-MuiTypography-root) {
-    font-size: 0.8rem;
+  .sidebar :global(.MuiTypography-root) {
+    font-size: 0.8rem !important;
   }
 
   .dashboard-body {

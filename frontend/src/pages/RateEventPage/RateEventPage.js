@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Grid, Select, MenuItem, Paper } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Grid,
+  Box,
+  Select,
+  MenuItem,
+  Paper,
+} from "@mui/material";
 import EventCard from "../../components/EventCard/EventCard";
 import EventModal from "../../components/EventModal/EventModal";
 import { getAllEvents } from "../../services/eventService";
@@ -41,11 +49,23 @@ const RateEventPage = () => {
   // Filter completed events based on selected club
   const filteredEvents =
     selectedClub === "All Clubs"
-      ? events.filter(event => event.status === "completed")
-      : events.filter(event => event.club === selectedClub && event.status === "completed");
+      ? events.filter((event) => event.status === "completed")
+      : events.filter(
+          (event) => event.club === selectedClub && event.status === "completed"
+        );
 
   return (
-    <Container maxWidth="lg" sx={{ paddingY: 4 }}>
+    <Container
+      sx={{
+        paddingY: 4,
+        paddingX: { xs: 0.5, sm: 2 }, // Use a numeric value for padding on larger screens
+        maxWidth: { xs: "100%", sm: 1200},
+        display: "flex", // Use flexbox
+        flexDirection: "column", // Ensure vertical alignment
+        alignItems: "center", // Center horizontally
+        justifyContent: "center",
+      }}
+    >
       <Typography variant="h4" gutterBottom align="center">
         Completed Events
       </Typography>
@@ -66,7 +86,11 @@ const RateEventPage = () => {
         ))}
       </Select>
 
-      <Paper elevation={2} sx={{ padding: 2, marginBottom: 4 }}>
+      <Paper
+        elevation={2}
+        style={{ width: '100%'}}
+        sx={{ paddingY: 2, paddingX: { xs: 0, sm: 2 }, marginBottom: 4 }}
+      >
         <Typography variant="h5" gutterBottom>
           {selectedClub === "All Clubs" ? "All Completed Events" : selectedClub}
         </Typography>
@@ -94,9 +118,23 @@ const RateEventPage = () => {
 // EventGrid component to handle rendering completed events
 const EventGrid = ({ events, openEventModal }) => {
   return events.length > 0 ? (
-    <Grid container spacing={3}>
+    <Grid
+      container
+      spacing={3}
+      sx={{
+        paddingX: { xs: 1, sm: 3 },
+        paddingY: { xs: 2, sm: 3 },
+      }}
+    >
       {events.map((event) => (
-        <Grid item xs={12} sm={6} md={4} key={event._id} sx={{ minWidth: '280px' }}>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          key={event._id}
+          sx={{ minWidth: { xs: "100%", sm: "280px" } }}
+        >
           <EventCard event={event} onClick={() => openEventModal(event)} />
         </Grid>
       ))}

@@ -15,24 +15,24 @@ import {
   FormControl,
   InputLabel,
   TextField,
-  ListItemIcon, 
-  ListItemText, 
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
-import { 
-  Assignment as AssignmentIcon, 
-  Event as EventIcon, 
-  Star as StarIcon, 
-  Group as GroupIcon, 
-  Add as AddIcon, 
-  Visibility as VisibilityIcon, 
-  Delete as DeleteIcon, 
-  PersonAdd as PersonAddIcon, 
-  PersonRemove as PersonRemoveIcon 
-} from '@mui/icons-material'; // Material-UI icons
+import {
+  Assignment as AssignmentIcon,
+  Event as EventIcon,
+  Star as StarIcon,
+  Group as GroupIcon,
+  Add as AddIcon,
+  Visibility as VisibilityIcon,
+  Delete as DeleteIcon,
+  PersonAdd as PersonAddIcon,
+  PersonRemove as PersonRemoveIcon,
+} from "@mui/icons-material"; // Material-UI icons
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import styles from './AdminPage.module.css'; // Add appropriate styles
+import styles from "./AdminPage.module.css"; // Add appropriate styles
 import Header from "../../components/AdminHeader/AdminHeader";
 import {
   getProposal,
@@ -315,547 +315,556 @@ const AdminPage = () => {
           </MenuItem>
         </MenuList>
       </div>
-        <div className={styles["dashboard-body"]} >
-        <Header email = {email} className={styles["adminPage-header"]} />
-      <div className={styles["dashboard-content"]}>
-      
-        <Card elevation={3} className={styles["welcome-card"]}>
-          <CardContent>
-            <Typography variant="h4" gutterBottom>
-              Welcome, Admin!
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <Grid container spacing={2} className={styles["action-grid"]}>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("reviewProposals")}
-            >
-              <CardContent>
-                <Typography variant="h6">Review Proposals</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("checkBookedVenues")}
-            >
-              <CardContent>
-                <Typography variant="h6">Check Booked Venues</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("rateEvent")}
-            >
-              <CardContent>
-                <Typography variant="h6">Rate Event</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("checkEventsRegistry")}
-            >
-              <CardContent>
-                <Typography variant="h6">Events Registry</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("viewMember")}
-            >
-              <CardContent>
-                <Typography variant="h6">View Club Members</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("addClub")}
-            >
-              <CardContent>
-                <Typography variant="h6">Add Club</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("removeClub")}
-            >
-              <CardContent>
-                <Typography variant="h6">Remove Club</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("addFaculty")}
-            >
-              <CardContent>
-                <Typography variant="h6">Add Faculty</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("removeFaculty")}
-            >
-              <CardContent>
-                <Typography variant="h6">Remove Faculty</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-
-        {selectedAction === "reviewProposals" && (
-          <Card elevation={3} className={styles["details-card"]}>
+      <div className={styles["dashboard-body"]}>
+        <Header email={email} className={styles["adminPage-header"]} />
+        <div className={styles["dashboard-content"]}>
+          <Card elevation={3} className={styles["welcome-card"]}>
             <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Review Proposals
+              <Typography variant="h4" gutterBottom>
+                Welcome, Admin!
               </Typography>
-              {proposals.map((proposal, index) => (
-                <Card
-                  elevation={3}
-                  className={styles["details-card"]}
-                  key={proposal._id}
-                  style={{ margin: "10px 0", width: "100%" }}
-                >
-                  <CardContent>
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Typography variant="h6">
-                        Proposal {proposals.length - index}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        {proposal.status}
-                      </Typography>
-                      <IconButton onClick={() => handleToggleExpand(index)}>
-                        {expandedProposalIndex === index ? (
-                          <ExpandLessIcon />
-                        ) : (
-                          <ExpandMoreIcon />
-                        )}
-                      </IconButton>
-                    </Box>
-                    <Collapse
-                      in={expandedProposalIndex === index}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      <Box mt={2}>
-                        {/* Proposal Details */}
-                        <Typography variant="body1">
-                          Organizing Body: {proposal.organizingBody}
-                        </Typography>
-                        <Typography variant="body1">
-                          Event Name: {proposal.eventName}
-                        </Typography>
-                        <Typography variant="body1">
-                          Event Date:{" "}
-                          {new Date(proposal.eventDate).toLocaleDateString()}
-                        </Typography>
-                        <Typography variant="body1">
-                          Event Time: {proposal.eventTime}
-                        </Typography>
-                        <Typography variant="body1">
-                          Purpose: {proposal.purpose}
-                        </Typography>
-                        <Typography variant="body1">
-                          Preferred Venue: {proposal.preferredVenue}
-                        </Typography>
-                        <Typography variant="body1">
-                          Proposal Initiator: {proposal.proposalInitiator}
-                        </Typography>
-                        <Typography variant="body1">
-                          Collaborations: {proposal.collaborations}
-                        </Typography>
-                        <Typography variant="body1">
-                          Sponsors: {proposal.sponsors}
-                        </Typography>
-                        <Typography variant="body1">
-                          Description: {proposal.description}
-                        </Typography>
-                        <Typography variant="body1">
-                          Target Audience: {proposal.targetAudience}
-                        </Typography>
-                        <Typography variant="body1">
-                          Expected Participation:{" "}
-                          {proposal.expectedParticipation}
-                        </Typography>
-                        <Typography variant="body1">
-                          Assistance Needed: {proposal.assistanceNeeded}
-                        </Typography>
-
-                        {/* Render Equipment Materials */}
-                        <Box mt={2}>
-                          <Typography variant="body1">
-                            <strong>Equipment Materials:</strong>
-                          </Typography>
-                          {proposal.equipmentMaterials.length ? (
-                            proposal.equipmentMaterials.map((item, idx) => (
-                              <Box key={idx} mb={1}>
-                                <Typography variant="body2">
-                                  Description: {item.description}
-                                </Typography>
-                                <Typography variant="body2">
-                                  Quantity: {item.quantity}
-                                </Typography>
-                                <Typography variant="body2">
-                                  Unit Price: {item.unitPrice}
-                                </Typography>
-                              </Box>
-                            ))
-                          ) : (
-                            <Typography variant="body2">
-                              No equipment materials listed.
-                            </Typography>
-                          )}
-                        </Box>
-
-                        {/* Render Travel Expenses */}
-                        <Box mt={2}>
-                          <Typography variant="body1">
-                            <strong>Travel Expenses:</strong>
-                          </Typography>
-                          {proposal.travelExpenses.length ? (
-                            proposal.travelExpenses.map((expense, idx) => (
-                              <Box key={idx} mb={1}>
-                                <Typography variant="body2">
-                                  Description: {expense.description}
-                                </Typography>
-                                <Typography variant="body2">
-                                  Total Cost: {expense.totalCost}
-                                </Typography>
-                              </Box>
-                            ))
-                          ) : (
-                            <Typography variant="body2">
-                              No travel expenses listed.
-                            </Typography>
-                          )}
-                        </Box>
-
-                        <Typography variant="body1">
-                          Equipment Total: {proposal.equipmentTotal}
-                        </Typography>
-                        <Typography variant="body1">
-                          Travel Total: {proposal.travelTotal}
-                        </Typography>
-                        <Typography variant="body1">
-                          Grand Total: {proposal.grandTotal}
-                        </Typography>
-
-                        {proposal.status ===
-                          "Accepted by the Faculty Member" && (
-                          <Box
-                            mt={2}
-                            display="flex"
-                            flexDirection="column"
-                            alignItems="center"
-                          >
-                            <Box mb={2} width="100%" maxWidth="800px">
-                              <TextField
-                                fullWidth
-                                label="Comment"
-                                margin="normal"
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
-                                sx={{ width: "100%" }}
-                              />
-                            </Box>
-
-                            <Box
-                              display="flex"
-                              justifyContent="space-around"
-                              flexWrap="wrap"
-                              gap={2}
-                              width="100%" // Ensures the buttons stay within the container width
-                              maxWidth="800px"
-                            >
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() =>
-                                  handleProposalAction(
-                                    proposal._id,
-                                    "accept",
-                                    comment
-                                  )
-                                }
-                                sx={{ flex: "1 1 150px" }}
-                              >
-                                Accept
-                              </Button>
-
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={() =>
-                                  handleProposalAction(
-                                    proposal._id,
-                                    "decline",
-                                    comment
-                                  )
-                                }
-                                sx={{ flex: "1 1 150px" }}
-                              >
-                                Decline
-                              </Button>
-                            </Box>
-                          </Box>
-                        )}
-                        {proposal.status === "Accepted by the Dean" ||
-                        proposal.status === "Declined by the Dean" ? (
-                          <Typography variant="body1" mt={2}>
-                            <b>Comment:</b> {proposal.comment}
-                          </Typography>
-                        ) : (
-                          ""
-                        )}
-                      </Box>
-                    </Collapse>
-                  </CardContent>
-                </Card>
-              ))}
             </CardContent>
           </Card>
-        )}
 
-        {selectedAction === "viewMember" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                <u>Club Members</u>
-              </Typography>
+          <Grid container spacing={2} className={styles["action-grid"]}>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("reviewProposals")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Review Proposals</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("checkBookedVenues")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Check Booked Venues</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("rateEvent")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Rate Event</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("checkEventsRegistry")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Events Registry</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("viewMember")}
+              >
+                <CardContent>
+                  <Typography variant="h6">View Club Members</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("addClub")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Add Club</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("removeClub")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Remove Club</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("addFaculty")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Add Faculty</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("removeFaculty")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Remove Faculty</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
 
-              <TextField
-                fullWidth
-                label="Search by Email or Role"
-                variant="outlined"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                margin="normal"
-              />
-
-              <Box>
-                {filteredMembers.map((clubObj, index) => {
-                  const clubName = clubObj.club;
-                  const members = clubObj.members;
-
-                  return (
-                    <Box key={index} sx={{ mb: 3 }}>
-                      <Typography
-                        variant="h6"
-                        sx={{ textTransform: "capitalize" }}
+          {selectedAction === "reviewProposals" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Review Proposals
+                </Typography>
+                {proposals.map((proposal, index) => (
+                  <Card
+                    elevation={3}
+                    className={styles["details-card"]}
+                    key={proposal._id}
+                    style={{ margin: "10px 0", width: "100%" }}
+                  >
+                    <CardContent>
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
                       >
-                        {clubName}
-                      </Typography>
-
-                      {members.map((member, idx) => (
-                        <Typography
-                          key={idx}
-                          variant="body1"
-                          sx={{
-                            fontWeight:
-                              member.role === "faculty mentor"
-                                ? "bold"
-                                : "normal",
-                            mt: 1,
-                          }}
-                        >
-                          {member.email} - {member.role}
+                        <Typography variant="h6">
+                          Proposal {proposals.length - index}
                         </Typography>
-                      ))}
-                    </Box>
-                  );
-                })}
-              </Box>
-            </CardContent>
-          </Card>
-        )}
+                        <Typography variant="body2" color="textSecondary">
+                          {proposal.status}
+                        </Typography>
+                        <IconButton onClick={() => handleToggleExpand(index)}>
+                          {expandedProposalIndex === index ? (
+                            <ExpandLessIcon />
+                          ) : (
+                            <ExpandMoreIcon />
+                          )}
+                        </IconButton>
+                      </Box>
+                      <Collapse
+                        in={expandedProposalIndex === index}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <Box mt={2}>
+                          {/* Proposal Details */}
+                          <Typography variant="body1">
+                            Organizing Body: {proposal.organizingBody}
+                          </Typography>
+                          <Typography variant="body1">
+                            Event Name: {proposal.eventName}
+                          </Typography>
+                          <Typography variant="body1">
+                            Event Date:{" "}
+                            {new Date(proposal.eventDate).toLocaleDateString()}
+                          </Typography>
+                          <Typography variant="body1">
+                            Event Time: {proposal.eventTime}
+                          </Typography>
+                          <Typography variant="body1">
+                            Purpose: {proposal.purpose}
+                          </Typography>
+                          <Typography variant="body1">
+                            Preferred Venue: {proposal.preferredVenue}
+                          </Typography>
+                          <Typography variant="body1">
+                            Proposal Initiator: {proposal.proposalInitiator}
+                          </Typography>
+                          <Typography variant="body1">
+                            Collaborations: {proposal.collaborations}
+                          </Typography>
+                          <Typography variant="body1">
+                            Sponsors: {proposal.sponsors}
+                          </Typography>
+                          <Typography variant="body1">
+                            Description: {proposal.description}
+                          </Typography>
+                          <Typography variant="body1">
+                            Target Audience: {proposal.targetAudience}
+                          </Typography>
+                          <Typography variant="body1">
+                            Expected Participation:{" "}
+                            {proposal.expectedParticipation}
+                          </Typography>
+                          <Typography variant="body1">
+                            Assistance Needed: {proposal.assistanceNeeded}
+                          </Typography>
 
-        {selectedAction === "addClub" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Add a new Club
-              </Typography>
-              <FormControl fullWidth margin="normal">
+                          {/* Render Equipment Materials */}
+                          <Box mt={2}>
+                            <Typography variant="body1">
+                              <strong>Equipment Materials:</strong>
+                            </Typography>
+                            {proposal.equipmentMaterials.length ? (
+                              proposal.equipmentMaterials.map((item, idx) => (
+                                <Box key={idx} mb={1}>
+                                  <Typography variant="body2">
+                                    Description: {item.description}
+                                  </Typography>
+                                  <Typography variant="body2">
+                                    Quantity: {item.quantity}
+                                  </Typography>
+                                  <Typography variant="body2">
+                                    Unit Price: {item.unitPrice}
+                                  </Typography>
+                                </Box>
+                              ))
+                            ) : (
+                              <Typography variant="body2">
+                                No equipment materials listed.
+                              </Typography>
+                            )}
+                          </Box>
+
+                          {/* Render Travel Expenses */}
+                          <Box mt={2}>
+                            <Typography variant="body1">
+                              <strong>Travel Expenses:</strong>
+                            </Typography>
+                            {proposal.travelExpenses.length ? (
+                              proposal.travelExpenses.map((expense, idx) => (
+                                <Box key={idx} mb={1}>
+                                  <Typography variant="body2">
+                                    Description: {expense.description}
+                                  </Typography>
+                                  <Typography variant="body2">
+                                    Total Cost: {expense.totalCost}
+                                  </Typography>
+                                </Box>
+                              ))
+                            ) : (
+                              <Typography variant="body2">
+                                No travel expenses listed.
+                              </Typography>
+                            )}
+                          </Box>
+
+                          <Typography variant="body1">
+                            Equipment Total: {proposal.equipmentTotal}
+                          </Typography>
+                          <Typography variant="body1">
+                            Travel Total: {proposal.travelTotal}
+                          </Typography>
+                          <Typography variant="body1">
+                            Grand Total: {proposal.grandTotal}
+                          </Typography>
+
+                          {proposal.status ===
+                            "Accepted by the Faculty Member" && (
+                            <Box
+                              mt={2}
+                              display="flex"
+                              flexDirection="column"
+                              alignItems="center"
+                            >
+                              <Box mb={2} width="100%" maxWidth="800px">
+                                <TextField
+                                  fullWidth
+                                  label="Comment"
+                                  margin="normal"
+                                  value={comment}
+                                  onChange={(e) => setComment(e.target.value)}
+                                  sx={{ width: "100%" }}
+                                />
+                              </Box>
+
+                              <Box
+                                display="flex"
+                                justifyContent="space-around"
+                                flexWrap="wrap"
+                                gap={2}
+                                width="100%" // Ensures the buttons stay within the container width
+                                maxWidth="800px"
+                              >
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  onClick={() =>
+                                    handleProposalAction(
+                                      proposal._id,
+                                      "accept",
+                                      comment
+                                    )
+                                  }
+                                  sx={{ flex: "1 1 150px" }}
+                                >
+                                  Accept
+                                </Button>
+
+                                <Button
+                                  variant="contained"
+                                  color="secondary"
+                                  onClick={() =>
+                                    handleProposalAction(
+                                      proposal._id,
+                                      "decline",
+                                      comment
+                                    )
+                                  }
+                                  sx={{ flex: "1 1 150px" }}
+                                >
+                                  Decline
+                                </Button>
+                              </Box>
+                            </Box>
+                          )}
+                          {proposal.status === "Accepted by the Dean" ||
+                          proposal.status === "Declined by the Dean" ? (
+                            <Typography variant="body1" mt={2}>
+                              <b>Comment:</b> {proposal.comment}
+                            </Typography>
+                          ) : (
+                            ""
+                          )}
+                        </Box>
+                      </Collapse>
+                    </CardContent>
+                  </Card>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+
+          {selectedAction === "viewMember" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  <u>Club Members</u>
+                </Typography>
+
                 <TextField
-                  value={clubName}
-                  onChange={(e) => setClubName(e.target.value)}
-                  placeholder="Enter club name"
-                  inputProps={{
-                    style: { textTransform: "capitalize" }, // Ensure input text is capitalized
-                  }}
+                  fullWidth
+                  label="Search by Email or Role"
+                  variant="outlined"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  margin="normal"
                 />
-              </FormControl>
-              <button
-                variant="contained"
-                color="secondary"
-                onClick={handleAddClub}
-              >
-                Add Club
-              </button>
-            </CardContent>
-          </Card>
-        )}
 
-        {selectedAction === "removeClub" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Remove Club
-              </Typography>
-              <FormControl fullWidth margin="normal">
-                <InputLabel>Select Club</InputLabel>
-                <Select
-                  value={selectedClubToRemove}
-                  onChange={(e) => setSelectedClubToRemove(e.target.value)}
+                <Box>
+                  {filteredMembers.map((clubObj, index) => {
+                    const clubName = clubObj.club;
+                    const members = clubObj.members;
+
+                    return (
+                      <Box key={index} sx={{ mb: 3 }}>
+                        <Typography
+                          variant="h6"
+                          sx={{ textTransform: "capitalize" }}
+                        >
+                          {clubName}
+                        </Typography>
+
+                        {members.map((member, idx) => (
+                          <Typography
+                            key={idx}
+                            variant="body1"
+                            sx={{
+                              fontWeight:
+                                member.role === "faculty mentor"
+                                  ? "bold"
+                                  : "normal",
+                              mt: 1,
+                            }}
+                          >
+                            {member.email} - {member.role}
+                          </Typography>
+                        ))}
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </CardContent>
+            </Card>
+          )}
+
+          {selectedAction === "addClub" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Add a new Club
+                </Typography>
+                <FormControl fullWidth margin="normal">
+                  <TextField
+                    value={clubName}
+                    onChange={(e) => setClubName(e.target.value)}
+                    placeholder="Enter club name"
+                    inputProps={{
+                      style: { textTransform: "capitalize" }, // Ensure input text is capitalized
+                    }}
+                  />
+                </FormControl>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleAddClub}
                 >
-                  {clubs.map((club) => (
-                    <MenuItem key={club._id} value={club._id}>
-                      {club.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <button
-                variant="contained"
-                color="secondary"
-                onClick={handleRemoveClub}
-              >
-                Remove Club
-              </button>
-            </CardContent>
-          </Card>
-        )}
+                  Add Club
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
-        {selectedAction === "addFaculty" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Add Faculty Mentor
-              </Typography>
-
-              <FormControl fullWidth margin="normal">
-                <InputLabel>Select User</InputLabel>
-                <Select
-                  value={selectedUser}
-                  onChange={(e) => setSelectedUser(e.target.value)}
+          {selectedAction === "removeClub" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Remove Club
+                </Typography>
+                <FormControl fullWidth margin="normal">
+                  <InputLabel>Select Club</InputLabel>
+                  <Select
+                    value={selectedClubToRemove}
+                    onChange={(e) => setSelectedClubToRemove(e.target.value)}
+                  >
+                    {clubs.map((club) => (
+                      <MenuItem key={club._id} value={club._id}>
+                        {club.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleRemoveClub}
                 >
-                  {users.map((user) => (
-                    <MenuItem key={user._id} value={user._id}>
-                      {user.email} - {user.club ? user.club.name : "No club"} -{" "}
-                      {user.role}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  Remove Club
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
-              <FormControl fullWidth margin="normal">
-                <InputLabel>Select Club</InputLabel>
-                <Select
-                  value={selectedClubToAddFaculty}
-                  onChange={(e) => setSelectedClubToAddFaculty(e.target.value)}
+          {selectedAction === "addFaculty" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Add Faculty Mentor
+                </Typography>
+
+                <FormControl fullWidth margin="normal">
+                  <InputLabel>Select User</InputLabel>
+                  <Select
+                    value={selectedUser}
+                    onChange={(e) => setSelectedUser(e.target.value)}
+                  >
+                    {users.map((user) => (
+                      <MenuItem key={user._id} value={user._id}>
+                        {user.email} - {user.club ? user.club.name : "No club"}{" "}
+                        - {user.role}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl fullWidth margin="normal">
+                  <InputLabel>Select Club</InputLabel>
+                  <Select
+                    value={selectedClubToAddFaculty}
+                    onChange={(e) =>
+                      setSelectedClubToAddFaculty(e.target.value)
+                    }
+                  >
+                    {clubs.map((club) => (
+                      <MenuItem key={club._id} value={club._id}>
+                        {club.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleAddFacultySubmit}
+                  disabled={!selectedClubToAddFaculty || !selectedUser}
                 >
-                  {clubs.map((club) => (
-                    <MenuItem key={club._id} value={club._id}>
-                      {club.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  Submit
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAddFacultySubmit}
-                disabled={!selectedClubToAddFaculty || !selectedUser}
-              >
-                Submit
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
-        {selectedAction === "removeFaculty" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Remove Faculty Mentor
-              </Typography>
-              <FormControl fullWidth margin="normal">
-                <InputLabel>Select Faculty</InputLabel>
-                <Select
-                  value={selectedFacultyToRemove}
-                  onChange={(e) => setSelectedFacultyToRemove(e.target.value)}
+          {selectedAction === "removeFaculty" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Remove Faculty Mentor
+                </Typography>
+                <FormControl fullWidth margin="normal">
+                  <InputLabel>Select Faculty</InputLabel>
+                  <Select
+                    value={selectedFacultyToRemove}
+                    onChange={(e) => setSelectedFacultyToRemove(e.target.value)}
+                  >
+                    {faculties.map((user) => (
+                      <MenuItem key={user._id} value={user._id}>
+                        {user.email} - {user.club.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleRemoveFacultySubmit}
+                  disabled={!selectedFacultyToRemove}
                 >
-                  {faculties.map((user) => (
-                    <MenuItem key={user._id} value={user._id}>
-                      {user.email} - {user.club.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <button
-                variant="contained"
-                color="primary"
-                onClick={handleRemoveFacultySubmit}
-                disabled={!selectedFacultyToRemove}
+                  Remove Faculty
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {selectedAction === "rateEvent" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent
+                sx={{
+                  padding: { xs: 0, sm: 2 }, // No padding on small screens (xs), and padding of 2 units on larger screens (sm)
+                }}
               >
-                Remove Faculty
-              </button>
-            </CardContent>
-          </Card>
-        )}
+                <Typography variant="h5" gutterBottom>
+                  Rate Event
+                </Typography>
+                <RateEventPage />
+              </CardContent>
+            </Card>
+          )}
 
-        {selectedAction === "rateEvent" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Rate Event
-              </Typography>
-              <RateEventPage />
-            </CardContent>
-          </Card>
-        )}
-
-        <BookedVenues selectedAction={selectedAction} />
-        <EventsRegistry className={styles["details-card"]} selectedAction={selectedAction} role={"admin"} />
-        {/* Continue rendering other sections as per selectedAction */}
+          <BookedVenues selectedAction={selectedAction} />
+          <EventsRegistry
+            className={styles["details-card"]}
+            selectedAction={selectedAction}
+            role={"admin"}
+          />
+          {/* Continue rendering other sections as per selectedAction */}
+        </div>
       </div>
-      </div>
-       {/* Floating Hamburger Icon */}
+      {/* Floating Hamburger Icon */}
       <div className={styles["hamburger-icon"]} onClick={toggleSidebar}>
         <MenuIcon />
       </div>
-      </div>
+    </div>
   );
 };
 

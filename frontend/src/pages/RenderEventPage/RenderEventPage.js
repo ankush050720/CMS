@@ -49,7 +49,7 @@ const EventPage = () => {
     sx={{
       paddingY: 4,
       paddingX: { xs: 0, sm: 2 }, // No padding on <768px, standard on larger screens
-      maxWidth: { xs: '100%', sm: "lg" }, // Full-width container on screens <768px
+      maxWidth: { xs: '100%', sm: 1200 }, // Full-width container on screens <768px
     }}>
       <Typography variant="h4" gutterBottom align="center">
         Events
