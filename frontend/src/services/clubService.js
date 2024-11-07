@@ -47,7 +47,7 @@ export const getClubMembers = async () => {
 
 export const updateMember = async (email, member) => {
   try {
-    console.log(member);
+    
     const response = await axios.put(`${API_URL}/api/clubs/${email}`, member); // Using email in the URL
     return response.data;
   } catch (error) {
@@ -58,7 +58,7 @@ export const updateMember = async (email, member) => {
 // Service to delete a member
 export const deleteMember = async (member) => {
   try {
-    console.log("hello", member);
+    
     const response = await axios.delete(`${API_URL}/api/clubs/${member.email}`); // Assuming email is used for identification
     return response.data;
   } catch (error) {

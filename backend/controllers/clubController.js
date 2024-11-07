@@ -4,7 +4,6 @@ const User = require("../models/User");
 
 const getClubName = async (req, res) => {
   try {
-    console.log("club:", req.user);
     const clubName = req.user.club.name;
     res.status(200).json({ clubName });
   } catch (err) {

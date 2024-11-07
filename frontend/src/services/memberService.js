@@ -57,7 +57,6 @@ export const removeMember = async (email) => {
 
 export const changeRole = async (email , role) => {
   try {
-    console.log(email, role);
     const res = await axios.post(`${API_URL}/api/members/change-role`, { email , role }, { withCredentials: true });
     alert("Successfully changed");
     return res.data;

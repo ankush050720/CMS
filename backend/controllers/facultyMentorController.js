@@ -4,7 +4,7 @@ const sendEmail = require('../utils/sendEmail'); // Import the sendEmail functio
 
 const updateProposalStatus = async (req, res) => {
   const { proposalId, action, comment } = req.body;
-  console.log(proposalId, action);
+  
   try {
     const proposal = await Proposal.findById(proposalId);
     if (!proposal) {
@@ -123,7 +123,6 @@ const addChairperson = async (req, res) => {
 
 const getClubMembers = async (req, res) => {
   const mentor = req.user;
-  console.log(mentor.club._id);
   try {
     const clubMembers = await User.find({
       club: mentor.club._id,

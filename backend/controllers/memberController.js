@@ -5,7 +5,7 @@ const sendEmail = require('../utils/sendEmail'); // Import the email utility
 const getClubMembers = async (req, res) => {
   try {
     const clubId = req.user.club;
-    console.log(clubId);
+    
     // Fetch all users who are part of the same club
     const members = await User.find({ club: clubId }).sort({ role: 1 });
 

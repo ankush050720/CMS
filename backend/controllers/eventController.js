@@ -172,17 +172,11 @@ exports.getRegisteredEvents = async (req, res) => {
       .select("registeredEvents") // Ensure only the registeredEvents field is selected
       .populate("registeredEvents.eventId"); // Populate the eventId field within registeredEvents
 
-    // Debugging: Check what is being fetched
-    console.log("Teams with registered events:", teams);
-
     // Collect all registered events from all teams
     const registeredEvents = teams.flatMap((team) => team.registeredEvents);
 
     // Extract only the event details from registeredEvents
     const events = registeredEvents.map((regEvent) => regEvent.eventId);
-
-    // Debugging: Check the events
-    console.log("Events:", events);
 
     res.status(200).json({ events });
   } catch (error) {
@@ -211,8 +205,6 @@ exports.getTeamDetails = async (req, res) => {
 
 exports.addMemberToTeam = async (req, res) => {
   const { teamId, newMemberEmail } = req.body;
-  console.log(teamId);
-  console.log(newMemberEmail);
   try {
     const user = await User.findOne({ email: newMemberEmail });
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -381,11 +373,8 @@ exports.registerTeam = async (req, res) => {
     await team.save();
 
     // Notify team members
-    console.log("Team Members:", teamMembers);
     teamMembers.forEach((email) => {
       const emailContent = `Dear ${email}, your team ${team.name} has successfully registered for the event ${event.name}.`;
-      console.log("Sending email to:", email);
-      console.log("Email content:", emailContent);
 
       sendEmail({
         email: email,
@@ -403,7 +392,6 @@ exports.registerTeam = async (req, res) => {
 
 exports.getTeamByEmail = async (req, res) => {
   const { userEmail } = req.query;
-  console.log("Received email:", userEmail);
 
   try {
     // Validate the userEmail
@@ -413,7 +401,6 @@ exports.getTeamByEmail = async (req, res) => {
 
     // Find the user by email to get the team
     const user = await User.findOne({ email: userEmail });
-    console.log("Found user:", user);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -421,7 +408,6 @@ exports.getTeamByEmail = async (req, res) => {
 
     // Find the team by user ID
     const team = await Team.findOne({ members: user.email });
-    console.log("Found team:", team);
 
     if (!team) {
       return res.status(404).json({ message: "Team not found for this user" });
@@ -659,17 +645,19 @@ exports.getAllEventsWithTeams = async (req, res) => {
 
       // Loop through each team
       for (const team of teams) {
-        // Check if the team's registeredEvents contain the event id
-        if (team.registeredEvents.includes(event._id)) {
-          eventDetails.teams.push({
-            team: team.name,
-            members: team.members,
-          });
+        // Loop through the registeredEvents array and check if event._id matches any eventId in the array
+        for (const registeredEvent of team.registeredEvents) {
+          if (registeredEvent.eventId && (registeredEvent.eventId.toString() === event._id.toString())) {
+            eventDetails.teams.push({
+              team: team.name,
+              members: team.members,
+            });
+            break;  // No need to check further once we find a match
+          }
         }
       }
       responseArray.push(eventDetails);
     }
-
     return res.status(200).json(responseArray);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -697,12 +685,15 @@ exports.getEventsByUserClub = async (req, res) => {
 
       // Loop through each team
       for (const team of teams) {
-        // Check if the team's registeredEvents contain the event id
-        if (team.registeredEvents.includes(event._id)) {
-          eventDetails.teams.push({
-            team: team.name,
-            members: team.members,
-          });
+        // Loop through the team's registeredEvents to check if the eventId matches
+        for (const registeredEvent of team.registeredEvents) {
+          if (registeredEvent.eventId && (registeredEvent.eventId.toString() === event._id.toString())) {
+            eventDetails.teams.push({
+              team: team.name,
+              members: team.members,
+            });
+            break;  // No need to check further once we find a match
+          }
         }
       }
       responseArray.push(eventDetails);
@@ -712,6 +703,7 @@ exports.getEventsByUserClub = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 exports.cancelRegistration = async (req, res) => {
   const { teamId, eventId } = req.params;
@@ -746,7 +738,6 @@ exports.cancelRegistration = async (req, res) => {
     }
 
     const transactionId = registeredEvent.transactionId;
-    console.log("Transaction ID:", transactionId);
 
     // 3. Issue a refund request to Razorpay
     const refund = await razorpay.payments.refund(transactionId, {
@@ -772,8 +763,6 @@ exports.cancelRegistration = async (req, res) => {
     const teamMembers = team.members; // Assuming members contain the emails
     teamMembers.forEach((email) => {
       const emailContent = `Dear ${email}, your team ${team.name} has successfully canceled registration for the event ${event.name}. Your refund of Rs. ${event.fee} has been processed and will be reflected back in your account in 5-7 working days.`;
-      console.log("Sending email to:", email);
-      console.log("Email content:", emailContent);
 
       sendEmail({
         email: email,

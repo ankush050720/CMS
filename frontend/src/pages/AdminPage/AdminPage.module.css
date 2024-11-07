@@ -205,17 +205,17 @@
 }
 
 /* Button styles */
-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+:global(.MuiButton-root) {
+  padding: 10px 20px !important;
+  font-size: 1rem !important;
+  border-radius: 5px !important;
+  transition: background-color 0.3s ease, transform 0.2s ease !important;
 }
 
-button:hover {
-  background-color: #16a085;
-  transform: translateY(-3px);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+:global(.MuiButton-root):hover {
+  background-color: #16a085 !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Adjustments for smaller screens */

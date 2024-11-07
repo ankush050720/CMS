@@ -9,7 +9,6 @@ export const uploadImageToCloudinary = async (file) => {
   formData.append('upload_preset', CLOUDINARY_PRESET);
   formData.append('cloud_name', 'dsailrfh1');
   try {
-    console.log('form', formData);
     const response = await axios.post(CLOUDINARY_URL, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',

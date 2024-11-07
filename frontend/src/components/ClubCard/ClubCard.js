@@ -118,8 +118,8 @@ const ClubCard = ({ name, logo, type, facultyLead, studentLead, onMoreDetailsCli
             fontSize: '0.875rem',
             letterSpacing: '0.05rem',
             '&:hover': {
-              transform: 'none',
-              backgroundColor: 'red',
+              transform: 'none !important',
+              backgroundColor: 'red !important',
             },
           }}
         >

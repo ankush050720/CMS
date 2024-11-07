@@ -125,7 +125,6 @@ const AdminPage = () => {
       }
     };
     getMembers();
-    console.log(members);
   }, []);
 
   useEffect(() => {
@@ -159,9 +158,9 @@ const AdminPage = () => {
 
   const handleProposalAction = async (proposalId, action, comment) => {
     try {
-      console.log(comment);
+      
       await updateProposalStatus(proposalId, action, comment);
-      console.log(`Proposal ${action} successfully`);
+      
     } catch (error) {
       console.error(`Failed to ${action} proposal:`, error);
     }
@@ -200,7 +199,7 @@ const AdminPage = () => {
       .join(" ");
     try {
       await addNewClub(capitalizedClubName);
-      console.log(`Added New Club successfully`);
+      
     } catch (error) {
       console.error("Failed to add club", error);
     }
@@ -209,7 +208,7 @@ const AdminPage = () => {
   const handleRemoveClub = async () => {
     try {
       await removeClub(selectedClubToRemove);
-      console.log(`Removed Selected Club successfully`);
+      
 
       // Remove the club from the local state
       setClubs((prevClubs) =>

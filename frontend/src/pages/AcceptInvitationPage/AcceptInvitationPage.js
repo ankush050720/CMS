@@ -6,7 +6,6 @@ const AcceptInvitation = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get('token'); // Extract the token from the query string
-  console.log('Token:', token);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -16,7 +15,6 @@ const AcceptInvitation = () => {
         return;
       }
       try {
-        console.log('Sending request to accept invitation...');
         const response = await teamService.acceptTeamInvitation(token); // Access function from default export
         setMessage(response.message);
       } catch (err) {

@@ -114,7 +114,7 @@ const FacultyMentorPage = () => {
     const fetchClubMembers = async () => {
       try {
         const response = await getClubMembers();
-        console.log(response);
+        
         setClubMembers(response.data);
       } catch (err) {
         console.error("Failed to fetch club members:", err);
@@ -147,7 +147,7 @@ const FacultyMentorPage = () => {
 
   const handleProposalAction = async (proposalId, action, comment) => {
     try {
-      console.log(comment);
+      
       await updateProposalStatus(proposalId, action, comment);
       console.log(`Proposal ${action} successfully`);
     } catch (error) {

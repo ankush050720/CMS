@@ -21,7 +21,6 @@ const postScore = async (req, res) => {
     const userRole = req.user.role; // Get the user's role from the authenticated user
     const userId = req.user.userId; // Extract the user ID from the authenticated user
 
-    console.log(userId);
 
     try {
         let score = await Score.findOne({ event: eventId });

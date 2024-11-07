@@ -8,7 +8,6 @@ const getTeamDetails = async () => {
 };
 
 const addTeamMember = async (teamId, email) => {
-  console.log(teamId);
   const response = await axios.post(`${API_URL}/api/events/team/add-member`, { teamId, newMemberEmail: email });
   return response.data;
 };

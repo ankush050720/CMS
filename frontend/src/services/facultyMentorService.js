@@ -3,7 +3,7 @@ import { API_URL } from '../utils/config';
 
 export const updateProposalStatus = async (proposalId, action, comment) => {
   try {
-    console.log(action);
+  
     const response = await axios.post(`${API_URL}/api/proposals/update-proposal-status`, {
       proposalId,
       action, 

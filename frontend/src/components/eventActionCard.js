@@ -122,7 +122,7 @@ const ActionCards = ({className, selectedAction}) => {
         try {
             // Call the addEvent service and pass the formData
             await addEvent(formData);
-            console.log("Event successfully added");
+            
         } catch (error) {
             console.error("Error submitting event:", error);
         }

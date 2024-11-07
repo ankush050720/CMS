@@ -4,7 +4,7 @@ import { API_URL } from '../utils/config';
 export const fetchMembers = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/admin/get-members`, { withCredentials: true });
-      console.log(res.data);
+      
       return res.data; // Return the member data
     } catch (error) {
       console.error('Error fetching club members:', error);
@@ -23,7 +23,7 @@ export const getProposal = async () => {
 
 export const updateProposalStatus = async (proposalId, action, comment) => {
     try {
-      console.log(action);
+      
       const response = await axios.post(`${API_URL}/api/admin/update-proposal-status`, {
         proposalId,
         action, 
