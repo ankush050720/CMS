@@ -83,6 +83,11 @@ const Header = ({ email, className }) => {
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
+          PaperProps={{
+            style: {
+              minWidth: "200px",
+            },
+          }}
         >
           {email ? (
             <>

@@ -50,6 +50,8 @@ import { getAllClubs } from "../../services/clubService";
 import RateEventPage from "../RateEventPage/RateEventPage";
 import BookedVenues from "../../components/bookedVenues";
 import EventsRegistry from "../../components/eventsRegistry";
+import LoadingButton from '../../components/LoadingButton';
+import LoadingForm from '../../components/LoadingForm';
 
 const AdminPage = () => {
   const [selectedAction, setSelectedAction] = useState("");

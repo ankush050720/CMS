@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { register } from '../../services/registerService';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import './RegisterForm.css';
+import LoadingButton from '../../components/LoadingButton';
+import LoadingForm from '../../components/LoadingForm';
 
 const RegisterForm = () => {
   const [email, setEmail] = useState('');
@@ -26,7 +28,7 @@ const RegisterForm = () => {
           Register
         </Typography>
         {/* Registration Form */}
-        <form onSubmit={handleRegister} autoComplete="off">
+        <LoadingForm onSubmit={handleRegister} autoComplete="off">
           <TextField
             fullWidth
             margin="normal"
@@ -64,10 +66,10 @@ const RegisterForm = () => {
             autoComplete="new-password"
             size="small"
           />
-          <Button fullWidth variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+          <LoadingButton fullWidth variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
             Register
-          </Button>
-        </form>
+          </LoadingButton>
+        </LoadingForm>
         <Box sx={{ mt: 2, textAlign: 'left' }}>
           <Typography variant="body2">
             <a href="/login">Already have an account? Login</a>

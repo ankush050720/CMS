@@ -7,8 +7,46 @@
   top: 20px !important;
 }
 
+@keyframes colorFlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.announcement {
+  display: block;
+  padding: 10px;
+  font-size: 1.5rem;
+  margin-top: 80px;
+  font-weight: bold;
+  text-align: center;
+  background: linear-gradient(90deg, darkred, limegreen, blue, indigo, violet, brown );
+  background-size: 200% 200%;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text; /* Safari and older versions of Chrome */
+  -moz-background-clip: text;    /* Older versions of Firefox */
+  -o-background-clip: text;      /* Older versions of Opera */
+  animation: colorFlow 5s linear infinite;
+  overflow: hidden;
+}
+
+.highlight-link {
+  transition: color 0.3s ease;
+}
+
+.highlight-link:hover {
+  color: rgb(255, 60, 0);
+}
+
+/* Responsive styling for screens smaller than 768px */
 @media (max-width: 768px) {
   .guest-header {
-    width: 90% !important;
+    width: 95% !important;
   } 
+
+  .announcement {
+    width: 95%;
+    word-break:keep-all;
+    font-size: 1.2rem;
+  }
 }

@@ -64,7 +64,7 @@ const Profile = () => {
                   fontWeight: 'bold',
                   fontSize: isSmallScreen ? '1.5rem' : '2rem',
                   textAlign: 'center',
-                  wordWrap: 'break-word',
+                  wordWrap: 'keep-all',
                 }}
               >
                 Profile
@@ -78,8 +78,8 @@ const Profile = () => {
                       marginBottom: '1rem',
                       color: '#34495e',
                       fontSize: isSmallScreen ? '0.9rem' : '1rem',
-                      wordWrap: 'break-word',
-                      overflowWrap: 'break-word',
+                      wordWrap: 'keep-all',
+                      overflowWrap: 'keep-all',
                     }}
                   >
                     <strong>Email:</strong> {userInfo.email}
@@ -90,8 +90,8 @@ const Profile = () => {
                       marginBottom: '1rem',
                       color: '#34495e',
                       fontSize: isSmallScreen ? '0.9rem' : '1rem',
-                      wordWrap: 'break-word',
-                      overflowWrap: 'break-word',
+                      wordWrap: 'keep-all',
+                      overflowWrap: 'keep-all',
                     }}
                   >
                     <strong>Phone Number:</strong> {userInfo.phone}
@@ -101,8 +101,8 @@ const Profile = () => {
                     style={{
                       color: '#34495e',
                       fontSize: isSmallScreen ? '0.9rem' : '1rem',
-                      wordWrap: 'break-word',
-                      overflowWrap: 'break-word',
+                      wordWrap: 'keep-all',
+                      overflowWrap: 'keep-all',
                     }}
                   >
                     <strong>Role:</strong> {userInfo.role}

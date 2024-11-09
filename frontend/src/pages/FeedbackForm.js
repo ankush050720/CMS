@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Typography, Box, Button, Rating, Paper } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"; // Import the ArrowBack icon
 import { postScore } from "../services/scoreService"; // Import the postScore function
+import LoadingButton from '../components/LoadingButton';
 
 const questions = [
   "How would you rate the overall experience of the event?",
@@ -142,7 +143,7 @@ const FeedbackForm = () => {
 
       {/* Show the Submit button only on the last question */}
       {currentQuestionIndex === questions.length - 1 && (
-        <Button
+        <LoadingButton
           variant="contained"
           color="primary"
           style={{ marginTop: "20px" }}
@@ -150,7 +151,7 @@ const FeedbackForm = () => {
           disabled={ratings[currentQuestionIndex] === null} // Disable if not rated
         >
           Submit
-        </Button>
+        </LoadingButton>
       )}
     </Box>
   );

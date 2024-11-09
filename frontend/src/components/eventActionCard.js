@@ -15,6 +15,8 @@ import ImageUpload from "../utils/ImageUpload"; // Import your ImageUpload compo
 import EventPage from "../pages/RenderEventPage/RenderEventPage"; // Adjust the import path as needed
 import {uploadImageToCloudinary} from "../utils/cloudinaryUpload";
 import { addEvent, getClubEvents, removeEvent, getUpcomingEvents, getOngoingEvents, getClosedEvents, closeRegistration, closeEvent, closeFeedback } from "../services/eventService";
+import LoadingButton from './LoadingButton';
+import LoadingForm from './LoadingForm';
 
 const ActionCards = ({className, selectedAction}) => {
     const [formData,
@@ -203,13 +205,13 @@ const ActionCards = ({className, selectedAction}) => {
                             ))}
                         </Select>
 
-                        <Button
+                        <LoadingButton
                             variant="contained"
                             color="secondary"
                             onClick={handleCloseRegistration}
                             disabled={!selectedEvent || upcomingEvents.length === 0}>
                             Close Registration
-                        </Button>
+                        </LoadingButton>
                     </Box>
                 </CardContent>
             </Card>
@@ -236,13 +238,13 @@ const ActionCards = ({className, selectedAction}) => {
                             ))}
                         </Select>
 
-                        <Button
+                        <LoadingButton
                             variant="contained"
                             color="secondary"
                             onClick={handleCloseEvent}
                             disabled={!selectedEvent || ongoingEvents.length === 0}>
                             Close Event
-                        </Button>
+                        </LoadingButton>
                     </Box>
                 </CardContent>
             </Card>
@@ -269,13 +271,13 @@ const ActionCards = ({className, selectedAction}) => {
                             ))}
                         </Select>
 
-                        <Button
+                        <LoadingButton
                             variant="contained"
                             color="secondary"
                             onClick={handleCloseFeedback}
                             disabled={!selectedEvent || closedEvents.length === 0}>
                             Close Feedback
-                        </Button>
+                        </LoadingButton>
                     </Box>
                 </CardContent>
             </Card>
@@ -302,13 +304,13 @@ const ActionCards = ({className, selectedAction}) => {
                             ))}
                         </Select>
 
-                        <Button
+                        <LoadingButton
                             variant="contained"
                             color="secondary"
                             onClick={handleRemoveEvent}
                             disabled={!selectedEvent || clubEvents.length === 0}>
                             Remove Event
-                        </Button>
+                        </LoadingButton>
                     </Box>
                 </CardContent>
             </Card>
@@ -323,7 +325,7 @@ const ActionCards = ({className, selectedAction}) => {
                         Add New Event
                     </Typography>
 
-                    <form onSubmit={handleSubmit}>
+                    <LoadingForm onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
@@ -419,12 +421,12 @@ const ActionCards = ({className, selectedAction}) => {
                                 sx={{
                                 textAlign: "right"
                             }}>
-                                <Button variant="contained" color="primary" type="submit">
+                                <LoadingButton variant="contained" color="primary" type="submit">
                                     Submit
-                                </Button>
+                                </LoadingButton>
                             </Grid>
                         </Grid>
-                    </form>
+                    </LoadingForm>
                 </CardContent>
             </Card>
         )

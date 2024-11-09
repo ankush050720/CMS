@@ -15,31 +15,52 @@ import {
   FormControl,
   InputLabel,
   TextField,
-  ListItemIcon, 
-  ListItemText, 
+  ListItemIcon,
+  ListItemText,
   Radio,
   RadioGroup,
-  FormControlLabel
+  FormControlLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
-import { 
-  Assignment as AssignmentIcon, 
-  Event as EventIcon, 
-  Star as StarIcon, 
-  Group as GroupIcon, 
-  Add as AddIcon, 
-  Delete as DeleteIcon, 
-  PersonAdd as PersonAddIcon, 
+import {
+  Assignment as AssignmentIcon,
+  Event as EventIcon,
+  Star as StarIcon,
+  Group as GroupIcon,
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  PersonAdd as PersonAddIcon,
   PersonRemove as PersonRemoveIcon,
-  Close as CloseIcon, 
+  Close as CloseIcon,
   Cancel as CancelIcon,
   Stop as StopIcon,
   CheckCircle as CheckCirlceIcon,
-  Visibility as VisibilityIcon
-} from '@mui/icons-material';
+  Visibility as VisibilityIcon,
+  Description as DescriptionIcon,
+  DescriptionOutlined as DescriptionOutlinedIcon,
+  MoreVert as MoreVertIcon,
+  MoreHoriz as MoreHorizIcon,
+  AccountCircle as AccountCircleIcon,
+  PermIdentity as PermIdentityIcon,
+  Article as ArticleIcon,
+  AccountCircleOutlined as AccountCircleOutlinedIcon,
+  Lock as LockIcon,
+  LockOutlined as LockOutlinedIcon,
+  Person as PersonIcon,
+  PersonOutlined as PersonOutlinedIcon,
+  AssignmentTurnedIn as AssignmentTurnedInIcon,
+} from "@mui/icons-material";
 import ImageUpload from "../../utils/ImageUpload";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { getUserInfo } from "../../services/userService";
+import { fetchApplications, deleteApplication } from "../../services/applicationService"; // Assume this service exists
 import Header from "../../components/Header/Header";
 import { submitProposal, getProposal } from "../../services/proposeService";
 import {
@@ -61,13 +82,15 @@ import {
   getClubEvents,
 } from "../../services/clubService";
 import EditIcon from "@mui/icons-material/Edit";
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
 import { uploadImageToCloudinary } from "../../utils/cloudinaryUpload";
 import ActionCards from "../../components/eventActionCard"; // Adjust the import path as needed
 import BookedVenues from "../../components/bookedVenues";
 import ChatButton from "../../components/ChatButton";
 import EventsRegistry from "../../components/eventsRegistry";
 import styles from "./ChairpersonPage.module.css";
+import LoadingButton from '../../components/LoadingButton';
+import LoadingForm from '../../components/LoadingForm';
 
 const ChairpersonPage = () => {
   const [selectedAction, setSelectedAction] = useState("");
@@ -127,10 +150,25 @@ const ChairpersonPage = () => {
   const [events, setEvents] = useState([]);
   const [newEvents, setNewEvents] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [applications, setApplications] = useState([]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  // Fetch applications in useEffect
+  useEffect(() => {
+    const getApplications = async () => {
+      try {
+        const applicationsData = await fetchApplications(); // Assume this fetches the applications
+        setApplications(applicationsData);
+      } catch (error) {
+        console.error("Error fetching applications:", error);
+      }
+    };
+
+    getApplications();
+  }, []);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -357,6 +395,31 @@ const ChairpersonPage = () => {
       member.role.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const filteredApplications = applications.filter(
+    (application) =>
+      application.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      application.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      application.phone.includes(searchTerm) ||
+      application.hallTicket.includes(searchTerm) ||
+      application.reason.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleDeleteApplication = async (id) => {
+    const isConfirmed = window.confirm("Do you really want to delete this application?");
+    
+    if (isConfirmed) {
+      try {
+        await deleteApplication(id);
+        // Update the local state to remove the deleted application
+        setApplications((prevApplications) => prevApplications.filter(app => app._id !== id));
+        alert("The application has been deleted");
+      } catch (error) {
+        alert("Error deleting application");
+        console.error("Error deleting application:", error);
+      }
+    }
+  };
+
   const handleAddMember = () => {
     setAddMembers([
       ...addMembers,
@@ -451,9 +514,6 @@ const ChairpersonPage = () => {
       nationalInternational: event.nationalInternational,
     };
 
-    console.log(updatedEvent);
-    console.log(event._id); // Make sure _id is defined here
-
     if (!event._id) {
       console.error("No _id found for the event.");
       return; // Stop if _id is undefined
@@ -465,7 +525,6 @@ const ChairpersonPage = () => {
 
   const handleDeleteEvent = async (eventId) => {
     try {
-      console.log(eventId);
       await deleteEvent(eventId);
       // Update the events state to remove the deleted event
       setEvents(events.filter((event) => event._id !== eventId));
@@ -581,7 +640,6 @@ const ChairpersonPage = () => {
 
   const handleImageUploadForEditedMember = async (file, email) => {
     try {
-      console.log(file);
       const uploadedUrl = await uploadImageToCloudinary(file); // Upload the file
       handleFieldChange(email, "photo", uploadedUrl); // Update the photo field for the specific member
     } catch (error) {
@@ -610,7 +668,6 @@ const ChairpersonPage = () => {
 
   const handleImageUpload = async (file) => {
     try {
-      console.log(file);
       const uploadedUrl = await uploadImageToCloudinary(file);
       setClubLogo(uploadedUrl); // Store the URL in state
     } catch (error) {
@@ -637,6 +694,12 @@ const ChairpersonPage = () => {
               <EventIcon />
             </ListItemIcon>
             <ListItemText primary="View All Proposals" />
+          </MenuItem>
+          <MenuItem onClick={() => setSelectedAction("checkApplications")}>
+            <ListItemIcon>
+              <LockOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="View Club Applications" />
           </MenuItem>
           <MenuItem onClick={() => setSelectedAction("checkBookedVenues")}>
             <ListItemIcon>
@@ -718,1277 +781,1386 @@ const ChairpersonPage = () => {
           </MenuItem>
         </MenuList>
       </div>
-        <div className={styles["dashboard-body"]} >
-        <Header email = {email} className={styles["chair-header"]} />
-      <div className={styles["dashboard-content"]}>
-      
-        <Card elevation={3} className={styles["welcome-card"]}>
-          <CardContent>
-            <Typography variant="h4" gutterBottom>
-              Welcome, Chairperson!
-            </Typography>
-          </CardContent>
-          <ChatButton />
-        </Card>
-
-        <Grid container spacing={2} className={styles["action-grid"]}>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("proposeEvent")}
-            >
-              <CardContent>
-                <Typography variant="h6">Propose Event</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("viewProposals")}
-            >
-              <CardContent>
-                <Typography variant="h6">View All Proposals</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("checkBookedVenues")}
-            >
-              <CardContent>
-                <Typography variant="h6">Check Booked Venues</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("viewMember")}
-            >
-              <CardContent>
-                <Typography variant="h6">View Club Members</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("addMember")}
-            >
-              <CardContent>
-                <Typography variant="h6">Add Member</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("removeMember")}
-            >
-              <CardContent>
-                <Typography variant="h6">Remove Member</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("changeRoles")}
-            >
-              <CardContent>
-                <Typography variant="h6">Change Roles</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("changeClubData")}
-            >
-              <CardContent>
-                <Typography variant="h6">Change Club Data</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("registerInEvent")}
-            >
-              <CardContent>
-                <Typography variant="h6">Register For Event</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("checkEventsRegistry")}
-            >
-              <CardContent>
-                <Typography variant="h6">Events Registry</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("addEvent")}
-            >
-              <CardContent>
-                <Typography variant="h6">Add New Event</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("removeEvent")}
-            >
-              <CardContent>
-                <Typography variant="h6">Remove Event</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("closeRegistration")}
-            >
-              <CardContent>
-                <Typography variant="h6">Close Registration</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("closeEvent")}
-            >
-              <CardContent>
-                <Typography variant="h6">Mark Event as Complete</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              elevation={3}
-              className={styles["action-card"]}
-              onClick={() => setSelectedAction("closeFeedback")}
-            >
-              <CardContent>
-                <Typography variant="h6">Close Feedback Collection</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-
-        {selectedAction === "proposeEvent" && (
-          <Card elevation={3} className={styles["details-card"]}>
+      <div className={styles["dashboard-body"]}>
+        <Header email={email} className={styles["chair-header"]} />
+        <div className={styles["dashboard-content"]}>
+          <Card elevation={3} className={styles["welcome-card"]}>
             <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Propose Event
+              <Typography variant="h4" gutterBottom>
+                Welcome, Chairperson!
               </Typography>
-              <form onSubmit={handleSubmit}>
-                <TextField
-                  fullWidth
-                  label="Name of Organizing Body"
-                  margin="normal"
-                  value={organizingBody}
-                  onChange={(e) => setOrganizingBody(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  label="Event Name"
-                  margin="normal"
-                  value={eventName}
-                  onChange={(e) => setEventName(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  type="date"
-                  label="Date of Event"
-                  margin="normal"
-                  InputLabelProps={{ shrink: true }}
-                  value={eventDate}
-                  onChange={(e) => setEventDate(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  type="time"
-                  label="Time of Event"
-                  margin="normal"
-                  InputLabelProps={{ shrink: true }}
-                  value={eventTime}
-                  onChange={(e) => setEventTime(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  label="Purpose of Event"
-                  margin="normal"
-                  value={purpose}
-                  onChange={(e) => setPurpose(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  label="Preferred Venue"
-                  margin="normal"
-                  value={preferredVenue}
-                  onChange={(e) => setPreferredVenue(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  label="Proposal Initiated by"
-                  margin="normal"
-                  value={proposalInitiator}
-                  onChange={(e) => setProposalInitiator(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  label="Collaborations (if any)"
-                  margin="normal"
-                  value={collaborations}
-                  onChange={(e) => setCollaborations(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  label="Name of Sponsors (if any)"
-                  margin="normal"
-                  value={sponsors}
-                  onChange={(e) => setSponsors(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={4}
-                  label="Brief description of the overall event"
-                  margin="normal"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  label="Target Audience"
-                  margin="normal"
-                  value={targetAudience}
-                  onChange={(e) => setTargetAudience(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  label="Expected Participation"
-                  margin="normal"
-                  value={expectedParticipation}
-                  onChange={(e) => setExpectedParticipation(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  label="Assistance required from any department"
-                  margin="normal"
-                  value={assistanceNeeded}
-                  onChange={(e) => setAssistanceNeeded(e.target.value)}
-                />
-
-                {/* Equipment & Materials Section */}
-                <Typography variant="h6" gutterBottom>
-                  Equipment & Materials
-                </Typography>
-                {equipmentMaterials.map((item, index) => (
-                  <Box key={index} display="flex" gap={2} mb={2}>
-                    <TextField
-                      label="Item Description"
-                      value={item.description}
-                      onChange={(e) =>
-                        handleEquipmentChange(
-                          index,
-                          "description",
-                          e.target.value
-                        )
-                      }
-                      fullWidth
-                    />
-                    <TextField
-                      label="Quantity"
-                      value={item.quantity}
-                      onChange={(e) =>
-                        handleEquipmentChange(index, "quantity", e.target.value)
-                      }
-                      fullWidth
-                    />
-                    <TextField
-                      label="Unit Price"
-                      value={item.unitPrice}
-                      onChange={(e) =>
-                        handleEquipmentChange(
-                          index,
-                          "unitPrice",
-                          e.target.value
-                        )
-                      }
-                      fullWidth
-                    />
-                  </Box>
-                ))}
-                <Button variant="outlined" onClick={addEquipmentField}>
-                  Add More Equipment
-                </Button>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={2}
-                  label="Justification"
-                  value={equipmentJustification}
-                  onChange={(e) => setEquipmentJustification(e.target.value)}
-                  margin="normal"
-                />
-
-                {/* Travel & Miscellaneous Section */}
-                <Typography variant="h6" gutterBottom>
-                  Travel & Miscellaneous
-                </Typography>
-                {travelExpenses.map((item, index) => (
-                  <Box key={index} display="flex" gap={2} mb={2}>
-                    <TextField
-                      label="Expense Description"
-                      value={item.description}
-                      onChange={(e) =>
-                        handleTravelChange(index, "description", e.target.value)
-                      }
-                      fullWidth
-                    />
-                    <TextField
-                      label="Total Cost"
-                      value={item.totalCost}
-                      onChange={(e) =>
-                        handleTravelChange(index, "totalCost", e.target.value)
-                      }
-                      fullWidth
-                    />
-                  </Box>
-                ))}
-                <Button variant="outlined" onClick={addTravelField}>
-                  Add More Travel Expenses
-                </Button>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={2}
-                  label="Justification"
-                  value={travelJustification}
-                  onChange={(e) => setTravelJustification(e.target.value)}
-                  margin="normal"
-                />
-
-                {/* Summary */}
-                <Box mt={4}>
-                  <Typography variant="h6">
-                    Total for Equipment & Materials: Rs.
-                    {calculateEquipmentTotal().toFixed(2)}
-                  </Typography>
-                  <Typography variant="h6">
-                    Total for Travel & Miscellaneous: Rs.
-                    {calculateTravelTotal().toFixed(2)}
-                  </Typography>
-                  <Typography variant="h5" mt={2} mb={2}>
-                    Grand Total: Rs.{calculateGrandTotal().toFixed(2)}
-                  </Typography>
-                </Box>
-
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                >
-                  Submit Proposal
-                </Button>
-              </form>
             </CardContent>
+            <ChatButton />
           </Card>
-        )}
 
-        {selectedAction === "viewProposals" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                View All Proposals
-              </Typography>
-              {proposals.map((proposal, index) => (
-                <Card
-                  elevation={3}
-                  className={styles["details-card"]}
-                  key={proposal._id}
-                  style={{
-                    margin: "10px 0",
-                    width: "100%",
-                    maxWidth: 1000,
-                    mb: 2,
-                  }}
-                >
-                  <CardContent>
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Typography variant="h6">
-                        Proposal {proposals.length - index}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        {proposal.status}
-                      </Typography>
-                      <IconButton onClick={() => handleToggleExpand(index)}>
-                        {expandedProposalIndex === index ? (
-                          <ExpandLessIcon />
-                        ) : (
-                          <ExpandMoreIcon />
-                        )}
-                      </IconButton>
+          <Grid container spacing={2} className={styles["action-grid"]}>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("proposeEvent")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Propose Event</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("viewProposals")}
+              >
+                <CardContent>
+                  <Typography variant="h6">View All Proposals</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("checkApplications")}
+              >
+                <CardContent>
+                  <Typography variant="h6">View Club Applications</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("checkBookedVenues")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Check Booked Venues</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("viewMember")}
+              >
+                <CardContent>
+                  <Typography variant="h6">View Club Members</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("addMember")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Add Member</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("removeMember")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Remove Member</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("changeRoles")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Change Roles</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("changeClubData")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Change Club Data</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("registerInEvent")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Register For Event</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("checkEventsRegistry")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Events Registry</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("addEvent")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Add New Event</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("removeEvent")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Remove Event</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("closeRegistration")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Close Registration</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("closeEvent")}
+              >
+                <CardContent>
+                  <Typography variant="h6">Mark Event as Complete</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                className={styles["action-card"]}
+                onClick={() => setSelectedAction("closeFeedback")}
+              >
+                <CardContent>
+                  <Typography variant="h6">
+                    Close Feedback Collection
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+
+          {selectedAction === "proposeEvent" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Propose Event
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                  <TextField
+                    fullWidth
+                    label="Name of Organizing Body"
+                    margin="normal"
+                    value={organizingBody}
+                    onChange={(e) => setOrganizingBody(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Event Name"
+                    margin="normal"
+                    value={eventName}
+                    onChange={(e) => setEventName(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    type="date"
+                    label="Date of Event"
+                    margin="normal"
+                    InputLabelProps={{ shrink: true }}
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    type="time"
+                    label="Time of Event"
+                    margin="normal"
+                    InputLabelProps={{ shrink: true }}
+                    value={eventTime}
+                    onChange={(e) => setEventTime(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Purpose of Event"
+                    margin="normal"
+                    value={purpose}
+                    onChange={(e) => setPurpose(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Preferred Venue"
+                    margin="normal"
+                    value={preferredVenue}
+                    onChange={(e) => setPreferredVenue(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Proposal Initiated by"
+                    margin="normal"
+                    value={proposalInitiator}
+                    onChange={(e) => setProposalInitiator(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Collaborations (if any)"
+                    margin="normal"
+                    value={collaborations}
+                    onChange={(e) => setCollaborations(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Name of Sponsors (if any)"
+                    margin="normal"
+                    value={sponsors}
+                    onChange={(e) => setSponsors(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={4}
+                    label="Brief description of the overall event"
+                    margin="normal"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Target Audience"
+                    margin="normal"
+                    value={targetAudience}
+                    onChange={(e) => setTargetAudience(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Expected Participation"
+                    margin="normal"
+                    value={expectedParticipation}
+                    onChange={(e) => setExpectedParticipation(e.target.value)}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Assistance required from any department"
+                    margin="normal"
+                    value={assistanceNeeded}
+                    onChange={(e) => setAssistanceNeeded(e.target.value)}
+                  />
+
+                  {/* Equipment & Materials Section */}
+                  <Typography variant="h6" gutterBottom>
+                    Equipment & Materials
+                  </Typography>
+                  {equipmentMaterials.map((item, index) => (
+                    <Box key={index} display="flex" gap={2} mb={2}>
+                      <TextField
+                        label="Item Description"
+                        value={item.description}
+                        onChange={(e) =>
+                          handleEquipmentChange(
+                            index,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                        fullWidth
+                      />
+                      <TextField
+                        label="Quantity"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          handleEquipmentChange(
+                            index,
+                            "quantity",
+                            e.target.value
+                          )
+                        }
+                        fullWidth
+                      />
+                      <TextField
+                        label="Unit Price"
+                        value={item.unitPrice}
+                        onChange={(e) =>
+                          handleEquipmentChange(
+                            index,
+                            "unitPrice",
+                            e.target.value
+                          )
+                        }
+                        fullWidth
+                      />
                     </Box>
-                    <Collapse
-                      in={expandedProposalIndex === index}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      <Box mt={2}>
-                        <Typography variant="body1">
-                          Organizing Body: {proposal.organizingBody}
-                        </Typography>
-                        <Typography variant="body1">
-                          Event Name: {proposal.eventName}
-                        </Typography>
-                        <Typography variant="body1">
-                          Event Date:{" "}
-                          {new Date(proposal.eventDate).toLocaleDateString()}
-                        </Typography>
-                        <Typography variant="body1">
-                          Event Time: {proposal.eventTime}
-                        </Typography>
-                        <Typography variant="body1">
-                          Purpose: {proposal.purpose}
-                        </Typography>
-                        <Typography variant="body1">
-                          Preferred Venue: {proposal.preferredVenue}
-                        </Typography>
-                        <Typography variant="body1">
-                          Proposal Initiator: {proposal.proposalInitiator}
-                        </Typography>
-                        <Typography variant="body1">
-                          Collaborations: {proposal.collaborations}
-                        </Typography>
-                        <Typography variant="body1">
-                          Sponsors: {proposal.sponsors}
-                        </Typography>
-                        <Typography variant="body1">
-                          Description: {proposal.description}
-                        </Typography>
-                        <Typography variant="body1">
-                          Target Audience: {proposal.targetAudience}
-                        </Typography>
-                        <Typography variant="body1">
-                          Expected Participation:{" "}
-                          {proposal.expectedParticipation}
-                        </Typography>
-                        <Typography variant="body1">
-                          Assistance Needed: {proposal.assistanceNeeded}
-                        </Typography>
+                  ))}
+                  <Button variant="outlined" onClick={addEquipmentField}>
+                    Add More Equipment
+                  </Button>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={2}
+                    label="Justification"
+                    value={equipmentJustification}
+                    onChange={(e) => setEquipmentJustification(e.target.value)}
+                    margin="normal"
+                  />
 
-                        {/* Render Equipment Materials */}
-                        <Box mt={2}>
-                          <Typography variant="body1">
-                            <strong>Equipment Materials:</strong>
-                          </Typography>
-                          {proposal.equipmentMaterials.length ? (
-                            proposal.equipmentMaterials.map((item, idx) => (
-                              <Box key={idx} mb={1}>
-                                <Typography variant="body2">
-                                  Description: {item.description}
-                                </Typography>
-                                <Typography variant="body2">
-                                  Quantity: {item.quantity}
-                                </Typography>
-                                <Typography variant="body2">
-                                  Unit Price: {item.unitPrice}
-                                </Typography>
-                              </Box>
-                            ))
-                          ) : (
-                            <Typography variant="body2">
-                              No equipment materials listed.
-                            </Typography>
-                          )}
-                        </Box>
+                  {/* Travel & Miscellaneous Section */}
+                  <Typography variant="h6" gutterBottom>
+                    Travel & Miscellaneous
+                  </Typography>
+                  {travelExpenses.map((item, index) => (
+                    <Box key={index} display="flex" gap={2} mb={2}>
+                      <TextField
+                        label="Expense Description"
+                        value={item.description}
+                        onChange={(e) =>
+                          handleTravelChange(
+                            index,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                        fullWidth
+                      />
+                      <TextField
+                        label="Total Cost"
+                        value={item.totalCost}
+                        onChange={(e) =>
+                          handleTravelChange(index, "totalCost", e.target.value)
+                        }
+                        fullWidth
+                      />
+                    </Box>
+                  ))}
+                  <Button variant="outlined" onClick={addTravelField}>
+                    Add More Travel Expenses
+                  </Button>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={2}
+                    label="Justification"
+                    value={travelJustification}
+                    onChange={(e) => setTravelJustification(e.target.value)}
+                    margin="normal"
+                  />
 
-                        {/* Render Travel Expenses */}
-                        <Box mt={2}>
-                          <Typography variant="body1">
-                            <strong>Travel Expenses:</strong>
-                          </Typography>
-                          {proposal.travelExpenses.length ? (
-                            proposal.travelExpenses.map((expense, idx) => (
-                              <Box key={idx} mb={1}>
-                                <Typography variant="body2">
-                                  Description: {expense.description}
-                                </Typography>
-                                <Typography variant="body2">
-                                  Total Cost: {expense.totalCost}
-                                </Typography>
-                              </Box>
-                            ))
-                          ) : (
-                            <Typography variant="body2">
-                              No travel expenses listed.
-                            </Typography>
-                          )}
-                        </Box>
-
-                        <Typography variant="body1">
-                          Equipment Total: {proposal.equipmentTotal}
-                        </Typography>
-                        <Typography variant="body1">
-                          Travel Total: {proposal.travelTotal}
-                        </Typography>
-                        <Typography variant="body1">
-                          Grand Total: {proposal.grandTotal}
-                        </Typography>
-                        {proposal.comment ? (
-                          <Typography variant="body1" mt={2}>
-                            <b>Comment:</b> {proposal.comment}
-                          </Typography>
-                        ) : (
-                          ""
-                        )}
-                      </Box>
-                    </Collapse>
-                  </CardContent>
-                </Card>
-              ))}
-            </CardContent>
-          </Card>
-        )}
-
-        {selectedAction === "viewMember" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                <u>Club Members</u>
-              </Typography>
-
-              {/* Search Bar */}
-              <TextField
-                fullWidth
-                label="Search by Email or Role"
-                variant="outlined"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                margin="normal"
-              />
-
-              <Box>
-                {filteredMembers.map((member, index) => (
-                  <Box key={index} marginBottom="1rem">
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight:
-                          member.role === "faculty mentor" ? "bold" : "normal",
-                      }}
-                    >
-                      {member.email} ({member.role})
+                  {/* Summary */}
+                  <Box mt={4}>
+                    <Typography variant="h6">
+                      Total for Equipment & Materials: Rs.
+                      {calculateEquipmentTotal().toFixed(2)}
+                    </Typography>
+                    <Typography variant="h6">
+                      Total for Travel & Miscellaneous: Rs.
+                      {calculateTravelTotal().toFixed(2)}
+                    </Typography>
+                    <Typography variant="h5" mt={2} mb={2}>
+                      Grand Total: Rs.{calculateGrandTotal().toFixed(2)}
                     </Typography>
                   </Box>
+
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                  >
+                    Submit Proposal
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          )}
+
+          {selectedAction === "viewProposals" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  View All Proposals
+                </Typography>
+                {proposals.map((proposal, index) => (
+                  <Card
+                    elevation={3}
+                    className={styles["details-card"]}
+                    key={proposal._id}
+                    style={{
+                      margin: "10px 0",
+                      width: "100%",
+                      maxWidth: 1000,
+                      mb: 2,
+                    }}
+                  >
+                    <CardContent>
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Typography variant="h6">
+                          Proposal {proposals.length - index}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          {proposal.status}
+                        </Typography>
+                        <IconButton onClick={() => handleToggleExpand(index)}>
+                          {expandedProposalIndex === index ? (
+                            <ExpandLessIcon />
+                          ) : (
+                            <ExpandMoreIcon />
+                          )}
+                        </IconButton>
+                      </Box>
+                      <Collapse
+                        in={expandedProposalIndex === index}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <Box mt={2}>
+                          <Typography variant="body1">
+                            Organizing Body: {proposal.organizingBody}
+                          </Typography>
+                          <Typography variant="body1">
+                            Event Name: {proposal.eventName}
+                          </Typography>
+                          <Typography variant="body1">
+                            Event Date:{" "}
+                            {new Date(proposal.eventDate).toLocaleDateString()}
+                          </Typography>
+                          <Typography variant="body1">
+                            Event Time: {proposal.eventTime}
+                          </Typography>
+                          <Typography variant="body1">
+                            Purpose: {proposal.purpose}
+                          </Typography>
+                          <Typography variant="body1">
+                            Preferred Venue: {proposal.preferredVenue}
+                          </Typography>
+                          <Typography variant="body1">
+                            Proposal Initiator: {proposal.proposalInitiator}
+                          </Typography>
+                          <Typography variant="body1">
+                            Collaborations: {proposal.collaborations}
+                          </Typography>
+                          <Typography variant="body1">
+                            Sponsors: {proposal.sponsors}
+                          </Typography>
+                          <Typography variant="body1">
+                            Description: {proposal.description}
+                          </Typography>
+                          <Typography variant="body1">
+                            Target Audience: {proposal.targetAudience}
+                          </Typography>
+                          <Typography variant="body1">
+                            Expected Participation:{" "}
+                            {proposal.expectedParticipation}
+                          </Typography>
+                          <Typography variant="body1">
+                            Assistance Needed: {proposal.assistanceNeeded}
+                          </Typography>
+
+                          {/* Render Equipment Materials */}
+                          <Box mt={2}>
+                            <Typography variant="body1">
+                              <strong>Equipment Materials:</strong>
+                            </Typography>
+                            {proposal.equipmentMaterials.length ? (
+                              proposal.equipmentMaterials.map((item, idx) => (
+                                <Box key={idx} mb={1}>
+                                  <Typography variant="body2">
+                                    Description: {item.description}
+                                  </Typography>
+                                  <Typography variant="body2">
+                                    Quantity: {item.quantity}
+                                  </Typography>
+                                  <Typography variant="body2">
+                                    Unit Price: {item.unitPrice}
+                                  </Typography>
+                                </Box>
+                              ))
+                            ) : (
+                              <Typography variant="body2">
+                                No equipment materials listed.
+                              </Typography>
+                            )}
+                          </Box>
+
+                          {/* Render Travel Expenses */}
+                          <Box mt={2}>
+                            <Typography variant="body1">
+                              <strong>Travel Expenses:</strong>
+                            </Typography>
+                            {proposal.travelExpenses.length ? (
+                              proposal.travelExpenses.map((expense, idx) => (
+                                <Box key={idx} mb={1}>
+                                  <Typography variant="body2">
+                                    Description: {expense.description}
+                                  </Typography>
+                                  <Typography variant="body2">
+                                    Total Cost: {expense.totalCost}
+                                  </Typography>
+                                </Box>
+                              ))
+                            ) : (
+                              <Typography variant="body2">
+                                No travel expenses listed.
+                              </Typography>
+                            )}
+                          </Box>
+
+                          <Typography variant="body1">
+                            Equipment Total: {proposal.equipmentTotal}
+                          </Typography>
+                          <Typography variant="body1">
+                            Travel Total: {proposal.travelTotal}
+                          </Typography>
+                          <Typography variant="body1">
+                            Grand Total: {proposal.grandTotal}
+                          </Typography>
+                          {proposal.comment ? (
+                            <Typography variant="body1" mt={2}>
+                              <b>Comment:</b> {proposal.comment}
+                            </Typography>
+                          ) : (
+                            ""
+                          )}
+                        </Box>
+                      </Collapse>
+                    </CardContent>
+                  </Card>
                 ))}
-              </Box>
-            </CardContent>
-          </Card>
-        )}
+              </CardContent>
+            </Card>
+          )}
 
-        {selectedAction === "addMember" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Add Member
-              </Typography>
-              <form onSubmit={handleAddMemberSubmit}>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>Select Member</InputLabel>
-                  <Select value={selectedUser} onChange={handleSelectChange}>
-                    {guestUsers.length > 0 ? (
-                      guestUsers.map((user) => (
-                        <MenuItem key={user._id} value={user.email}>
-                          {user.email} {/* Show email or user name */}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem disabled>No guests available</MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                >
-                  Add Member
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        )}
+          {selectedAction === "checkApplications" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  <u>Club Applications</u>
+                </Typography>
 
-        {selectedAction === "removeMember" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Remove Member
-              </Typography>
-              <form onSubmit={handleRemoveMember}>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>Select Member</InputLabel>
-                  <Select
-                    value={selectedMember}
-                    onChange={(e) => setSelectedMember(e.target.value)}
-                  >
-                    {removableMembers.length > 0 ? (
-                      removableMembers.map((member) => (
-                        <MenuItem key={member._id} value={member.email}>
-                          {member.email} - {member.role}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem disabled>No members available</MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  disabled={removableMembers.length === 0} // Disable button if no members
-                >
-                  Remove
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        )}
-
-        {selectedAction === "changeRoles" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Change Roles
-              </Typography>
-              <form onSubmit={handleRoleChangeSubmit}>
-                <FormControl fullWidth sx={{ mb: 2 }}>
-                  <InputLabel>Select Member</InputLabel>
-                  <Select
-                    value={selectMember}
-                    onChange={(e) => setSelectMember(e.target.value)}
-                  >
-                    {removableMembers.length > 0 ? (
-                      removableMembers.map((member) => (
-                        <MenuItem key={member._id} value={member.email}>
-                          {member.email} - {member.role}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem disabled>No members available</MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth sx={{ mb: 3 }}>
-                  <InputLabel>Select New Role</InputLabel>
-                  <Select
-                    value={selectedRole}
-                    onChange={(e) => setSelectedRole(e.target.value)}
-                  >
-                    <MenuItem value="secretary">Secretary</MenuItem>
-                    <MenuItem value="treasurer">Treasurer</MenuItem>
-                    <MenuItem value="marketing & pr secretary">
-                      Marketing & PR Secretary
-                    </MenuItem>
-                    <MenuItem value="web master">Web Master</MenuItem>
-                    <MenuItem value="membership chair">
-                      Membership Chair
-                    </MenuItem>
-                    <MenuItem value="management head">Management Head</MenuItem>
-                    <MenuItem value="content & creative head">
-                      Content & Creative Head
-                    </MenuItem>
-                    <MenuItem value="digital & social media head">
-                      Digital & Social Media Head
-                    </MenuItem>
-                    <MenuItem value="member">Member</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <Button type="submit" variant="contained" color="primary">
-                  Submit
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        )}
-
-        {selectedAction === "changeClubData" && (
-          <Card elevation={3} className={styles["details-card"]}>
-            <CardContent>
-              <Typography variant="h5" gutterBottom>
-                Change Club Data
-              </Typography>
-
-              <form>
-                {/* Student Club/Chapter Name () */}
+                {/* Search Bar */}
                 <TextField
                   fullWidth
-                  label="Student Club/Chapter Name"
+                  label="Search in Applications"
+                  variant="outlined"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   margin="normal"
-                  value={clubName.clubName}
-                  InputProps={{
-                    readOnly: true,
-                  }}
                 />
 
-                <Box mt={4}>
-                  <Typography variant="h6" gutterBottom>
-                    Type
-                  </Typography>
-                  <FormControl component="fieldset">
-                    <RadioGroup
-                      row
-                      value={type}
-                      onChange={(e) => setType(e.target.value)}
-                    >
-                      <FormControlLabel
-                        value="club"
-                        control={<Radio />}
-                        label="Club"
-                      />
-                      <FormControlLabel
-                        value="chapter"
-                        control={<Radio />}
-                        label="Chapter"
-                      />
-                    </RadioGroup>
-                  </FormControl>
+                {/* Applications Table */}
+                <TableContainer component={Paper} sx={{ marginTop: 3 }}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Phone</TableCell>
+                        <TableCell>Hall Ticket</TableCell>
+                        <TableCell>Reason</TableCell>
+                        <TableCell>Comments</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {filteredApplications.length > 0 ? (
+                        filteredApplications.map((application) => (
+                          <TableRow key={application._id}>
+                            <TableCell>{application.name}</TableCell>
+                            <TableCell>{application.email}</TableCell>
+                            <TableCell>{application.phone}</TableCell>
+                            <TableCell>{application.hallTicket}</TableCell>
+                            <TableCell>{application.reason}</TableCell>
+                            <TableCell>{application.comments}</TableCell>
+                            <TableCell>
+                              <IconButton
+                                onClick={() =>
+                                  handleDeleteApplication(application._id)
+                                }
+                                aria-label="delete"
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={7} align="center">
+                            No applications found.
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </CardContent>
+            </Card>
+          )}
+
+          {selectedAction === "viewMember" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  <u>Club Members</u>
+                </Typography>
+
+                {/* Search Bar */}
+                <TextField
+                  fullWidth
+                  label="Search by Email or Role"
+                  variant="outlined"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  margin="normal"
+                />
+
+                <Box>
+                  {filteredMembers.map((member, index) => (
+                    <Box key={index} marginBottom="1rem">
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontWeight:
+                            member.role === "faculty mentor"
+                              ? "bold"
+                              : "normal",
+                        }}
+                      >
+                        {member.email} ({member.role})
+                      </Typography>
+                    </Box>
+                  ))}
                 </Box>
+              </CardContent>
+            </Card>
+          )}
 
-                <TextField
-                  fullWidth
-                  label="Faculty Coordinator Name"
-                  margin="normal"
-                  value={facultyCoordinator}
-                  onChange={(e) => setFacultyCoordinator(e.target.value)}
-                />
+          {selectedAction === "addMember" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Add Member
+                </Typography>
+                <form onSubmit={handleAddMemberSubmit}>
+                  <FormControl fullWidth margin="normal">
+                    <InputLabel>Select Member</InputLabel>
+                    <Select value={selectedUser} onChange={handleSelectChange}>
+                      {guestUsers.length > 0 ? (
+                        guestUsers.map((user) => (
+                          <MenuItem key={user._id} value={user.email}>
+                            {user.email} {/* Show email or user name */}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>No guests available</MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                  >
+                    Add Member
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          )}
 
-                <TextField
-                  fullWidth
-                  label="Student Chair"
-                  margin="normal"
-                  value={studentChair}
-                  onChange={(e) => setStudentChair(e.target.value)}
-                />
+          {selectedAction === "removeMember" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Remove Member
+                </Typography>
+                <form onSubmit={handleRemoveMember}>
+                  <FormControl fullWidth margin="normal">
+                    <InputLabel>Select Member</InputLabel>
+                    <Select
+                      value={selectedMember}
+                      onChange={(e) => setSelectedMember(e.target.value)}
+                    >
+                      {removableMembers.length > 0 ? (
+                        removableMembers.map((member) => (
+                          <MenuItem key={member._id} value={member.email}>
+                            {member.email} - {member.role}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>No members available</MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={removableMembers.length === 0} // Disable button if no members
+                  >
+                    Remove
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          )}
 
-                <TextField
-                  fullWidth
-                  label="Student Co-Chair"
-                  margin="normal"
-                  value={studentCoChair}
-                  onChange={(e) => setStudentCoChair(e.target.value)}
-                />
+          {selectedAction === "changeRoles" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Change Roles
+                </Typography>
+                <form onSubmit={handleRoleChangeSubmit}>
+                  <FormControl fullWidth sx={{ mb: 2 }}>
+                    <InputLabel>Select Member</InputLabel>
+                    <Select
+                      value={selectMember}
+                      onChange={(e) => setSelectMember(e.target.value)}
+                    >
+                      {removableMembers.length > 0 ? (
+                        removableMembers.map((member) => (
+                          <MenuItem key={member._id} value={member.email}>
+                            {member.email} - {member.role}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>No members available</MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
 
-                <TextField
-                  fullWidth
-                  label="No. of Official Members"
-                  margin="normal"
-                  type="number"
-                  value={officialMembers}
-                  onChange={(e) => setOfficialMembers(e.target.value)}
-                />
+                  <FormControl fullWidth sx={{ mb: 3 }}>
+                    <InputLabel>Select New Role</InputLabel>
+                    <Select
+                      value={selectedRole}
+                      onChange={(e) => setSelectedRole(e.target.value)}
+                    >
+                      <MenuItem value="secretary">Secretary</MenuItem>
+                      <MenuItem value="treasurer">Treasurer</MenuItem>
+                      <MenuItem value="marketing & pr secretary">
+                        Marketing & PR Secretary
+                      </MenuItem>
+                      <MenuItem value="web master">Web Master</MenuItem>
+                      <MenuItem value="membership chair">
+                        Membership Chair
+                      </MenuItem>
+                      <MenuItem value="management head">
+                        Management Head
+                      </MenuItem>
+                      <MenuItem value="content & creative head">
+                        Content & Creative Head
+                      </MenuItem>
+                      <MenuItem value="digital & social media head">
+                        Digital & Social Media Head
+                      </MenuItem>
+                      <MenuItem value="member">Member</MenuItem>
+                    </Select>
+                  </FormControl>
 
-                <Typography>Club Logo</Typography>
-                <ImageUpload onImageUpload={handleImageUpload} />
+                  <Button type="submit" variant="contained" color="primary">
+                    Submit
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          )}
 
-                <TextField
-                  fullWidth
-                  label="Club Website"
-                  margin="normal"
-                  value={clubWebsite}
-                  onChange={(e) => setClubWebsite(e.target.value)}
-                />
+          {selectedAction === "changeClubData" && (
+            <Card elevation={3} className={styles["details-card"]}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Change Club Data
+                </Typography>
 
-                <TextField
-                  fullWidth
-                  label="Club Email ID"
-                  margin="normal"
-                  value={clubEmail}
-                  onChange={(e) => setClubEmail(e.target.value)}
-                />
+                <form>
+                  {/* Student Club/Chapter Name () */}
+                  <TextField
+                    fullWidth
+                    label="Student Club/Chapter Name"
+                    margin="normal"
+                    value={clubName.clubName}
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
 
-                <TextField
-                  fullWidth
-                  label="Instagram Handle"
-                  margin="normal"
-                  value={instagramHandle}
-                  onChange={(e) => setInstagramHandle(e.target.value)}
-                />
+                  <Box mt={4}>
+                    <Typography variant="h6" gutterBottom>
+                      Type
+                    </Typography>
+                    <FormControl component="fieldset">
+                      <RadioGroup
+                        row
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                      >
+                        <FormControlLabel
+                          value="club"
+                          control={<Radio />}
+                          label="Club"
+                        />
+                        <FormControlLabel
+                          value="chapter"
+                          control={<Radio />}
+                          label="Chapter"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Box>
 
-                <TextField
-                  fullWidth
-                  label="LinkedIn Handle"
-                  margin="normal"
-                  value={linkedinHandle}
-                  onChange={(e) => setLinkedinHandle(e.target.value)}
-                />
+                  <TextField
+                    fullWidth
+                    label="Faculty Coordinator Name"
+                    margin="normal"
+                    value={facultyCoordinator}
+                    onChange={(e) => setFacultyCoordinator(e.target.value)}
+                  />
 
-                <TextField
-                  fullWidth
-                  label="Facebook Handle"
-                  margin="normal"
-                  value={facebookHandle}
-                  onChange={(e) => setFacebookHandle(e.target.value)}
-                />
+                  <TextField
+                    fullWidth
+                    label="Student Chair"
+                    margin="normal"
+                    value={studentChair}
+                    onChange={(e) => setStudentChair(e.target.value)}
+                  />
 
-                <TextField
-                  fullWidth
-                  label="Twitter Handle"
-                  margin="normal"
-                  value={twitterHandle}
-                  onChange={(e) => setTwitterHandle(e.target.value)}
-                />
+                  <TextField
+                    fullWidth
+                    label="Student Co-Chair"
+                    margin="normal"
+                    value={studentCoChair}
+                    onChange={(e) => setStudentCoChair(e.target.value)}
+                  />
 
-                <TextField
-                  fullWidth
-                  label="Club Official's Pics, name, designation one PPTs/Pic/Poster"
-                  margin="normal"
-                  helperText="Provide a drive link"
-                  value={officialPics}
-                  onChange={(e) => setOfficialPics(e.target.value)}
-                />
+                  <TextField
+                    fullWidth
+                    label="No. of Official Members"
+                    margin="normal"
+                    type="number"
+                    value={officialMembers}
+                    onChange={(e) => setOfficialMembers(e.target.value)}
+                  />
 
-                <TextField
-                  fullWidth
-                  label="Club/Chapter Brief"
-                  margin="normal"
-                  multiline
-                  rows={3}
-                  value={chapterBrief}
-                  onChange={(e) => setChapterBrief(e.target.value)}
-                />
+                  <Typography>Club Logo</Typography>
+                  <ImageUpload onImageUpload={handleImageUpload} />
 
-                <TextField
-                  fullWidth
-                  label="Mission"
-                  margin="normal"
-                  multiline
-                  rows={3}
-                  value={mission}
-                  onChange={(e) => setMission(e.target.value)}
-                />
+                  <TextField
+                    fullWidth
+                    label="Club Website"
+                    margin="normal"
+                    value={clubWebsite}
+                    onChange={(e) => setClubWebsite(e.target.value)}
+                  />
 
-                <TextField
-                  fullWidth
-                  label="Vision"
-                  margin="normal"
-                  multiline
-                  rows={3}
-                  value={vision}
-                  onChange={(e) => setVision(e.target.value)}
-                />
+                  <TextField
+                    fullWidth
+                    label="Club Email ID"
+                    margin="normal"
+                    value={clubEmail}
+                    onChange={(e) => setClubEmail(e.target.value)}
+                  />
 
-                <Box mt={4}>
-                  <Typography variant="h6" gutterBottom>
-                    Edit Members
-                  </Typography>
-                  {/* Existing Members from DB */}
-                  <Typography variant="h6" gutterBottom>
-                    Existing Members
-                  </Typography>
-                  {memberName.map((member, index) => {
-                    const isEditing = editedMembers.some(
-                      (m) => m.email === member.email
-                    );
+                  <TextField
+                    fullWidth
+                    label="Instagram Handle"
+                    margin="normal"
+                    value={instagramHandle}
+                    onChange={(e) => setInstagramHandle(e.target.value)}
+                  />
 
-                    return (
+                  <TextField
+                    fullWidth
+                    label="LinkedIn Handle"
+                    margin="normal"
+                    value={linkedinHandle}
+                    onChange={(e) => setLinkedinHandle(e.target.value)}
+                  />
+
+                  <TextField
+                    fullWidth
+                    label="Facebook Handle"
+                    margin="normal"
+                    value={facebookHandle}
+                    onChange={(e) => setFacebookHandle(e.target.value)}
+                  />
+
+                  <TextField
+                    fullWidth
+                    label="Twitter Handle"
+                    margin="normal"
+                    value={twitterHandle}
+                    onChange={(e) => setTwitterHandle(e.target.value)}
+                  />
+
+                  <TextField
+                    fullWidth
+                    label="Club Official's Pics, name, designation one PPTs/Pic/Poster"
+                    margin="normal"
+                    helperText="Provide a drive link"
+                    value={officialPics}
+                    onChange={(e) => setOfficialPics(e.target.value)}
+                  />
+
+                  <TextField
+                    fullWidth
+                    label="Club/Chapter Brief"
+                    margin="normal"
+                    multiline
+                    rows={3}
+                    value={chapterBrief}
+                    onChange={(e) => setChapterBrief(e.target.value)}
+                  />
+
+                  <TextField
+                    fullWidth
+                    label="Mission"
+                    margin="normal"
+                    multiline
+                    rows={3}
+                    value={mission}
+                    onChange={(e) => setMission(e.target.value)}
+                  />
+
+                  <TextField
+                    fullWidth
+                    label="Vision"
+                    margin="normal"
+                    multiline
+                    rows={3}
+                    value={vision}
+                    onChange={(e) => setVision(e.target.value)}
+                  />
+
+                  <Box mt={4}>
+                    <Typography variant="h6" gutterBottom>
+                      Edit Members
+                    </Typography>
+                    {/* Existing Members from DB */}
+                    <Typography variant="h6" gutterBottom>
+                      Existing Members
+                    </Typography>
+                    {memberName.map((member, index) => {
+                      const isEditing = editedMembers.some(
+                        (m) => m.email === member.email
+                      );
+
+                      return (
+                        <Box key={index} sx={{ mb: 2, position: "relative" }}>
+                          <Typography variant="subtitle1">
+                            {member.name} - {member.position}
+                          </Typography>
+
+                          <TextField
+                            fullWidth
+                            label="Name"
+                            margin="normal"
+                            value={
+                              isEditing
+                                ? editedMembers.find(
+                                    (m) => m.email === member.email
+                                  )?.name || member.name
+                                : member.name
+                            }
+                            onChange={(e) =>
+                              handleFieldChange(
+                                member.email,
+                                "name",
+                                e.target.value
+                              )
+                            }
+                            disabled={!isEditing}
+                          />
+
+                          <TextField
+                            fullWidth
+                            label="Enrolment Number"
+                            margin="normal"
+                            value={
+                              isEditing
+                                ? editedMembers.find(
+                                    (m) => m.email === member.email
+                                  )?.enrollmentId || member.enrollmentId // use enrollmentId here
+                                : member.enrollmentId
+                            }
+                            onChange={(e) =>
+                              handleFieldChange(
+                                member.email,
+                                "enrollmentId", // change to "enrollmentId"
+                                e.target.value
+                              )
+                            }
+                            disabled={!isEditing}
+                          />
+
+                          <TextField
+                            fullWidth
+                            label="Email ID"
+                            margin="normal"
+                            value={member.email}
+                            disabled
+                          />
+
+                          <TextField
+                            fullWidth
+                            label="Position"
+                            margin="normal"
+                            value={
+                              isEditing
+                                ? editedMembers.find(
+                                    (m) => m.email === member.email
+                                  )?.position || member.position
+                                : member.position
+                            }
+                            onChange={(e) =>
+                              handleFieldChange(
+                                member.email,
+                                "position",
+                                e.target.value
+                              )
+                            }
+                            disabled={!isEditing}
+                          />
+
+                          {isEditing ? (
+                            <ImageUpload
+                              onImageUpload={(file) =>
+                                handleImageUploadForEditedMember(
+                                  file,
+                                  member.email
+                                )
+                              }
+                            />
+                          ) : (
+                            <>
+                              <Typography
+                                style={{
+                                  // Apply blur effect here
+
+                                  color: "#b0b0b0", // Optional, to give a more subtle effect
+                                }}
+                              >
+                                Uploaded Photo
+                              </Typography>
+                              {member.photo && (
+                                <div>
+                                  <img
+                                    src={member.photo}
+                                    alt="Member"
+                                    style={{
+                                      maxWidth: "200px",
+                                      marginTop: "10px",
+                                    }}
+                                  />
+                                </div>
+                              )}
+                            </>
+                          )}
+
+                          <IconButton onClick={() => handleEditMember(member)}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleDeleteMember(member)}
+                          >
+                            <DeleteIcon color="secondary" />
+                          </IconButton>
+                        </Box>
+                      );
+                    })}
+
+                    {addMembers.map((member, index) => (
                       <Box key={index} sx={{ mb: 2, position: "relative" }}>
                         <Typography variant="subtitle1">
-                          {member.name} - {member.position}
+                          Member {index + 1}
                         </Typography>
-
                         <TextField
                           fullWidth
                           label="Name"
                           margin="normal"
-                          value={
-                            isEditing
-                              ? editedMembers.find(
-                                  (m) => m.email === member.email
-                                )?.name || member.name
-                              : member.name
-                          }
-                          onChange={(e) =>
-                            handleFieldChange(
-                              member.email,
-                              "name",
-                              e.target.value
-                            )
-                          }
-                          disabled={!isEditing}
+                          value={member.name}
+                          onChange={(e) => handleMemberChange(e, index, "name")}
                         />
-
                         <TextField
                           fullWidth
                           label="Enrolment Number"
                           margin="normal"
-                          value={
-                            isEditing
-                              ? editedMembers.find(
-                                  (m) => m.email === member.email
-                                )?.enrollmentId || member.enrollmentId // use enrollmentId here
-                              : member.enrollmentId
+                          value={member.enrollmentId} // changed to enrollmentId
+                          onChange={
+                            (e) => handleMemberChange(e, index, "enrollmentId") // changed to enrollmentId
                           }
-                          onChange={(e) =>
-                            handleFieldChange(
-                              member.email,
-                              "enrollmentId", // change to "enrollmentId"
-                              e.target.value
-                            )
-                          }
-                          disabled={!isEditing}
                         />
-
                         <TextField
                           fullWidth
                           label="Email ID"
                           margin="normal"
                           value={member.email}
-                          disabled
+                          onChange={(e) =>
+                            handleMemberChange(e, index, "email")
+                          }
                         />
-
                         <TextField
                           fullWidth
                           label="Position"
                           margin="normal"
-                          value={
-                            isEditing
-                              ? editedMembers.find(
-                                  (m) => m.email === member.email
-                                )?.position || member.position
-                              : member.position
-                          }
+                          value={member.position}
                           onChange={(e) =>
-                            handleFieldChange(
-                              member.email,
-                              "position",
-                              e.target.value
-                            )
+                            handleMemberChange(e, index, "position")
                           }
-                          disabled={!isEditing}
+                        />
+                        <Typography>Member's Pic</Typography>
+                        <ImageUpload
+                          onImageUpload={(file) =>
+                            handleImageUploadForMember(file, index)
+                          }
+                        />
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          onClick={() => handleRemoveData(index)}
+                          sx={{ position: "absolute", top: 0, right: 0 }}
+                        >
+                          Remove Member
+                        </Button>
+                      </Box>
+                    ))}
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleAddMember}
+                      startIcon={<AddIcon />}
+                    >
+                      Add Member
+                    </Button>
+                  </Box>
+
+                  <Box mt={4}>
+                    <Typography variant="h6" gutterBottom>
+                      Existing Events
+                    </Typography>
+                    {events.map((event, index) => (
+                      <Box key={event._id} sx={{ mb: 2, position: "relative" }}>
+                        <Typography variant="subtitle1">
+                          {event.eventName}
+                        </Typography>
+
+                        <TextField
+                          fullWidth
+                          label="Date"
+                          type="date"
+                          InputLabelProps={{ shrink: true }}
+                          margin="normal"
+                          value={event.date && event.date.split("T")[0]} // Ensure this is properly formatted
+                          onChange={(e) => handleEventChange(e, index, "date")}
+                          disabled={!event.isEditing} // Disable if not editing
                         />
 
-                        {isEditing ? (
-                          <ImageUpload
-                            onImageUpload={(file) =>
-                              handleImageUploadForEditedMember(
-                                file,
-                                member.email
-                              )
-                            }
-                          />
-                        ) : (
-                          <>
-                            <Typography
-                              style={{ // Apply blur effect here
-                                
-                                color: "#b0b0b0", // Optional, to give a more subtle effect
-                              }}
-                            >
-                              Uploaded Photo
-                            </Typography>
-                            {member.photo && (
-                              <div>
-                                <img
-                                  src={member.photo}
-                                  alt="Member"
-                                  style={{
-                                    maxWidth: "200px",
-                                    marginTop: "10px",
-                                  }}
-                                />
-                              </div>
-                            )}
-                          </>
-                        )}
+                        <TextField
+                          fullWidth
+                          label="Name of Event"
+                          margin="normal"
+                          value={event.eventName}
+                          onChange={(e) =>
+                            handleEventChange(e, index, "eventName")
+                          }
+                          disabled={!event.isEditing} // Disable if not editing
+                        />
 
-                        <IconButton onClick={() => handleEditMember(member)}>
+                        <TextField
+                          fullWidth
+                          label="Internal/External"
+                          margin="normal"
+                          value={event.internalExternal}
+                          onChange={(e) =>
+                            handleEventChange(e, index, "internalExternal")
+                          }
+                          disabled={!event.isEditing} // Disable if not editing
+                        />
+
+                        <TextField
+                          fullWidth
+                          label="National/International"
+                          margin="normal"
+                          value={event.nationalInternational}
+                          onChange={(e) =>
+                            handleEventChange(e, index, "nationalInternational")
+                          }
+                          disabled={!event.isEditing} // Disable if not editing
+                        />
+
+                        <IconButton onClick={() => handleEditEvent(index)}>
                           <EditIcon />
                         </IconButton>
-                        <IconButton onClick={() => handleDeleteMember(member)}>
+
+                        <IconButton
+                          onClick={() => handleDeleteEvent(event._id)}
+                        >
                           <DeleteIcon color="secondary" />
                         </IconButton>
+
+                        {event.isEditing && (
+                          <Button onClick={() => handleSaveEditEvent(index)}>
+                            Save
+                          </Button>
+                        )}
                       </Box>
-                    );
-                  })}
+                    ))}
 
-                  {addMembers.map((member, index) => (
-                    <Box key={index} sx={{ mb: 2, position: "relative" }}>
-                      <Typography variant="subtitle1">
-                        Member {index + 1}
-                      </Typography>
-                      <TextField
-                        fullWidth
-                        label="Name"
-                        margin="normal"
-                        value={member.name}
-                        onChange={(e) => handleMemberChange(e, index, "name")}
-                      />
-                      <TextField
-                        fullWidth
-                        label="Enrolment Number"
-                        margin="normal"
-                        value={member.enrollmentId} // changed to enrollmentId
-                        onChange={
-                          (e) => handleMemberChange(e, index, "enrollmentId") // changed to enrollmentId
-                        }
-                      />
-                      <TextField
-                        fullWidth
-                        label="Email ID"
-                        margin="normal"
-                        value={member.email}
-                        onChange={(e) => handleMemberChange(e, index, "email")}
-                      />
-                      <TextField
-                        fullWidth
-                        label="Position"
-                        margin="normal"
-                        value={member.position}
-                        onChange={(e) =>
-                          handleMemberChange(e, index, "position")
-                        }
-                      />
-                      <Typography>Member's Pic</Typography>
-                      <ImageUpload
-                        onImageUpload={(file) =>
-                          handleImageUploadForMember(file, index)
-                        }
-                      />
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleRemoveData(index)}
-                        sx={{ position: "absolute", top: 0, right: 0 }}
-                      >
-                        Remove Member
-                      </Button>
-                    </Box>
-                  ))}
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={handleAddMember}
-                    startIcon={<AddIcon />}
-                  >
-                    Add Member
-                  </Button>
-                </Box>
-
-                <Box mt={4}>
-                  <Typography variant="h6" gutterBottom>
-                    Existing Events
-                  </Typography>
-                  {events.map((event, index) => (
-                    <Box key={event._id} sx={{ mb: 2, position: "relative" }}>
-                      <Typography variant="subtitle1">
-                        {event.eventName}
-                      </Typography>
-
-                      <TextField
-                        fullWidth
-                        label="Date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        margin="normal"
-                        value={event.date && event.date.split("T")[0]} // Ensure this is properly formatted
-                        onChange={(e) => handleEventChange(e, index, "date")}
-                        disabled={!event.isEditing} // Disable if not editing
-                      />
-
-                      <TextField
-                        fullWidth
-                        label="Name of Event"
-                        margin="normal"
-                        value={event.eventName}
-                        onChange={(e) =>
-                          handleEventChange(e, index, "eventName")
-                        }
-                        disabled={!event.isEditing} // Disable if not editing
-                      />
-
-                      <TextField
-                        fullWidth
-                        label="Internal/External"
-                        margin="normal"
-                        value={event.internalExternal}
-                        onChange={(e) =>
-                          handleEventChange(e, index, "internalExternal")
-                        }
-                        disabled={!event.isEditing} // Disable if not editing
-                      />
-
-                      <TextField
-                        fullWidth
-                        label="National/International"
-                        margin="normal"
-                        value={event.nationalInternational}
-                        onChange={(e) =>
-                          handleEventChange(e, index, "nationalInternational")
-                        }
-                        disabled={!event.isEditing} // Disable if not editing
-                      />
-
-                      <IconButton onClick={() => handleEditEvent(index)}>
-                        <EditIcon />
-                      </IconButton>
-
-                      <IconButton onClick={() => handleDeleteEvent(event._id)}>
-                        <DeleteIcon color="secondary" />
-                      </IconButton>
-
-                      {event.isEditing && (
-                        <Button onClick={() => handleSaveEditEvent(index)}>
-                          Save
+                    <Typography variant="h6" gutterBottom>
+                      Add Events
+                    </Typography>
+                    {newEvents.map((event, index) => (
+                      <Box key={index} sx={{ mb: 2, position: "relative" }}>
+                        <TextField
+                          fullWidth
+                          label="Date"
+                          type="date"
+                          InputLabelProps={{ shrink: true }}
+                          margin="normal"
+                          value={event.date}
+                          onChange={(e) =>
+                            handleNewEventChange(e, index, "date")
+                          }
+                        />
+                        <TextField
+                          fullWidth
+                          label="Name of Event"
+                          margin="normal"
+                          value={event.eventName}
+                          onChange={(e) =>
+                            handleNewEventChange(e, index, "eventName")
+                          }
+                        />
+                        <TextField
+                          fullWidth
+                          label="Internal/External"
+                          margin="normal"
+                          value={event.internalExternal}
+                          onChange={(e) =>
+                            handleNewEventChange(e, index, "internalExternal")
+                          }
+                        />
+                        <TextField
+                          fullWidth
+                          label="National/International"
+                          margin="normal"
+                          value={event.nationalInternational}
+                          onChange={(e) =>
+                            handleNewEventChange(
+                              e,
+                              index,
+                              "nationalInternational"
+                            )
+                          }
+                        />
+                        <Button onClick={() => handleRemoveNewEvent(index)}>
+                          Remove Event
                         </Button>
-                      )}
-                    </Box>
-                  ))}
+                      </Box>
+                    ))}
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleAddEvent}
+                      startIcon={<AddIcon />}
+                    >
+                      Add Event
+                    </Button>
+                  </Box>
 
-                  <Typography variant="h6" gutterBottom>
-                    Add Events
-                  </Typography>
-                  {newEvents.map((event, index) => (
-                    <Box key={index} sx={{ mb: 2, position: "relative" }}>
-                      <TextField
-                        fullWidth
-                        label="Date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        margin="normal"
-                        value={event.date}
-                        onChange={(e) => handleNewEventChange(e, index, "date")}
-                      />
-                      <TextField
-                        fullWidth
-                        label="Name of Event"
-                        margin="normal"
-                        value={event.eventName}
-                        onChange={(e) =>
-                          handleNewEventChange(e, index, "eventName")
-                        }
-                      />
-                      <TextField
-                        fullWidth
-                        label="Internal/External"
-                        margin="normal"
-                        value={event.internalExternal}
-                        onChange={(e) =>
-                          handleNewEventChange(e, index, "internalExternal")
-                        }
-                      />
-                      <TextField
-                        fullWidth
-                        label="National/International"
-                        margin="normal"
-                        value={event.nationalInternational}
-                        onChange={(e) =>
-                          handleNewEventChange(
-                            e,
-                            index,
-                            "nationalInternational"
-                          )
-                        }
-                      />
-                      <Button onClick={() => handleRemoveNewEvent(index)}>
-                        Remove Event
-                      </Button>
-                    </Box>
-                  ))}
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={handleAddEvent}
-                    startIcon={<AddIcon />}
-                  >
-                    Add Event
-                  </Button>
-                </Box>
+                  <Box mt={4}>
+                    <Typography variant="h6" gutterBottom>
+                      Proposed event tentatively scheduled on
+                    </Typography>
+                    <TextField
+                      fullWidth
+                      label="Proposed Date"
+                      type="date"
+                      InputLabelProps={{ shrink: true }}
+                      margin="normal"
+                      value={tentativeDate}
+                      onChange={(e) => setTentativeDate(e.target.value)}
+                    />
+                  </Box>
 
-                <Box mt={4}>
-                  <Typography variant="h6" gutterBottom>
-                    Proposed event tentatively scheduled on
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    label="Proposed Date"
-                    type="date"
-                    InputLabelProps={{ shrink: true }}
-                    margin="normal"
-                    value={tentativeDate}
-                    onChange={(e) => setTentativeDate(e.target.value)}
-                  />
-                </Box>
-
-                <Box
-                  mt={4}
-                  sx={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={handleClear}
+                  <Box
+                    mt={4}
+                    sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    Clear
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmitData}
-                  >
-                    Submit
-                  </Button>
-                </Box>
-              </form>
-            </CardContent>
-          </Card>
-        )}
-        <ActionCards className = {styles["details-card"]} selectedAction={selectedAction} />
-        <BookedVenues className = {styles["details-card"]} selectedAction={selectedAction} />
-        <EventsRegistry className={styles["details-card"]} selectedAction={selectedAction} role={"chairperson"}/>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={handleClear}
+                    >
+                      Clear
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSubmitData}
+                    >
+                      Submit
+                    </Button>
+                  </Box>
+                </form>
+              </CardContent>
+            </Card>
+          )}
+          <ActionCards
+            className={styles["details-card"]}
+            selectedAction={selectedAction}
+          />
+          <BookedVenues
+            className={styles["details-card"]}
+            selectedAction={selectedAction}
+          />
+          <EventsRegistry
+            className={styles["details-card"]}
+            selectedAction={selectedAction}
+            role={"chairperson"}
+          />
         </div>
-        </div>
-        <div className={styles["hamburger-icon"]} onClick={toggleSidebar}>
+      </div>
+      <div className={styles["hamburger-icon"]} onClick={toggleSidebar}>
         <MenuIcon />
       </div>
-        </div>
+    </div>
   );
 };
 

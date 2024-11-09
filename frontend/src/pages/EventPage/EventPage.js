@@ -75,8 +75,12 @@ const EventPage = () => {
           gutterBottom
           align="center"
           mt={10}
-          mb={10}
-          style={{ fontWeight: "bolder", color: "#4086ea", fontSize: "3rem" }}
+          mb={5}
+          sx={{
+            fontWeight: "bolder",
+            color: "#4086ea",
+            fontSize: { xs: "2rem", sm: "3rem" }, // Responsive font size
+          }}
         >
           Check Out Our Events...
         </Typography>
@@ -182,7 +186,9 @@ const Section = ({ title, events, clubName, status, openEventModal }) => {
   );
 
   return filteredEvents.length > 0 ? (
-    <Box sx={{ mb: 4 }}> {/* Added margin-bottom */}
+    <Box sx={{ mb: 4 }}>
+      {" "}
+      {/* Added margin-bottom */}
       <Typography variant="h6" gutterBottom>
         {title}
       </Typography>

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { sendForgotPasswordLink } from '../../services/forgotPasswordService';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import './ForgotPasswordForm.css';
+import LoadingButton from '../../components/LoadingButton';
+import LoadingForm from '../../components/LoadingForm';
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState('');
@@ -23,7 +25,7 @@ const ForgotPasswordForm = () => {
         <Typography variant="h4" gutterBottom>
           Forgot Password
         </Typography>
-        <form onSubmit={handleForgotPassword}>
+        <LoadingForm onSubmit={handleForgotPassword}>
           <TextField
             fullWidth
             margin="normal"
@@ -35,10 +37,10 @@ const ForgotPasswordForm = () => {
             autoComplete="off"
             size="small"
           />
-          <Button fullWidth variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+          <LoadingButton fullWidth variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
             Send Reset Link
-          </Button>
-        </form>
+          </LoadingButton>
+        </LoadingForm>
         <Box sx={{ mt: 2, textAlign: 'left' }}>
           <Typography variant="body2">
             <a href="/login">Back to Login</a>

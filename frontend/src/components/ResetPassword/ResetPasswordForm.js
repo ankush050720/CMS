@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { resetPassword } from '../../services/resetPasswordService';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import './ResetPasswordForm.css'; // Assuming the CSS for background image
+import LoadingButton from '../../components/LoadingButton';
+import LoadingForm from '../../components/LoadingForm';
 
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState('');
@@ -24,7 +26,7 @@ const ResetPasswordForm = () => {
         <Typography variant="h4" gutterBottom>
           Reset Password
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <LoadingForm onSubmit={handleSubmit}>
           <TextField
             fullWidth
             margin="normal"
@@ -37,16 +39,16 @@ const ResetPasswordForm = () => {
             autoComplete="off"
             size="small" // Compact field size
           />
-          <Button fullWidth variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+          <LoadingButton fullWidth variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
             Submit
-          </Button>
+          </LoadingButton>
 
           {message && (
             <Typography color="error" sx={{ mt: 2 }}>
               {message}
             </Typography>
           )}
-        </form>
+        </LoadingForm>
       </Box>
     </div>
   );

@@ -18,6 +18,8 @@ import {
 } from "@mui/material";
 import { useMediaQuery } from "@mui/material"; // Import for media query
 import "./RegisteredEventPage.css";
+import LoadingButton from '../../components/LoadingButton';
+import LoadingForm from '../../components/LoadingForm';
 
 const RegisteredEvents = () => {
   const [team, setTeam] = useState(null);
@@ -70,8 +72,10 @@ const RegisteredEvents = () => {
     try {
       await authService.addTeamMember(team._id, newMemberEmail);
       setSuccess("Invitation sent successfully");
+      alert("Invitation sent successfully");
       setError("");
     } catch (err) {
+      alert("Error adding member");
       setError(err.response?.data?.message || "Error adding member");
       setSuccess("");
     }
@@ -110,6 +114,7 @@ const RegisteredEvents = () => {
     if (!isConfirmed) return;
 
     try {
+      console.log(team , eventId);
       const response = await eventService.cancelRegistration(team._id, eventId);
 
       if (response.success) {
@@ -156,7 +161,7 @@ const RegisteredEvents = () => {
               <Typography variant="h6">
                 <strong>Team Name:</strong> {team.name}
               </Typography>
-              <form onSubmit={handleUpdateTeamName}>
+              <LoadingForm onSubmit={handleUpdateTeamName}>
                 <TextField
                   fullWidth
                   variant="outlined"
@@ -166,16 +171,16 @@ const RegisteredEvents = () => {
                   sx={{ marginBottom: 2 }}
                   required
                 />
-                <Button type="submit" variant="contained" color="primary">
+                <LoadingButton type="submit" variant="contained" color="primary">
                   Update Team Name
-                </Button>
-              </form>
+                </LoadingButton>
+              </LoadingForm>
 
               <Typography variant="h6" sx={{ marginTop: 2 }}>
                 <strong>Members:</strong> {team.members.join(", ")}
               </Typography>
 
-              <form onSubmit={handleAddMember} style={{ marginTop: "1rem" }}>
+              <LoadingForm onSubmit={handleAddMember} style={{ marginTop: "1rem" }}>
                 <TextField
                   fullWidth
                   variant="outlined"
@@ -185,19 +190,19 @@ const RegisteredEvents = () => {
                   sx={{ marginBottom: 2 }}
                   required
                 />
-                <Button type="submit" variant="contained" color="primary">
+                <LoadingButton type="submit" variant="contained" color="primary">
                   Send Invitation
-                </Button>
-              </form>
+                </LoadingButton>
+              </LoadingForm>
 
-              <Button
+              <LoadingButton
                 onClick={handleLeaveTeam}
                 variant="outlined"
                 color="secondary"
                 sx={{ marginTop: 2 }}
               >
                 Leave Team
-              </Button>
+              </LoadingButton>
 
               {error && (
                 <Alert severity="error" sx={{ marginTop: 2 }}>
@@ -213,7 +218,7 @@ const RegisteredEvents = () => {
           ) : (
             <Box>
               <Typography>You are not part of any team yet.</Typography>
-              <form onSubmit={handleCreateTeam} style={{ marginTop: "1rem" }}>
+              <LoadingForm onSubmit={handleCreateTeam} style={{ marginTop: "1rem" }}>
                 <TextField
                   fullWidth
                   variant="outlined"
@@ -223,10 +228,10 @@ const RegisteredEvents = () => {
                   sx={{ marginBottom: 2 }}
                   required
                 />
-                <Button type="submit" variant="contained" color="primary">
+                <LoadingButton type="submit" variant="contained" color="primary">
                   Create Team
-                </Button>
-              </form>
+                </LoadingButton>
+              </LoadingForm>
             </Box>
           )}
 
@@ -247,7 +252,7 @@ const RegisteredEvents = () => {
                       ).toLocaleDateString()} at ${event.time}`}
                     />
                     {event.status === "upcoming" && (
-                      <Button
+                      <LoadingButton
                         variant="outlined"
                         color="error"
                         sx={{ marginLeft: 2 }}
@@ -256,7 +261,7 @@ const RegisteredEvents = () => {
                         }
                       >
                         Cancel Registration
-                      </Button>
+                      </LoadingButton>
                     )}
                   </ListItem>
                 );

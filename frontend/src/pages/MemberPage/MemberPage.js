@@ -23,7 +23,10 @@ const MemberPage = () => {
   }, []);
 
   return (
-    <div style={{ backgroundColor: "whitesmoke", paddingTop:"40px", paddingBottom:"50px" }}>
+    <div style={{ backgroundColor: "whitesmoke", paddingTop:"40px", paddingBottom:"50px", 
+      paddingLeft: window.innerWidth < 768 ? "0px" : "initial",
+      paddingRight: window.innerWidth < 768 ? "0px" : "initial",
+     }}>
     <Header email={email} className="member-header" />
     <div style={{ width: window.innerWidth < 768 ? "95%" : "80%",
           margin: "0 auto" }}>

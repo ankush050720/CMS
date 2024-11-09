@@ -4,7 +4,6 @@
   align-items: center;         /* Center vertically */
   justify-content: flex-start; /* Align form to the left */
   height: 100vh;               /* Full screen height */
-  width: 100vw;                /* Full screen width */
   padding-left: 5%;            /* Padding to push form slightly from left */
   background-image: url('/public/bgimg.jpg'); /* Set your background image */
   background-size: cover;      /* Ensure the background covers the full screen */

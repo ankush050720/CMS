@@ -19,6 +19,7 @@ import PaymentService from "../../services/paymentService";
 import EventRegService from "../../services/eventRegService";
 import { getScore } from "../../services/scoreService";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
+import LoadingButton from "../LoadingButton";
 
 // Slide transition component
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -210,31 +211,31 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
     switch (event.status) {
       case "upcoming":
         return (
-          <Button onClick={handlePayment} variant="contained" color="primary">
+          <LoadingButton onClick={handlePayment} variant="contained" color="primary">
             Register Now
-          </Button>
+          </LoadingButton>
         );
       case "ongoing":
         return (
-          <Button disabled variant="contained" color="primary">
+          <LoadingButton disabled variant="contained" color="primary">
             Registration Closed
-          </Button>
+          </LoadingButton>
         );
       case "completed":
         return (
-          <Button onClick={handleFeedback} variant="contained" color="primary">
+          <LoadingButton onClick={handleFeedback} variant="contained" color="primary">
             Give Feedback
-          </Button>
+          </LoadingButton>
         );
       case "feedbackClosed":
         return (
-          <Button
+          <LoadingButton
             onClick={handleShowFeedback}
             variant="contained"
             color="secondary"
           >
             Show Feedback
-          </Button>
+          </LoadingButton>
         );
       default:
         return null;
@@ -319,9 +320,9 @@ const EventModal = ({ event, isOpen, onRequestClose }) => {
         <DialogTitle>Feedback Results</DialogTitle>
         <DialogContent>{renderFeedbackContent()}</DialogContent>
         <DialogActions>
-          <Button onClick={() => setFeedbackModalOpen(false)} color="primary">
+          <LoadingButton onClick={() => setFeedbackModalOpen(false)} color="primary">
             Close
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </>

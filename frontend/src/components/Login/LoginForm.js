@@ -3,6 +3,8 @@ import { login } from '../../services/loginService';
 import { useRoleBasedRedirect } from '../../utils/roleBasedRedirect'; // Role-based redirect utility
 import { TextField, Button, Typography, Box } from '@mui/material';
 import './LoginForm.css'; // Link to the custom styles
+import LoadingButton from '../../components/LoadingButton';
+import LoadingForm from '../../components/LoadingForm';
 
 const LoginForm = () => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
@@ -27,7 +29,7 @@ const LoginForm = () => {
         <Typography variant="h4" align="left" gutterBottom>
           Login
         </Typography>
-        <form onSubmit={handleLogin} autoComplete="off">
+        <LoadingForm onSubmit={handleLogin} autoComplete="off">
           {/* Hidden fields to prevent autofill */}
           <input type="text" name="fake-username" style={{ display: 'none' }} />
           <input type="password" name="fake-password" style={{ display: 'none' }} />
@@ -55,7 +57,7 @@ const LoginForm = () => {
             name="real-password"
             autoComplete="new-password" // Prevents autofill
           />
-          <Button
+          <LoadingButton
             fullWidth
             variant="contained"
             color="primary"
@@ -63,8 +65,8 @@ const LoginForm = () => {
             sx={{ mt: 2 }}
           >
             Login
-          </Button>
-        </form>
+          </LoadingButton>
+        </LoadingForm>
         <Box sx={{ mt: 2, textAlign: 'left' }}>
           <Typography variant="body2">
             <a href="/forgot-password">Forgot Password?</a>

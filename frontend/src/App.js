@@ -23,7 +23,9 @@ import Contact from './pages/ContactPage/ContactPage';
 import TermsAndConditions from './pages/Policy/TermsPage';
 import PrivacyPolicy from './pages/Policy/PolicyPage';
 import RefundsAndCancellations from './pages/Policy/RefundsPage';
+import ClubApplication from './pages/ClubApplicationPage';
 import ScrollToTop from './utils/ScrollToTop';
+import { LoadingProvider } from './components/LoadingContext';
 
 const App = () => {
   const [showCookiePopup, setShowCookiePopup] = useState(false);
@@ -43,6 +45,7 @@ const App = () => {
   };
 
   return (
+    <LoadingProvider>
     <Router>
       <Loader>
         <div>
@@ -70,10 +73,12 @@ const App = () => {
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/refunds-and-cancellations" element={<RefundsAndCancellations />} />
+                <Route path="/club-registration" element={<ClubApplication />} />
               </Routes>
         </div>
       </Loader>
     </Router>
+    </LoadingProvider>
   );
 };
 

@@ -12,6 +12,7 @@ const facultyMentorRoute = require('./routes/facultyMentorRoute')
 const scoreRoute = require('./routes/scoreRoute');
 const adminRoute = require('./routes/adminRoute');
 const chatRoute = require('./routes/chatRoute');
+const applicationRoute = require('./routes/applicationRoute');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -50,6 +51,7 @@ app.use('/api/proposals', facultyMentorRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/score', scoreRoute);
 app.use('/api/chat', chatRoute);
+app.use('/api/applications', applicationRoute);
 
 app.get('/', (req, res) => {
   res.send('Hello from backend!');
