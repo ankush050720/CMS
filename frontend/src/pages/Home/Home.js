@@ -171,6 +171,10 @@ const Home = () => {
               font-size: 1.1rem !important;
               margin: 0 auto;
             }
+
+            .video-player iframe {
+              margin-top: 5%;
+            }
           }
 
         `}</style>
