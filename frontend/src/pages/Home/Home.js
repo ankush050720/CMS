@@ -166,6 +166,13 @@ const Home = () => {
               margin-bottom: 5rem;
             }
           }
+          @media (max-height: 400px) {
+            h2 {
+              font-size: 1.1rem !important;
+              margin: 0 auto;
+            }
+          }
+
         `}</style>
       </div>
     );

@@ -74,7 +74,7 @@ const BookedVenues = ({ className, selectedAction }) => {
               margin="normal"
             />
             {Object.keys(groupedEvents).length > 0 ? (
-              <TableContainer component={Paper} style={{ marginTop: "20px", maxWidth: "100%", overflowX: "auto" }}>
+              <TableContainer component={Paper} style={{ marginTop: "20px" ,overflowX: "auto" }}>
                 <Table>
                   <TableHead>
                     <TableRow>

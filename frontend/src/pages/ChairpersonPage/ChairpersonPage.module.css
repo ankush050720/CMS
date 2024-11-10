@@ -12,16 +12,18 @@
   height: fit-content;
   flex-direction: column;
   flex-grow: 1;
-  margin: 0 40px 10px 315px;
+  max-width:calc(100% - 330px);
+  padding-left: 290px;
+  margin: 10px auto;
 }
 
 /* Header styling - now fixed */
 .chair-header {
   position: fixed !important;
   left: 310px !important;
-  width: calc(100% - 345px) !important;
+  width: calc(100% - 330px) !important;
   border-radius: 8px;
-  padding: 15px;
+  padding: 15px !important;
   z-index: 100;
 }
 
@@ -183,7 +185,7 @@
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1) !important;
-  word-break: keep-all;
+  word-break: keep-all !important;
 }
 
 .action-card:hover {
@@ -261,7 +263,7 @@ button:hover {
 
   .dashboard-body {
     padding: 10px;
-    margin: 0;
+    min-width: 95%;
     margin-top: 100px;
   }
 
