@@ -424,6 +424,7 @@
 
   .button {
     width: 100px;
+    height: 38px;
     padding: 10px;
   }
 
@@ -491,6 +492,7 @@
 
   .button {
     width: 90px;
+    height: 35px;
     font-size: 0.9rem;
   }
 
@@ -582,5 +584,13 @@
 
   .carousel h1 {
     font-size: 2.2rem;
+  }
+}
+
+@media (max-height:400px) {
+  .intro-header {
+    scale:0.7;
+    height: calc(100vh - 60px);
+    margin-top: 30px;
   }
 }

@@ -53,6 +53,7 @@
 
 @media (max-width: 768px) {
   /* Hide the nav links and show the menu icon */
+
   .nav {
     position: absolute;
     top: 60px;

@@ -156,16 +156,19 @@ const Home = () => {
             }
 
             h2 {
-              font-size: 1.4rem !important;
-              top: 8%;
+              font-size: 1.2rem !important;
+              top: 5.5%;
             }
 
             .video-player iframe {
-              height: 50vh;
-              margin-top: 10%;
-              margin-bottom: 5rem;
+              height: 40vh;
+              margin-top: 23%;
+              margin-bottom: 8rem;
             }
           }
+
+          @media (max-height: 400px) {
+
         `}</style>
       </div>
     );
