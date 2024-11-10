@@ -173,7 +173,7 @@ const Home = () => {
             }
 
             .video-player iframe {
-              margin-top: 5%;
+              margin-top: 7%;
             }
           }
 
