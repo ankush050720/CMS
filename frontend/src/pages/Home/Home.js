@@ -64,117 +64,110 @@ const Home = () => {
       <div
         className="video-player"
         style={{
-          position: "relative",
           width: "100%",
-          backgroundImage: 'url("/video-bg.jpg")',
-          backgroundPosition: "center top",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          minHeight: "100vh",
-          zIndex: 1,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <h2
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            position: "absolute",
-            top: "8%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            color: "white",
-            fontSize: "2.5rem",
-            zIndex: 2,
-            textAlign: "center",
-            margin: "0",
-          }}
-        >
-          Know Our Campus
-        </h2>
-  
+        {/* Background div covering only 50% height */}
         <div
           style={{
             position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "90%",
-            maxWidth: "800px",
-            zIndex: 3,
-            padding: "80px 0 20px", // Adds bottom padding to iframe area
-          }}
-        >
-          <iframe
-            width="100%"
-            src={videoUrl}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            style={{
-              height: "60vh",
-              maxHeight: "500px",
-              borderRadius: "8px",
-            }}
-          ></iframe>
-        </div>
-  
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
+            top: "0",
+            left: "0",
             width: "100%",
             height: "50%",
-            backgroundColor: "#FBECFC",
-            zIndex: 1,
+            backgroundImage: 'url("/video-bg.jpg")',
+            backgroundPosition: "center top",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            zIndex: -1,
           }}
         ></div>
   
-        <style>{`
+        {/* Content container */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            paddingTop: "20px",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "Poppins, sans-serif",
+              color: "white",
+              fontSize: "2.5rem",
+              textAlign: "center",
+              margin: "0",
+              padding: "10px 0",
+            }}
+          >
+            Know Our Campus
+          </h2>
+  
+          <div
+            style={{
+              width: "90%",
+              maxWidth: "800px",
+              marginTop: "20px",
+              position: "relative",
+              paddingBottom: "56.25%", // 16:9 aspect ratio
+              height: "0",
+              overflow: "hidden",
+              borderRadius: "8px",
+              marginBottom: "50px", // Adds padding at the bottom of the iframe container
+            }}
+          >
+            <iframe
+              src={videoUrl}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{
+                position: "absolute",
+                top: "0",
+                left: "0",
+                width: "100%",
+                height: "100%",
+              }}
+            ></iframe>
+          </div>
+        </div>
+  
+        <style jsx>{`
           .video-player h2 {
-            font-size: 2.5rem;
+            font-size: 2.5rem !important;
           }
   
           @media (max-width: 900px) {
             .video-player h2 {
-              font-size: 1.8rem;
-            }
-  
-            .video-player iframe {
-              height: 50vh;
-            }
-  
-            .video-player > div {
-              padding-top: 70px; /* Reduced padding for smaller screens */
-              padding-bottom: 20px; /* Extra padding at bottom */
+              font-size: 1.8rem !important;
             }
           }
-
+  
           @media (max-width: 768px) {
             .video-player h2 {
-              font-size: 1.7rem !important;
+              font-size: 1.6rem !important;
             }
+          }
   
           @media (max-width: 576px) {
             .video-player h2 {
-              font-size: 1.2rem !important;
-            }
-  
-            .video-player iframe {
-              height: 40vh;
-            }
-  
-            .video-player > div {
-              padding-top: 60px; /* Reduced padding for smaller screens */
-              padding-bottom: 20px; /* Extra padding at bottom */
+              font-size: 1.4rem !important;
             }
           }
         `}</style>
       </div>
     );
-  };  
+  };
   
-  
-
   const openClubModal = (club) => {
     setSelectedClub(club);
     setIsClubModalOpen(true);
