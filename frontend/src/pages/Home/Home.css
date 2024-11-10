@@ -584,11 +584,3 @@
     font-size: 2.2rem;
   }
 }
-
-/* For screens shorter than 400px */
-@media (max-height: 400px) {
-  .intro-header {
-    scale: 0.5;
-    padding-bottom: 0px;
-  }
-}
