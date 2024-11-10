@@ -68,11 +68,10 @@ const Home = () => {
           width: "100%",
           backgroundImage: 'url("/video-bg.jpg")',
           backgroundPosition: "center top",
-          backgroundSize: "100% 50%",
+          backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
+          minHeight: "100vh",
           zIndex: 1,
-          opacity: 1, // Set to 1 for always visible
-          transform: "translateY(0)", // No translation needed
         }}
       >
         <h2
@@ -86,20 +85,22 @@ const Home = () => {
             fontSize: "2.5rem",
             zIndex: 2,
             textAlign: "center",
+            margin: "0",
           }}
         >
           Know Our Campus
         </h2>
-
+  
         <div
           style={{
             position: "absolute",
-            top: "45%",
+            top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "70%",
+            width: "90%",
+            maxWidth: "800px",
             zIndex: 3,
-            marginTop: "75px",
+            padding: "80px 0 20px", // Adds bottom padding to iframe area
           }}
         >
           <iframe
@@ -109,9 +110,14 @@ const Home = () => {
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            style={{
+              height: "60vh",
+              maxHeight: "500px",
+              borderRadius: "8px",
+            }}
           ></iframe>
         </div>
-
+  
         <div
           style={{
             position: "absolute",
@@ -122,57 +128,52 @@ const Home = () => {
             zIndex: 1,
           }}
         ></div>
-
+  
         <style>{`
-          .video-player {
-            min-height: 800px; /* Base height for larger screens */
+          .video-player h2 {
+            font-size: 2.5rem;
           }
-
-          .video-player iframe {
-            height: 80vh; /* Default iframe height */
-          }
-
+  
           @media (max-width: 900px) {
-            .video-player {
-              min-height: 100vh; /* Reduce min-height for smaller screens */
-              background-size: cover;
+            .video-player h2 {
+              font-size: 1.8rem;
             }
-            
-            h2 {
-              font-size: 1.8rem !important;
-              top: 8%;
-            }
-
+  
             .video-player iframe {
-              height: 60vh; /* Responsive iframe height */
-              margin-top: 35%;
-              margin-bottom: 12rem;
+              height: 50vh;
+            }
+  
+            .video-player > div {
+              padding-top: 70px; /* Reduced padding for smaller screens */
+              padding-bottom: 20px; /* Extra padding at bottom */
             }
           }
 
-          @media (max-width: 600px) {
-            .video-player {
-              min-height: 100vh; /* Further reduce for smaller screens */
+          @media (max-width: 768px) {
+            .video-player h2 {
+              font-size: 1.7rem !important;
             }
-
-            h2 {
+  
+          @media (max-width: 576px) {
+            .video-player h2 {
               font-size: 1.2rem !important;
-              top: 5.5%;
             }
-
+  
             .video-player iframe {
               height: 40vh;
-              margin-top: 23%;
-              margin-bottom: 8rem;
+            }
+  
+            .video-player > div {
+              padding-top: 60px; /* Reduced padding for smaller screens */
+              padding-bottom: 20px; /* Extra padding at bottom */
             }
           }
-
-          @media (max-height: 400px) {
-
         `}</style>
       </div>
     );
-};
+  };  
+  
+  
 
   const openClubModal = (club) => {
     setSelectedClub(club);
