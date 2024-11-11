@@ -62,14 +62,12 @@ const Home = () => {
   const VideoPlayer = ({ videoUrl }) => {
     return (
       <div
-        style={{ minHeight : '100vh' }}
-      >
-      <div
         className="video-player"
         style={{
           width: "100%",
           position: "relative",
           overflow: "hidden",
+          minHeight: "100vh"
         }}
       >
         {/* Background div covering only 50% height */}
@@ -167,7 +165,6 @@ const Home = () => {
             }
           }
         `}</style>
-      </div>
       </div>
     );
   };
