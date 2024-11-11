@@ -117,7 +117,7 @@ const Home = () => {
               maxWidth: "800px",
               marginTop: "20px",
               position: "relative",
-              paddingBottom: "40%",
+              paddingBottom: "47%",
               height: "0",
               overflow: "hidden",
               borderRadius: "8px",
