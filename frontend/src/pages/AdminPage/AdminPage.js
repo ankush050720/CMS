@@ -597,7 +597,7 @@ const AdminPage = () => {
                                 width="100%" // Ensures the buttons stay within the container width
                                 maxWidth="800px"
                               >
-                                <Button
+                                <LoadingButton
                                   variant="contained"
                                   color="primary"
                                   onClick={() =>
@@ -610,9 +610,9 @@ const AdminPage = () => {
                                   sx={{ flex: "1 1 150px" }}
                                 >
                                   Accept
-                                </Button>
+                                </LoadingButton>
 
-                                <Button
+                                <LoadingButton
                                   variant="contained"
                                   color="secondary"
                                   onClick={() =>
@@ -625,7 +625,7 @@ const AdminPage = () => {
                                   sx={{ flex: "1 1 150px" }}
                                 >
                                   Decline
-                                </Button>
+                                </LoadingButton>
                               </Box>
                             </Box>
                           )}
@@ -715,13 +715,13 @@ const AdminPage = () => {
                     }}
                   />
                 </FormControl>
-                <Button
+                <LoadingButton
                   variant="contained"
                   color="secondary"
                   onClick={handleAddClub}
                 >
                   Add Club
-                </Button>
+                </LoadingButton>
               </CardContent>
             </Card>
           )}
@@ -745,13 +745,13 @@ const AdminPage = () => {
                     ))}
                   </Select>
                 </FormControl>
-                <Button
+                <LoadingButton
                   variant="contained"
                   color="secondary"
                   onClick={handleRemoveClub}
                 >
                   Remove Club
-                </Button>
+                </LoadingButton>
               </CardContent>
             </Card>
           )}
@@ -794,14 +794,14 @@ const AdminPage = () => {
                   </Select>
                 </FormControl>
 
-                <Button
+                <LoadingButton
                   variant="contained"
                   color="primary"
                   onClick={handleAddFacultySubmit}
                   disabled={!selectedClubToAddFaculty || !selectedUser}
                 >
                   Submit
-                </Button>
+                </LoadingButton>
               </CardContent>
             </Card>
           )}
@@ -825,14 +825,14 @@ const AdminPage = () => {
                     ))}
                   </Select>
                 </FormControl>
-                <Button
+                <LoadingButton
                   variant="contained"
                   color="primary"
                   onClick={handleRemoveFacultySubmit}
                   disabled={!selectedFacultyToRemove}
                 >
                   Remove Faculty
-                </Button>
+                </LoadingButton>
               </CardContent>
             </Card>
           )}

@@ -518,7 +518,7 @@ const FacultyMentorPage = () => {
                                 width="100%" // Ensures the buttons stay within the container width
                                 maxWidth="800px"
                               >
-                                <Button
+                                <LoadingButton
                                   variant="contained"
                                   color="primary"
                                   onClick={() =>
@@ -531,9 +531,9 @@ const FacultyMentorPage = () => {
                                   sx={{ flex: "1 1 150px" }}
                                 >
                                   Accept
-                                </Button>
+                                </LoadingButton>
 
-                                <Button
+                                <LoadingButton
                                   variant="contained"
                                   color="secondary"
                                   onClick={() =>
@@ -546,7 +546,7 @@ const FacultyMentorPage = () => {
                                   sx={{ flex: "1 1 150px" }}
                                 >
                                   Decline
-                                </Button>
+                                </LoadingButton>
                               </Box>
                             </Box>
                           )}
@@ -636,14 +636,14 @@ const FacultyMentorPage = () => {
                   </Select>
                 </FormControl>
 
-                <Button
+                <LoadingButton
                   variant="contained"
                   color="primary"
                   onClick={handleAddChairpersonSubmit}
                   disabled={!selectedRole || !selectedMember}
                 >
                   Submit
-                </Button>
+                </LoadingButton>
               </CardContent>
             </Card>
           )}
@@ -667,7 +667,7 @@ const FacultyMentorPage = () => {
                     <Typography variant="body1">
                       <b>Chairperson:</b> {clubLeaders.chairperson.email}
                     </Typography>
-                    <Button
+                    <LoadingButton
                       variant="contained"
                       color="secondary"
                       onClick={() =>
@@ -678,7 +678,7 @@ const FacultyMentorPage = () => {
                       }
                     >
                       Remove Chairperson
-                    </Button>
+                    </LoadingButton>
                   </Box>
                 )}
 
@@ -694,7 +694,7 @@ const FacultyMentorPage = () => {
                       <b>Vice Chairperson:</b>{" "}
                       {clubLeaders.viceChairperson.email}
                     </Typography>
-                    <Button
+                    <LoadingButton
                       variant="contained"
                       color="secondary"
                       onClick={() =>
@@ -705,7 +705,7 @@ const FacultyMentorPage = () => {
                       }
                     >
                       Remove Vice Chairperson
-                    </Button>
+                    </LoadingButton>
                   </Box>
                 )}
               </CardContent>

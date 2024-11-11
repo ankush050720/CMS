@@ -11,19 +11,21 @@ import {
   TableHead,
   TableRow,
   Paper,
+  CircularProgress, // Import CircularProgress
+  Box
 } from "@mui/material";
 import { getAllRegistry } from "../services/eventService";
 
 const EventsRegistry = ({ className, selectedAction, role }) => {
-  const [data, setData] = useState([]); // To store the response data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
-  const [searchQuery, setSearchQuery] = useState(""); // Search query state
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchAllRegistry = async () => {
       try {
-        const response = await getAllRegistry(role); // Fetch data with role
+        const response = await getAllRegistry(role);
         setData(response.data);
       } catch (error) {
         setError(error.message);
@@ -33,9 +35,8 @@ const EventsRegistry = ({ className, selectedAction, role }) => {
     };
 
     fetchAllRegistry();
-  }, [role]); // Dependency array includes role
+  }, [role]);
 
-  // Filtered data based on the search query
   const filteredData = data.filter(event => {
     const eventMatches = event.event.toLowerCase().includes(searchQuery.toLowerCase());
     const teamsMatch = event.teams.some(team =>
@@ -51,7 +52,9 @@ const EventsRegistry = ({ className, selectedAction, role }) => {
         <Card elevation={4} className={className} style={{ marginBottom: "20px", marginTop: "40px" }}>
           <CardContent>
             {loading ? (
-              <Typography variant="h6">Loading...</Typography>
+              <Box display="flex" justifyContent="center" marginTop="20px">
+                <CircularProgress />
+              </Box>
             ) : error ? (
               <Typography variant="h6" color="error">{error}</Typography>
             ) : (

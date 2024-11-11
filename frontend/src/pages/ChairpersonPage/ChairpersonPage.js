@@ -980,7 +980,7 @@ const ChairpersonPage = () => {
                 <Typography variant="h5" gutterBottom>
                   Propose Event
                 </Typography>
-                <form onSubmit={handleSubmit}>
+                <LoadingForm onSubmit={handleSubmit}>
                   <TextField
                     fullWidth
                     label="Name of Organizing Body"
@@ -1123,9 +1123,9 @@ const ChairpersonPage = () => {
                       />
                     </Box>
                   ))}
-                  <Button variant="outlined" onClick={addEquipmentField}>
+                  <LoadingButton variant="outlined" onClick={addEquipmentField}>
                     Add More Equipment
-                  </Button>
+                  </LoadingButton>
                   <TextField
                     fullWidth
                     multiline
@@ -1164,9 +1164,9 @@ const ChairpersonPage = () => {
                       />
                     </Box>
                   ))}
-                  <Button variant="outlined" onClick={addTravelField}>
+                  <LoadingButton variant="outlined" onClick={addTravelField}>
                     Add More Travel Expenses
-                  </Button>
+                  </LoadingButton>
                   <TextField
                     fullWidth
                     multiline
@@ -1192,15 +1192,15 @@ const ChairpersonPage = () => {
                     </Typography>
                   </Box>
 
-                  <Button
+                  <LoadingButton
                     fullWidth
                     variant="contained"
                     color="primary"
                     type="submit"
                   >
                     Submit Proposal
-                  </Button>
-                </form>
+                  </LoadingButton>
+                </LoadingForm>
               </CardContent>
             </Card>
           )}
@@ -1475,7 +1475,7 @@ const ChairpersonPage = () => {
                 <Typography variant="h5" gutterBottom>
                   Add Member
                 </Typography>
-                <form onSubmit={handleAddMemberSubmit}>
+                <LoadingForm onSubmit={handleAddMemberSubmit}>
                   <FormControl fullWidth margin="normal">
                     <InputLabel>Select Member</InputLabel>
                     <Select value={selectedUser} onChange={handleSelectChange}>
@@ -1490,15 +1490,15 @@ const ChairpersonPage = () => {
                       )}
                     </Select>
                   </FormControl>
-                  <Button
+                  <LoadingButton
                     fullWidth
                     variant="contained"
                     color="primary"
                     type="submit"
                   >
                     Add Member
-                  </Button>
-                </form>
+                  </LoadingButton>
+                </LoadingForm>
               </CardContent>
             </Card>
           )}
@@ -1509,7 +1509,7 @@ const ChairpersonPage = () => {
                 <Typography variant="h5" gutterBottom>
                   Remove Member
                 </Typography>
-                <form onSubmit={handleRemoveMember}>
+                <LoadingForm onSubmit={handleRemoveMember}>
                   <FormControl fullWidth margin="normal">
                     <InputLabel>Select Member</InputLabel>
                     <Select
@@ -1527,7 +1527,7 @@ const ChairpersonPage = () => {
                       )}
                     </Select>
                   </FormControl>
-                  <Button
+                  <LoadingButton
                     fullWidth
                     variant="contained"
                     color="primary"
@@ -1535,8 +1535,8 @@ const ChairpersonPage = () => {
                     disabled={removableMembers.length === 0} // Disable button if no members
                   >
                     Remove
-                  </Button>
-                </form>
+                  </LoadingButton>
+                </LoadingForm>
               </CardContent>
             </Card>
           )}
@@ -1547,7 +1547,7 @@ const ChairpersonPage = () => {
                 <Typography variant="h5" gutterBottom>
                   Change Roles
                 </Typography>
-                <form onSubmit={handleRoleChangeSubmit}>
+                <LoadingForm onSubmit={handleRoleChangeSubmit}>
                   <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel>Select Member</InputLabel>
                     <Select
@@ -1594,10 +1594,10 @@ const ChairpersonPage = () => {
                     </Select>
                   </FormControl>
 
-                  <Button type="submit" variant="contained" color="primary">
+                  <LoadingButton type="submit" variant="contained" color="primary">
                     Submit
-                  </Button>
-                </form>
+                  </LoadingButton>
+                </LoadingForm>
               </CardContent>
             </Card>
           )}
@@ -1609,7 +1609,7 @@ const ChairpersonPage = () => {
                   Change Club Data
                 </Typography>
 
-                <form>
+                <LoadingForm>
                   {/* Student Club/Chapter Name () */}
                   <TextField
                     fullWidth
@@ -1950,24 +1950,24 @@ const ChairpersonPage = () => {
                             handleImageUploadForMember(file, index)
                           }
                         />
-                        <Button
+                        <LoadingButton
                           variant="outlined"
                           color="secondary"
                           onClick={() => handleRemoveData(index)}
                           sx={{ position: "absolute", top: 0, right: 0 }}
                         >
                           Remove Member
-                        </Button>
+                        </LoadingButton>
                       </Box>
                     ))}
-                    <Button
+                    <LoadingButton
                       variant="outlined"
                       color="primary"
                       onClick={handleAddMember}
                       startIcon={<AddIcon />}
                     >
                       Add Member
-                    </Button>
+                    </LoadingButton>
                   </Box>
 
                   <Box mt={4}>
@@ -2035,9 +2035,9 @@ const ChairpersonPage = () => {
                         </IconButton>
 
                         {event.isEditing && (
-                          <Button onClick={() => handleSaveEditEvent(index)}>
+                          <LoadingButton onClick={() => handleSaveEditEvent(index)}>
                             Save
-                          </Button>
+                          </LoadingButton>
                         )}
                       </Box>
                     ))}
@@ -2089,19 +2089,19 @@ const ChairpersonPage = () => {
                             )
                           }
                         />
-                        <Button onClick={() => handleRemoveNewEvent(index)}>
+                        <LoadingButton onClick={() => handleRemoveNewEvent(index)}>
                           Remove Event
-                        </Button>
+                        </LoadingButton>
                       </Box>
                     ))}
-                    <Button
+                    <LoadingButton
                       variant="outlined"
                       color="primary"
                       onClick={handleAddEvent}
                       startIcon={<AddIcon />}
                     >
                       Add Event
-                    </Button>
+                    </LoadingButton>
                   </Box>
 
                   <Box mt={4}>
@@ -2123,22 +2123,22 @@ const ChairpersonPage = () => {
                     mt={4}
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Button
+                    <LoadingButton
                       variant="outlined"
                       color="secondary"
                       onClick={handleClear}
                     >
                       Clear
-                    </Button>
-                    <Button
+                    </LoadingButton>
+                    <LoadingButton
                       variant="contained"
                       color="primary"
                       onClick={handleSubmitData}
                     >
                       Submit
-                    </Button>
+                    </LoadingButton>
                   </Box>
-                </form>
+                </LoadingForm>
               </CardContent>
             </Card>
           )}

@@ -140,7 +140,7 @@ const Home = () => {
             ></iframe>
           </div>
         </div>
-        
+  
         <style jsx>{`
           .video-player h2 {
             font-size: 2.5rem !important;
