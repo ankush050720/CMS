@@ -331,7 +331,7 @@ const FacultyMentorPage = () => {
               >
                 <CardContent>
                   <Typography variant="h6">
-                    Add Chairperson/ViceChairperson
+                    Add Chair/ViceChair
                   </Typography>
                 </CardContent>
               </Card>
@@ -344,7 +344,7 @@ const FacultyMentorPage = () => {
               >
                 <CardContent>
                   <Typography variant="h6">
-                    Remove Chairperson/ViceChairperson
+                    Remove Chair/ViceChair
                   </Typography>
                 </CardContent>
               </Card>
