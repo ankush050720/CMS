@@ -67,7 +67,6 @@ const Home = () => {
           width: "100%",
           position: "relative",
           overflow: "hidden",
-          minHeight: "100vh"
         }}
       >
         {/* Background div covering only 50% height */}
