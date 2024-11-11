@@ -62,6 +62,9 @@ const Home = () => {
   const VideoPlayer = ({ videoUrl }) => {
     return (
       <div
+        style={{ minHeight : '100vh' }}
+      >
+      <div
         className="video-player"
         style={{
           width: "100%",
@@ -140,7 +143,7 @@ const Home = () => {
             ></iframe>
           </div>
         </div>
-  
+        
         <style jsx>{`
           .video-player h2 {
             font-size: 2.5rem !important;
@@ -164,6 +167,7 @@ const Home = () => {
             }
           }
         `}</style>
+      </div>
       </div>
     );
   };
