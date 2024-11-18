@@ -125,11 +125,13 @@ const getClubMembers = async (req, res) => {
   const mentor = req.user;
   try {
     const clubMembers = await User.find({
-      club: mentor.club._id,
-      role: { $ne: 'faculty mentor' }, // Exclude faculty mentor
+      $or: [
+        { club: mentor.club._id, role: { $ne: 'faculty mentor' } }, // Existing club members excluding 'faculty mentor'
+        { role: 'guest' } // Include all users with role 'guest'
+      ],
     });
 
-    if (!clubMembers) {
+    if (!clubMembers || clubMembers.length === 0) {
       return res.status(404).json({ error: 'No members found in the club' });
     }
 
@@ -139,6 +141,7 @@ const getClubMembers = async (req, res) => {
     return res.status(500).json({ error: 'Server error' });
   }
 };
+
 
 const getClubLeaders = async (req, res) => {
   try {
