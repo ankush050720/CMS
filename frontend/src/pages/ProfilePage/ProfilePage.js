@@ -105,17 +105,6 @@ const Profile = () => {
                       overflowWrap: 'keep-all',
                     }}
                   >
-                    <strong>Club:</strong> {userInfo.club.name}
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    style={{
-                      color: '#34495e',
-                      fontSize: isSmallScreen ? '0.9rem' : '1rem',
-                      wordWrap: 'keep-all',
-                      overflowWrap: 'keep-all',
-                    }}
-                  >
                     <strong>Role:</strong> {userInfo.role}
                   </Typography>
                 </div>
