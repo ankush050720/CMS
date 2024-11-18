@@ -105,6 +105,7 @@ const addChairperson = async (req, res) => {
     }
 
     member.role = role;
+    member.club = user.club;
     await member.save();
 
     // Send an email to the new chairperson/vice-chairperson
