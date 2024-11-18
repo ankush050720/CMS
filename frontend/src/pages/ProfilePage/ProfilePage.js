@@ -26,7 +26,7 @@ const Profile = () => {
     fetchUserInfo();
   }, []);
 
-  if (loading) return <CircularProgress />;
+  if (loading) return <CircularProgress sx={{ color: 'limegreen' }} />;
   if (error) return <Typography color="error">{error}</Typography>;
 
   return (

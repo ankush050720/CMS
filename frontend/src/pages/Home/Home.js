@@ -346,7 +346,7 @@ const Home = () => {
               ))
           ) : (
             <div className="loading-container">
-              <CircularProgress />
+              <CircularProgress sx={{ color: 'limegreen' }}/>
             </div>
           )}
         </div>
@@ -378,7 +378,7 @@ const Home = () => {
           </>
         ) : (
           <div className="loading-container">
-            <CircularProgress />
+            <CircularProgress sx={{ color: 'limegreen' }}/>
           </div>
         )}
       </div>

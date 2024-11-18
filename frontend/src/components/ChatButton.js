@@ -31,7 +31,7 @@ const ChatButton = () => {
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
       {loading ? (
-        <CircularProgress /> 
+        <CircularProgress sx={{ color: 'limegreen' }} /> 
       ) : (
         <Button 
           variant="contained" 

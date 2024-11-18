@@ -75,7 +75,7 @@ const BookedVenues = ({ className, selectedAction }) => {
             
             {loading ? (
               <Box display="flex" justifyContent="center" marginTop="20px">
-                <CircularProgress />
+                <CircularProgress sx={{ color: 'limegreen' }} />
               </Box>
             ) : (
               Object.keys(groupedEvents).length > 0 ? (

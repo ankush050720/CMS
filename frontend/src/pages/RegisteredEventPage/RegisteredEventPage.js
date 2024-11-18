@@ -239,7 +239,7 @@ const RegisteredEvents = () => {
             Events Registered
           </Typography>
           {isLoadingEvents ? (
-            <CircularProgress sx={{ marginTop: 2 }} />
+            <CircularProgress sx={{ marginTop: 2, color: 'limegreen' }} />
           ) : registeredEvents.length > 0 ? (
             <List>
               {registeredEvents.map((event) => {

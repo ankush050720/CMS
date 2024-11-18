@@ -18,7 +18,7 @@ const LoadingButton = ({ onClick, children, ...props }) => {
   
     return (
       <Button onClick={handleClick} disabled={loading} {...props}>
-        {loading ? <CircularProgress size={24} /> : children}
+        {loading ? <CircularProgress size={24} sx={{ color: 'limegreen' }} /> : children}
       </Button>
     );
   };

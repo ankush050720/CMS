@@ -53,7 +53,7 @@ const EventsRegistry = ({ className, selectedAction, role }) => {
           <CardContent>
             {loading ? (
               <Box display="flex" justifyContent="center" marginTop="20px">
-                <CircularProgress />
+                <CircularProgress sx={{ color: 'limegreen' }} />
               </Box>
             ) : error ? (
               <Typography variant="h6" color="error">{error}</Typography>
