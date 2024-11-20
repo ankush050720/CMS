@@ -40,6 +40,7 @@ const ClubPage = () => {
         backgroundSize: "cover", // Cover the entire area
         backgroundPosition: "center", // Center the background image
         backgroundRepeat: "no-repeat",
+        wordBreak: "break-word",
       }}
     >
       <Header />
@@ -106,6 +107,7 @@ const ClubPage = () => {
               elevation={3}
               style={{
                 padding: "1.5rem",
+                fontSize:"0.9rem",
                 backgroundColor: "rgba(11,182,205,0.05)",
               }}
             >
@@ -123,7 +125,7 @@ const ClubPage = () => {
               <Typography variant="h6" gutterBottom>
                 Email:{" "}
                 <a
-                  href={club.clubEmail}
+                  href={`mailto:${club.clubEmail}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ wordBreak: "break-word" }}
@@ -136,8 +138,9 @@ const ClubPage = () => {
               </Typography>
               <List>
                 {club.instagramHandle && (
-                  <ListItem>
-                    • Instagram:{" "}
+                  <ListItem style={{ display: "block" }}>
+                    • Instagram:
+                    <br />
                     <a
                       href={club.instagramHandle}
                       target="_blank"
@@ -149,8 +152,9 @@ const ClubPage = () => {
                   </ListItem>
                 )}
                 {club.linkedinHandle && (
-                  <ListItem>
-                    • LinkedIn:{" "}
+                  <ListItem style={{ display: "block" }}>
+                    • LinkedIn:
+                    <br />
                     <a
                       href={club.linkedinHandle}
                       target="_blank"
@@ -162,8 +166,9 @@ const ClubPage = () => {
                   </ListItem>
                 )}
                 {club.facebookHandle && (
-                  <ListItem>
-                    • Facebook:{" "}
+                  <ListItem style={{ display: "block" }}>
+                    • Facebook:
+                    <br />
                     <a
                       href={club.facebookHandle}
                       target="_blank"
@@ -175,8 +180,9 @@ const ClubPage = () => {
                   </ListItem>
                 )}
                 {club.twitterHandle && (
-                  <ListItem>
-                    • Twitter:{" "}
+                  <ListItem style={{ display: "block" }}>
+                    • Twitter:
+                    <br />
                     <a
                       href={club.twitterHandle}
                       target="_blank"
@@ -315,7 +321,7 @@ const ClubPage = () => {
         </Box>
 
         {/* Events */}
-        <Box mt={4} mb={5} >
+        <Box mt={4} mb={5}>
           <Typography variant="h4" gutterBottom>
             Conducted Events
           </Typography>
@@ -334,12 +340,17 @@ const ClubPage = () => {
               >
                 <Paper
                   elevation={3}
-                  style={{
+                  sx={{
                     padding: "2rem",
                     textAlign: "center",
                     width: "100%", // Let Grid control the width
                     maxWidth: "300px", // Optional max width for event cards
                     backgroundColor: "rgba(11,182,205,0.05)",
+                    wordBreak: "break-word",
+                    transition: "transform 0.3s ease",
+                    "&:hover": {
+                      transform: "scale(1.02)", // Scale on hover
+                    },
                   }}
                 >
                   <Typography variant="h6" gutterBottom>
