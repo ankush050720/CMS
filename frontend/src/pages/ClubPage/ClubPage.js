@@ -114,6 +114,7 @@ const ClubPage = () => {
                   href={club.clubWebsite}
                   target="_blank"
                   rel="noopener noreferrer"
+                  style={{ wordBreak: "break-word" }}
                 >
                   {club.clubWebsite}
                 </a>
@@ -124,6 +125,7 @@ const ClubPage = () => {
                   href={club.clubEmail}
                   target="_blank"
                   rel="noopener noreferrer"
+                  style={{ wordBreak: "break-word" }}
                 >
                   {club.clubEmail}
                 </a>
@@ -139,6 +141,7 @@ const ClubPage = () => {
                       href={club.instagramHandle}
                       target="_blank"
                       rel="noopener noreferrer"
+                      style={{ wordBreak: "break-word" }}
                     >
                       {club.instagramHandle}
                     </a>
@@ -151,6 +154,7 @@ const ClubPage = () => {
                       href={club.linkedinHandle}
                       target="_blank"
                       rel="noopener noreferrer"
+                      style={{ wordBreak: "break-word" }}
                     >
                       {club.linkedinHandle}
                     </a>
@@ -163,6 +167,7 @@ const ClubPage = () => {
                       href={club.facebookHandle}
                       target="_blank"
                       rel="noopener noreferrer"
+                      style={{ wordBreak: "break-word" }}
                     >
                       {club.facebookHandle}
                     </a>
@@ -175,6 +180,7 @@ const ClubPage = () => {
                       href={club.twitterHandle}
                       target="_blank"
                       rel="noopener noreferrer"
+                      style={{ wordBreak: "break-word" }}
                     >
                       {club.twitterHandle}
                     </a>
