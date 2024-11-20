@@ -82,6 +82,7 @@ const ClubPage = () => {
               style={{
                 padding: "1.5rem",
                 backgroundColor: "rgba(11,182,205,0.05)",
+                wordBreak: "break-word",
               }}
             >
               <Typography variant="h6" gutterBottom>
@@ -314,12 +315,14 @@ const ClubPage = () => {
         </Box>
 
         {/* Events */}
-        <Box mt={4}>
+        <Box mt={4} mb={5} >
           <Typography variant="h4" gutterBottom>
             Conducted Events
           </Typography>
-          <Grid container gap={5}>
-            {club.events.map((event, index) => (
+          <Grid container spacing={3}>
+            {" "}
+            {/* Use spacing instead of gap */}
+            {club.events.map((event) => (
               <Grid
                 item
                 xs={12}
@@ -334,7 +337,8 @@ const ClubPage = () => {
                   style={{
                     padding: "2rem",
                     textAlign: "center",
-                    width: "200px", // Consistent width for event cards
+                    width: "100%", // Let Grid control the width
+                    maxWidth: "300px", // Optional max width for event cards
                     backgroundColor: "rgba(11,182,205,0.05)",
                   }}
                 >
