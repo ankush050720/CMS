@@ -3,11 +3,13 @@ import { getUserInfo } from '../../services/userService';
 import { Card, CardContent, Typography, Grid, CircularProgress, Avatar } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { useMediaQuery } from '@mui/material';
+import { getClubName } from '../../services/clubService';
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [clubName, setClubName] = useState('');
 
   const isSmallScreen = useMediaQuery("(max-width:768px)");
 
@@ -24,6 +26,21 @@ const Profile = () => {
     };
 
     fetchUserInfo();
+  }, []);
+
+  useEffect(() => {
+    const fetchClubName = async () => {
+      try {
+        const data = await getClubName();
+        setClubName(data.clubName);
+      } catch (err) {
+        setError('Unable to fetch user information');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClubName();
   }, []);
 
   if (loading) return <CircularProgress sx={{ color: 'limegreen' }} />;
@@ -95,6 +112,18 @@ const Profile = () => {
                     }}
                   >
                     <strong>Phone Number:</strong> {userInfo.phone}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    style={{
+                      marginBottom: '1rem',
+                      color: '#34495e',
+                      fontSize: isSmallScreen ? '0.9rem' : '1rem',
+                      wordWrap: 'keep-all',
+                      overflowWrap: 'keep-all',
+                    }}
+                  >
+                    <strong>Club:</strong> {clubName}
                   </Typography>
                   <Typography
                     variant="h6"
