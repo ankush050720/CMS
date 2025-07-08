@@ -105,7 +105,7 @@ const ClubApplication = () => {
   try {
     let cvUrl = "";
     if (cvFile) {
-      cvUrl = await uploadFileToCloudinary(cvFile); // Upload to Cloudinary
+      cvUrl = await uploadImageToCloudinary(cvFile); // Upload to Cloudinary
     }
 
     const response = await submitApplication({
