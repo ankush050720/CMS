@@ -14,7 +14,7 @@ import { submitApplication } from "../services/applicationService";
 import LoadingButton from "../components/LoadingButton";
 import LoadingForm from "../components/LoadingForm";
 import FileUpload from '../utils/FileUpload';
-import { uploadImageToCloudinary } from '../utils/cloudinaryUpload';
+import { uploadFileToCloudinary } from '../utils/cloudinaryFileUpload';
 
 const styles = (
   <style>
@@ -105,7 +105,7 @@ const ClubApplication = () => {
   try {
     let cvUrl = "";
     if (cvFile) {
-      cvUrl = await uploadImageToCloudinary(cvFile); // Upload to Cloudinary
+      cvUrl = await uploadFileToCloudinary(cvFile); // Upload to Cloudinary
     }
 
     const response = await submitApplication({
