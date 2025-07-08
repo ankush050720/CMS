@@ -1391,8 +1391,22 @@ const ChairpersonPage = () => {
                         <TableCell>Email</TableCell>
                         <TableCell>Phone</TableCell>
                         <TableCell>Hall Ticket</TableCell>
+                        <TableCell>Program</TableCell>
+                        <TableCell>Year</TableCell>
+                        <TableCell>Specialization</TableCell>
+                        <TableCell>Recommender 1</TableCell>
+                        <TableCell>Recommender 2</TableCell>
+                        <TableCell>LinkedIn</TableCell>
+                        <TableCell>Facebook</TableCell>
+                        <TableCell>Instagram</TableCell>
+                        <TableCell>Other Media</TableCell>
+                        <TableCell>GitHub</TableCell>
+                        <TableCell>YouTube</TableCell>
                         <TableCell>Reason</TableCell>
                         <TableCell>Comments</TableCell>
+                        <TableCell>Comment</TableCell>
+                        <TableCell>CV</TableCell>
+                        <TableCell>Action</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -1403,13 +1417,56 @@ const ChairpersonPage = () => {
                             <TableCell>{application.email}</TableCell>
                             <TableCell>{application.phone}</TableCell>
                             <TableCell>{application.hallTicket}</TableCell>
+                            <TableCell>{application.program}</TableCell>
+                            <TableCell>{application.year}</TableCell>
+                            <TableCell>{application.specialization}</TableCell>
+                            <TableCell>{application.recommender1}</TableCell>
+                            <TableCell>{application.recommender2}</TableCell>
+                            <TableCell>
+                              <a href={application.linkedin} target="_blank" rel="noreferrer">
+                                LinkedIn
+                              </a>
+                            </TableCell>
+                            <TableCell>
+                              <a href={application.facebook} target="_blank" rel="noreferrer">
+                                Facebook
+                              </a>
+                            </TableCell>
+                            <TableCell>
+                              <a href={application.instagram} target="_blank" rel="noreferrer">
+                                Instagram
+                              </a>
+                            </TableCell>
+                            <TableCell>
+                              <a href={application.other_media} target="_blank" rel="noreferrer">
+                                Other
+                              </a>
+                            </TableCell>
+                            <TableCell>
+                              <a href={application.github} target="_blank" rel="noreferrer">
+                                GitHub
+                              </a>
+                            </TableCell>
+                            <TableCell>
+                              <a href={application.youtube} target="_blank" rel="noreferrer">
+                                YouTube
+                              </a>
+                            </TableCell>
                             <TableCell>{application.reason}</TableCell>
                             <TableCell>{application.comments}</TableCell>
+                            <TableCell>{application.comment}</TableCell>
+                            <TableCell>
+                              {application.cv ? (
+                                <a href={application.cv} target="_blank" rel="noreferrer">
+                                  View CV
+                                </a>
+                              ) : (
+                                "N/A"
+                              )}
+                            </TableCell>
                             <TableCell>
                               <IconButton
-                                onClick={() =>
-                                  handleDeleteApplication(application._id)
-                                }
+                                onClick={() => handleDeleteApplication(application._id)}
                                 aria-label="delete"
                               >
                                 <DeleteIcon />
@@ -1419,7 +1476,7 @@ const ChairpersonPage = () => {
                         ))
                       ) : (
                         <TableRow>
-                          <TableCell colSpan={7} align="center">
+                          <TableCell colSpan={20} align="center">
                             No applications found.
                           </TableCell>
                         </TableRow>
