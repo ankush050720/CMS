@@ -14,7 +14,7 @@ import { submitApplication } from "../services/applicationService";
 import LoadingButton from "../components/LoadingButton";
 import LoadingForm from "../components/LoadingForm";
 import FileUpload from '../utils/FileUpload';
-import { uploadFileToCloudinary } from '../utils/cloudinaryUpload';
+import { uploadImageToCloudinary } from '../utils/cloudinaryUpload';
 
 const styles = (
   <style>
