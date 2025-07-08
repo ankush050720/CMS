@@ -15,6 +15,7 @@ export const uploadFileToCloudinary = async (file) => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      withCredentials: false, // Adjust this based on your needs
     });
 
     return response.data.secure_url; // Return the secure URL of the uploaded file
