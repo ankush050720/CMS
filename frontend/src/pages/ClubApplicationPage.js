@@ -11,26 +11,28 @@ import { getAllClubs } from "../services/clubService";
 import Header from "../components/Header/Header";
 import { getUserInfo } from "../services/userService";
 import { submitApplication } from "../services/applicationService";
-import LoadingButton from '../components/LoadingButton';
-import LoadingForm from '../components/LoadingForm';
+import LoadingButton from "../components/LoadingButton";
+import LoadingForm from "../components/LoadingForm";
+import FileUpload from '../utils/FileUpload';
+import { uploadFileToCloudinary } from '../services/cloudinaryUpload';
 
 const styles = (
   <style>
     {`
+      .headerStyles {
+        width: 80% !important;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 8px;
+        position: fixed !important;
+        top: 20px !important;
+      }
+      @media (max-width: 768px) {
         .headerStyles {
-            width: 80% !important;
-  left: 50%; /* Centering horizontally */
-  transform: translateX(-50%); /* Move left by half its width */
-  border-radius: 8px;
-  position: fixed !important;
-  top: 20px !important;
+          width: 95% !important;
         }
-        @media (max-width: 768px) {
-          .headerStyles {
-            width: 95% !important;
-          }
-        }
-      `}
+      }
+    `}
   </style>
 );
 
@@ -43,7 +45,21 @@ const ClubApplication = () => {
     clubName: "",
     reason: "",
     comments: "",
+    program: "",
+    year: "",
+    specialization: "",
+    recommender1: "",
+    recommender2: "",
+    linkedin: "",
+    facebook: "",
+    instagram: "",
+    other_media: "",
+    github: "",
+    youtube: "",
+    comment: "",
   });
+
+  const [cvFile, setCvFile] = useState(null);
   const [clubs, setClubs] = useState([]);
   const [email, setEmail] = useState("");
 
@@ -56,7 +72,6 @@ const ClubApplication = () => {
         console.error("Error fetching user info", err);
       }
     };
-
     fetchUserDetails();
   }, []);
 
@@ -74,46 +89,66 @@ const ClubApplication = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormValues((prevValues) => ({
-      ...prevValues,
+    setFormValues((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Call the clubRegistration service with formValues
-      const response = await submitApplication(formValues);
-      // If successful, show an alert
-      if (response.success) {
-        alert("Application successfully submitted!");
-        setFormValues({ // Optionally reset the form
-          name: "",
-          email: "",
-          phone: "",
-          hallTicket: "",
-          clubName: "",
-          reason: "",
-          comments: "",
-        });
-      } else {
-        alert("Failed to submit the application.");
-      }
-    } catch (err) {
-      console.error("Error during registration:", err);
-      alert("An error occurred. Please try again.");
-    }
+  const handleFileChange = (e) => {
+    setCvFile(e.target.files[0]);
   };
 
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    let cvUrl = "";
+    if (cvFile) {
+      cvUrl = await uploadFileToCloudinary(cvFile); // Upload to Cloudinary
+    }
+
+    const response = await submitApplication({
+      ...formValues,
+      cv: cvUrl, // send the Cloudinary link instead of the file
+    });
+
+    if (response.success) {
+      alert("Application successfully submitted!");
+      setFormValues({
+        name: "",
+        email: "",
+        phone: "",
+        hallTicket: "",
+        clubName: "",
+        reason: "",
+        comments: "",
+        program: "",
+        year: "",
+        specialization: "",
+        recommender1: "",
+        recommender2: "",
+        linkedin: "",
+        facebook: "",
+        instagram: "",
+        other_media: "",
+        github: "",
+        youtube: "",
+        comment: "",
+      });
+      setCvFile(null);
+    } else {
+      alert("Failed to submit the application.");
+    }
+  } catch (err) {
+    console.error("Error submitting application:", err);
+    alert("An error occurred. Please try again.");
+  }
+};
+
   return (
-    <div
-      style={{
-        background: "whiteSmoke",
-        padding : "20px 5px"
-      }}
-    >
-        {styles}
+    <div style={{ background: "whitesmoke", padding: "20px 5px" }}>
+      {styles}
       <Header email={email} className="headerStyles" />
       <Box
         sx={{
@@ -124,51 +159,41 @@ const ClubApplication = () => {
           borderRadius: 2,
         }}
       >
-        <Paper
-          elevation={3}
-          sx={{ padding: 3, borderRadius: 2, marginBottom: 4 }}
-        >
+        <Paper elevation={3} sx={{ padding: 3, borderRadius: 2, marginBottom: 4 }}>
           <Typography variant="h4" align="center" gutterBottom>
             Club Application
           </Typography>
         </Paper>
         <LoadingForm onSubmit={handleSubmit}>
-          <TextField
-            label="Name"
-            name="name"
-            value={formValues.name}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            label="Email"
-            name="email"
-            value={formValues.email}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            label="Phone Number"
-            name="phone"
-            value={formValues.phone}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            label="Hall Ticket Number"
-            name="hallTicket"
-            value={formValues.hallTicket}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-          />
+          {[
+            ["Name", "name"],
+            ["Email", "email"],
+            ["Phone Number", "phone"],
+            ["Hall Ticket Number", "hallTicket"],
+            ["Program", "program"],
+            ["Year", "year"],
+            ["Specialization", "specialization"],
+            ["Recommender 1", "recommender1"],
+            ["Recommender 2", "recommender2"],
+            ["LinkedIn", "linkedin"],
+            ["Facebook", "facebook"],
+            ["Instagram", "instagram"],
+            ["Other Media", "other_media"],
+            ["GitHub", "github"],
+            ["YouTube", "youtube"],
+            ["Comment", "comment"],
+          ].map(([label, name]) => (
+            <TextField
+              key={name}
+              label={label}
+              name={name}
+              value={formValues[name]}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+          ))}
+
           <TextField
             select
             label="Club Name"
@@ -185,6 +210,7 @@ const ClubApplication = () => {
               </MenuItem>
             ))}
           </TextField>
+
           <TextField
             label="Why you want to join our club"
             name="reason"
@@ -196,6 +222,7 @@ const ClubApplication = () => {
             rows={4}
             required
           />
+
           <TextField
             label="Any other comments"
             name="comments"
@@ -206,6 +233,13 @@ const ClubApplication = () => {
             multiline
             rows={2}
           />
+
+          <Typography variant="subtitle1" sx={{ mt: 2 }}>
+            Upload CV (PDF only)
+          </Typography>
+          <FileUpload onFileUpload={(file) => setCvFile(file)} />
+
+
           <LoadingButton
             type="submit"
             variant="contained"
