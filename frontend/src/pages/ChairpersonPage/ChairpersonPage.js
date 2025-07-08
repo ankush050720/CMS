@@ -1423,34 +1423,58 @@ const ChairpersonPage = () => {
                             <TableCell>{application.recommender1}</TableCell>
                             <TableCell>{application.recommender2}</TableCell>
                             <TableCell>
-                              <a href={application.linkedin} target="_blank" rel="noreferrer">
-                                LinkedIn
-                              </a>
+                              {application.linkedin ? (
+                                <a href={application.linkedin} target="_blank" rel="noreferrer">
+                                  LinkedIn
+                                </a>
+                              ) : (
+                                "N/A"
+                              )}
                             </TableCell>
                             <TableCell>
-                              <a href={application.facebook} target="_blank" rel="noreferrer">
-                                Facebook
-                              </a>
+                              {application.facebook ? (
+                                <a href={application.facebook} target="_blank" rel="noreferrer">
+                                  Facebook
+                                </a>
+                              ) : (
+                                "N/A"
+                              )}
                             </TableCell>
                             <TableCell>
-                              <a href={application.instagram} target="_blank" rel="noreferrer">
-                                Instagram
-                              </a>
+                              {application.instagram ? (
+                                <a href={application.instagram} target="_blank" rel="noreferrer">
+                                  Instagram
+                                </a>
+                              ) : (
+                                "N/A"
+                              )}
                             </TableCell>
                             <TableCell>
-                              <a href={application.other_media} target="_blank" rel="noreferrer">
-                                Other
-                              </a>
+                              {application.other_media ? (
+                                <a href={application.other_media} target="_blank" rel="noreferrer">
+                                  Other
+                                </a>
+                              ) : (
+                                "N/A"
+                              )}
                             </TableCell>
                             <TableCell>
-                              <a href={application.github} target="_blank" rel="noreferrer">
-                                GitHub
-                              </a>
+                              {application.github ? (
+                                <a href={application.github} target="_blank" rel="noreferrer">
+                                  GitHub
+                                </a>
+                              ) : (
+                                "N/A"
+                              )}
                             </TableCell>
                             <TableCell>
-                              <a href={application.youtube} target="_blank" rel="noreferrer">
-                                YouTube
-                              </a>
+                              {application.youtube ? (
+                                <a href={application.youtube} target="_blank" rel="noreferrer">
+                                  YouTube
+                                </a>
+                              ) : (
+                                "N/A"
+                              )}
                             </TableCell>
                             <TableCell>{application.reason}</TableCell>
                             <TableCell>{application.comments}</TableCell>
@@ -1484,6 +1508,7 @@ const ChairpersonPage = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
+
               </CardContent>
             </Card>
           )}
