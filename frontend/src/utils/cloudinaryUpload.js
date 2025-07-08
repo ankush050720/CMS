@@ -4,7 +4,7 @@ import axios from 'axios';
 const CLOUDINARY_URL = process.env.REACT_APP_CLOUDINARY_URL;
 const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_PRESET;
 
-export const uploadFileToCloudinary = async (file) => {
+export const uploadImageToCloudinary = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', CLOUDINARY_PRESET);
