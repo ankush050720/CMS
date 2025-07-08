@@ -6,7 +6,7 @@ const sendEmail = require('../utils/sendEmail');
 // Submit application to the backend
 exports.submitApplication = async (req, res) => {
   try {
-    // Destructure form values from request body
+    // Destructure all form values from request body
     const {
       name,
       email,
@@ -15,15 +15,28 @@ exports.submitApplication = async (req, res) => {
       clubName, // This is the clubId from the form
       reason,
       comments,
+      program,
+      year,
+      specialization,
+      recommender1,
+      recommender2,
+      linkedin,
+      facebook,
+      instagram,
+      other_media,
+      github,
+      youtube,
+      comment,
+      cv // ✅ Make sure this is included
     } = req.body;
 
-    // Retrieve the actual club name from the Club model using the clubId (clubName in the form)
-    const club = await Club.findById(clubName); // Assuming clubName is the clubId
+    // Retrieve the actual club name from the Club model using the clubId
+    const club = await Club.findById(clubName);
     if (!club) {
       return res.status(404).json({ message: 'Club not found' });
     }
 
-    const clubNameActual = club.name; // Get the actual club name
+    const clubNameActual = club.name;
 
     // Create a new application document
     const newApplication = new Application({
@@ -34,44 +47,53 @@ exports.submitApplication = async (req, res) => {
       clubName,
       reason,
       comments,
+      program,
+      year,
+      specialization,
+      recommender1,
+      recommender2,
+      linkedin,
+      facebook,
+      instagram,
+      other_media,
+      github,
+      youtube,
+      comment,
+      cv, // ✅ Store the CV link
     });
 
     // Save the application to the database
     await newApplication.save();
 
-    // Send email to chairperson and vice-chairperson if they exist
+    // Find and notify club admins
     const chairperson = await User.findOne({ role: 'chairperson', club: clubName });
     const viceChairperson = await User.findOne({ role: 'vicechairperson', club: clubName });
 
     const recipients = [];
-    if (chairperson && chairperson.email) {
-      recipients.push(chairperson.email);
-    }
-    if (viceChairperson && viceChairperson.email) {
-      recipients.push(viceChairperson.email);
-    }
+    if (chairperson?.email) recipients.push(chairperson.email);
+    if (viceChairperson?.email) recipients.push(viceChairperson.email);
 
     if (recipients.length > 0) {
       await sendEmail({
-        email: recipients.join(', '), // Convert array to comma-separated string
+        email: recipients.join(', '),
         subject: `New Club Application Received for ${clubNameActual}`,
         message: `Hello,\n\nYou have received a new application for club membership from ${name}.\n\nApplicant's details:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nRegards,\nThe SRU Club Team`,
       });
     }
 
-    // Send email to the applicant (the email submitted in the form)
+    // Send confirmation to applicant
     await sendEmail({
-      email: email,
+      email,
       subject: `Your Application for Club Membership Has Been Submitted`,
-      message: `Dear ${name},\n\nThank you for your application to join the ${clubNameActual}. We have received your application and our team will review it shortly. You will be informed about the next steps in the hiring process soon.\n\nWe appreciate your interest and look forward to connecting with you.\n\nBest Regards,\nThe SRU Club Team`,
+      message: `Dear ${name},\n\nThank you for your application to join the ${clubNameActual}. We have received your application and our team will review it shortly.\n\nWe appreciate your interest.\n\nBest Regards,\nThe SRU Club Team`,
     });
 
-    // Return success message
     res.status(201).json({ success: true, message: 'Application successfully submitted!' });
-} catch (err) {
-  console.error(err);
-  res.status(500).json({ success: false, message: 'Error submitting application' });
-}
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Error submitting application' });
+  }
 };
 
 // Fetch applications for the authenticated user's club
