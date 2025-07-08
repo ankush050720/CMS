@@ -8,7 +8,6 @@ export const uploadFileToCloudinary = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', CLOUDINARY_PRESET);
-  formData.append('cloud_name', 'dsailrfh1');
 
   try {
     const response = await axios.post(CLOUDINARY_RAW_URL, formData, {
