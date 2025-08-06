@@ -42,7 +42,7 @@ const ClubApplication = () => {
     email: "",
     phone: "",
     hallTicket: "",
-    clubName: "",
+    clubName: [],
     reason: "",
     comments: "",
     program: "",
@@ -194,12 +194,21 @@ const ClubApplication = () => {
             />
           ))}
 
-          <TextField
+           <TextField
             select
-            label="Club Name"
+            SelectProps={{ multiple: true }}
+            label="Select up to 2 Clubs"
             name="clubName"
             value={formValues.clubName}
-            onChange={handleChange}
+            onChange={(e) => {
+              const selected = e.target.value;
+              if (selected.length <= 2) {
+                setFormValues((prev) => ({
+                  ...prev,
+                  clubName: selected,
+                }));
+              }
+            }}
             fullWidth
             margin="normal"
             required
