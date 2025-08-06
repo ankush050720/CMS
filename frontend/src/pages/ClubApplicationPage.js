@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
-  Button,
   Typography,
   MenuItem,
   Paper,
@@ -13,8 +12,8 @@ import { getUserInfo } from "../services/userService";
 import { submitApplication } from "../services/applicationService";
 import LoadingButton from "../components/LoadingButton";
 import LoadingForm from "../components/LoadingForm";
-import FileUpload from '../utils/FileUpload';
-import { uploadFileToCloudinary } from '../utils/cloudinaryFileUpload';
+import FileUpload from "../utils/FileUpload";
+import { uploadFileToCloudinary } from "../utils/cloudinaryFileUpload";
 
 const styles = (
   <style>
@@ -61,13 +60,18 @@ const ClubApplication = () => {
 
   const [cvFile, setCvFile] = useState(null);
   const [clubs, setClubs] = useState([]);
-  const [email, setEmail] = useState("");
 
+  // Fetch user info and set email, phone, name
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const userInfo = await getUserInfo();
-        setEmail(userInfo.email);
+        setFormValues((prev) => ({
+          ...prev,
+          email: userInfo.email || "",
+          phone: userInfo.phone || "",
+          name: userInfo.name || "",
+        }));
       } catch (err) {
         console.error("Error fetching user info", err);
       }
@@ -75,6 +79,7 @@ const ClubApplication = () => {
     fetchUserDetails();
   }, []);
 
+  // Fetch clubs
   useEffect(() => {
     const fetchClubs = async () => {
       try {
@@ -95,61 +100,57 @@ const ClubApplication = () => {
     }));
   };
 
-  const handleFileChange = (e) => {
-    setCvFile(e.target.files[0]);
-  };
-
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    let cvUrl = "";
-    if (cvFile) {
-      cvUrl = await uploadFileToCloudinary(cvFile); // Upload to Cloudinary
-    }
+    try {
+      let cvUrl = "";
+      if (cvFile) {
+        cvUrl = await uploadFileToCloudinary(cvFile); // Upload to Cloudinary
+      }
 
-    const response = await submitApplication({
-      ...formValues,
-      cv: cvUrl, // send the Cloudinary link instead of the file
-    });
-
-    if (response.success) {
-      alert("Application successfully submitted!");
-      setFormValues({
-        name: "",
-        email: "",
-        phone: "",
-        hallTicket: "",
-        clubName: "",
-        reason: "",
-        comments: "",
-        program: "",
-        year: "",
-        specialization: "",
-        recommender1: "",
-        recommender2: "",
-        linkedin: "",
-        facebook: "",
-        instagram: "",
-        other_media: "",
-        github: "",
-        youtube: "",
-        comment: "",
+      const response = await submitApplication({
+        ...formValues,
+        cv: cvUrl, // send the Cloudinary link instead of the file
       });
-      setCvFile(null);
-    } else {
-      alert("Failed to submit the application.");
+
+      if (response.success) {
+        alert("Application successfully submitted!");
+        setFormValues({
+          name: "",
+          email: "",
+          phone: "",
+          hallTicket: "",
+          clubName: [],
+          reason: "",
+          comments: "",
+          program: "",
+          year: "",
+          specialization: "",
+          recommender1: "",
+          recommender2: "",
+          linkedin: "",
+          facebook: "",
+          instagram: "",
+          other_media: "",
+          github: "",
+          youtube: "",
+          comment: "",
+        });
+        setCvFile(null);
+      } else {
+        alert("Failed to submit the application.");
+      }
+    } catch (err) {
+      console.error("Error submitting application:", err);
+      alert("An error occurred. Please try again.");
     }
-  } catch (err) {
-    console.error("Error submitting application:", err);
-    alert("An error occurred. Please try again.");
-  }
-};
+  };
 
   return (
     <div style={{ background: "whitesmoke", padding: "20px 5px" }}>
       {styles}
-      <Header email={email} className="headerStyles" />
+      <Header email={formValues.email} className="headerStyles" />
       <Box
         sx={{
           width: window.innerWidth < 768 ? "85%" : "76%",
@@ -191,10 +192,15 @@ const ClubApplication = () => {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              InputProps={
+                name === "email" || name === "phone"
+                  ? { readOnly: true }
+                  : undefined
+              }
             />
           ))}
 
-           <TextField
+          <TextField
             select
             SelectProps={{ multiple: true }}
             label="Select up to 2 Clubs"
@@ -247,7 +253,6 @@ const ClubApplication = () => {
             Upload CV (PDF only)
           </Typography>
           <FileUpload onFileUpload={(file) => setCvFile(file)} />
-
 
           <LoadingButton
             type="submit"
