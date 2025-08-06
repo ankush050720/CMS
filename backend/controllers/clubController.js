@@ -126,7 +126,7 @@ const getClubMembers = async (req, res) => {
 // GET - Retrieve all club data
 const getAllClubs = async (req, res) => {
   try {
-    const clubs = await Club.find({});
+    const clubs = await Club.find({ name: { $ne: "Test Club" } });
     return res.status(200).json(clubs);
   } catch (error) {
     return res.status(500).json({ message: "Error retrieving clubs", error });
