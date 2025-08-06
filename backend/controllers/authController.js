@@ -9,12 +9,20 @@ const Team = require('../models/Team');
 exports.register = async (req, res) => {
   let { email, phone, password } = req.body;
   email = email.toLowerCase(); // Convert email to lowercase
+  
+  const emailPattern = /^[a-zA-Z0-9]{10}@sru\.edu\.in$/;
+
+  if (!emailPattern.test(email)) {
+    return res.status(400).json({ msg: 'Invalid email. Please use your SRU email.' });
+  }
+
   try {
     let user = await User.findOne({ $or: [{ email }, { phone }] });
     if (user) return res.status(400).json({ msg: 'User already exists' });
 
     user = new User({ email, phone, password });
     await user.save();
+
     res.status(201).json({ msg: 'User registered successfully' });
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
