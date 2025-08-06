@@ -60,12 +60,17 @@ const ClubApplication = () => {
 
   const [cvFile, setCvFile] = useState(null);
   const [clubs, setClubs] = useState([]);
+  const [userEmail, setUserEmail] = useState("");
+  const [userPhone, setUserPhone] = useState("");
 
-  // Fetch user info and set email, phone, name
+  // Fetch user info and set email and phone
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const userInfo = await getUserInfo();
+        setUserEmail(userInfo.email || "");
+        setUserPhone(userInfo.phone || "");
+
         setFormValues((prev) => ({
           ...prev,
           email: userInfo.email || "",
@@ -105,20 +110,22 @@ const ClubApplication = () => {
     try {
       let cvUrl = "";
       if (cvFile) {
-        cvUrl = await uploadFileToCloudinary(cvFile); // Upload to Cloudinary
+        cvUrl = await uploadFileToCloudinary(cvFile);
       }
 
       const response = await submitApplication({
         ...formValues,
-        cv: cvUrl, // send the Cloudinary link instead of the file
+        cv: cvUrl,
       });
 
       if (response.success) {
         alert("Application successfully submitted!");
+
+        // Reset form but preserve user email and phone
         setFormValues({
           name: "",
-          email: "",
-          phone: "",
+          email: userEmail,
+          phone: userPhone,
           hallTicket: "",
           clubName: [],
           reason: "",
@@ -136,6 +143,7 @@ const ClubApplication = () => {
           youtube: "",
           comment: "",
         });
+
         setCvFile(null);
       } else {
         alert("Failed to submit the application.");
