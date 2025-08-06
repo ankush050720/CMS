@@ -6,13 +6,12 @@ const sendEmail = require('../utils/sendEmail');
 // Submit application to the backend
 exports.submitApplication = async (req, res) => {
   try {
-    // Destructure all form values from request body
     const {
       name,
       email,
       phone,
       hallTicket,
-      clubName, // This is the clubId from the form
+      clubName,
       reason,
       comments,
       program,
@@ -27,18 +26,24 @@ exports.submitApplication = async (req, res) => {
       github,
       youtube,
       comment,
-      cv // ✅ Make sure this is included
+      cv
     } = req.body;
 
-    // Retrieve the actual club name from the Club model using the clubId
-    const club = await Club.findById(clubName);
-    if (!club) {
-      return res.status(404).json({ message: 'Club not found' });
+    // Check if an application already exists for this email
+    const existingApplication = await Application.findOne({ email });
+    if (existingApplication) {
+      return res.status(400).json({
+        success: false,
+        message: 'An application with this email has already been submitted.',
+      });
     }
 
-    const clubNameActual = club.name;
+    // Retrieve club details (can be one or two clubs now)
+    const clubs = await Club.find({ _id: { $in: clubName } });
+    if (!clubs || clubs.length === 0) {
+      return res.status(404).json({ message: 'One or more selected clubs not found' });
+    }
 
-    // Create a new application document
     const newApplication = new Application({
       name,
       email,
@@ -59,40 +64,50 @@ exports.submitApplication = async (req, res) => {
       github,
       youtube,
       comment,
-      cv, // ✅ Store the CV link
+      cv,
     });
 
-    // Save the application to the database
     await newApplication.save();
 
-    // Find and notify club admins
-    const chairperson = await User.findOne({ role: 'chairperson', club: clubName });
-    const viceChairperson = await User.findOne({ role: 'vicechairperson', club: clubName });
+    // Send email to chairpersons and vice-chairpersons of selected clubs
+    for (const clubId of clubName) {
+      const club = await Club.findById(clubId);
+      if (!club) continue;
 
-    const recipients = [];
-    if (chairperson?.email) recipients.push(chairperson.email);
-    if (viceChairperson?.email) recipients.push(viceChairperson.email);
+      const chairperson = await User.findOne({ role: 'chairperson', club: clubId });
+      const viceChairperson = await User.findOne({ role: 'vicechairperson', club: clubId });
 
-    if (recipients.length > 0) {
-      await sendEmail({
-        email: recipients.join(', '),
-        subject: `New Club Application Received for ${clubNameActual}`,
-        message: `Hello,\n\nYou have received a new application for club membership from ${name}.\n\nApplicant's details:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nRegards,\nThe SRU Club Team`,
-      });
+      const recipients = [];
+      if (chairperson?.email) recipients.push(chairperson.email);
+      if (viceChairperson?.email) recipients.push(viceChairperson.email);
+
+      if (recipients.length > 0) {
+        await sendEmail({
+          email: recipients.join(', '),
+          subject: `New Club Application Received for ${club.name}`,
+          message: `Hello,\n\nYou have received a new application for club membership from ${name}.\n\nApplicant's details:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nRegards,\nThe SRU Club Team`,
+        });
+      }
     }
 
     // Send confirmation to applicant
     await sendEmail({
       email,
       subject: `Your Application for Club Membership Has Been Submitted`,
-      message: `Dear ${name},\n\nThank you for your application to join the ${clubNameActual}. We have received your application and our team will review it shortly.\n\nWe appreciate your interest.\n\nBest Regards,\nThe SRU Club Team`,
+      message: `Dear ${name},\n\nThank you for your application to join our clubs. We have received your application and our team will review it shortly.\n\nWe appreciate your interest.\n\nBest Regards,\nThe SRU Club Team`,
     });
 
-    res.status(201).json({ success: true, message: 'Application successfully submitted!' });
+    res.status(201).json({
+      success: true,
+      message: 'Application successfully submitted!',
+    });
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: 'Error submitting application' });
+    res.status(500).json({
+      success: false,
+      message: 'Error submitting application',
+    });
   }
 };
 
