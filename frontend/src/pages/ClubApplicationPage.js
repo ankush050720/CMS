@@ -70,7 +70,6 @@ const ClubApplication = () => {
           ...prev,
           email: userInfo.email || "",
           phone: userInfo.phone || "",
-          name: userInfo.name || "",
         }));
       } catch (err) {
         console.error("Error fetching user info", err);
