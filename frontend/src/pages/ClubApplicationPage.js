@@ -121,7 +121,6 @@ const ClubApplication = () => {
       if (response.success) {
         alert("Application successfully submitted!");
 
-        // Reset form but preserve user email and phone
         setFormValues({
           name: "",
           email: userEmail,
@@ -174,23 +173,23 @@ const ClubApplication = () => {
         </Paper>
         <LoadingForm onSubmit={handleSubmit}>
           {[
-            ["Name", "name"],
-            ["Email", "email"],
-            ["Phone Number", "phone"],
-            ["Hall Ticket Number", "hallTicket"],
-            ["Program", "program"],
-            ["Year", "year"],
-            ["Specialization", "specialization"],
-            ["Recommender 1", "recommender1"],
-            ["Recommender 2", "recommender2"],
-            ["LinkedIn", "linkedin"],
-            ["Facebook", "facebook"],
-            ["Instagram", "instagram"],
-            ["Other Media", "other_media"],
-            ["GitHub", "github"],
-            ["YouTube", "youtube"],
-            ["Comment", "comment"],
-          ].map(([label, name]) => (
+            ["Name", "name", true],
+            ["Email", "email", true],
+            ["Phone Number", "phone", true],
+            ["Hall Ticket Number", "hallTicket", true],
+            ["Program", "program", false],
+            ["Year", "year", false],
+            ["Specialization", "specialization", false],
+            ["Recommender 1", "recommender1", false],
+            ["Recommender 2", "recommender2", false],
+            ["LinkedIn", "linkedin", false],
+            ["Facebook", "facebook", false],
+            ["Instagram", "instagram", false],
+            ["Other Media", "other_media", false],
+            ["GitHub", "github", false],
+            ["YouTube", "youtube", false],
+            ["Comment", "comment", false],
+          ].map(([label, name, isRequired]) => (
             <TextField
               key={name}
               label={label}
@@ -199,6 +198,7 @@ const ClubApplication = () => {
               onChange={handleChange}
               fullWidth
               margin="normal"
+              required={isRequired}
               InputProps={
                 name === "email" || name === "phone"
                   ? { readOnly: true }
