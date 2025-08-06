@@ -18,11 +18,13 @@ const applicationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  clubName: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Club',
-    required: true,
-  },
+  clubName: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Club',
+      required: true,
+    },
+  ],
   reason: {
     type: String,
     required: true,
