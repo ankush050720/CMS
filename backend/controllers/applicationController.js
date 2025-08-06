@@ -114,15 +114,15 @@ exports.submitApplication = async (req, res) => {
 // Fetch applications for the authenticated user's club
 exports.getApplications = async (req, res) => {
   try {
-    const club = req.user.club; // Assuming req.user contains the authenticated user's data and club ID
-    // Fetch applications where the clubName matches the user's club ID
-    const applications = await Application.find({ clubName: club });
+    const club = req.user.club; // user's club ID
+
+    // Find all applications where the clubName array contains the user's club ID
+    const applications = await Application.find({ clubName: { $in: [club] } });
 
     if (applications.length === 0) {
       return res.status(404).json({ message: 'No applications found for your club' });
     }
 
-    // Return the list of applications
     res.status(200).json({ applications });
   } catch (err) {
     console.error(err);
