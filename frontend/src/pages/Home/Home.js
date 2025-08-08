@@ -274,15 +274,13 @@ const Home = () => {
       <div className="dean-container" ref={deanSectionRef}>
         <h4>| FROM THE DESK OF DEAN</h4>
         <div className="dean-body">
-          {/*
           <div className="dean-image">
             <img src="/dean-image.jpg" alt="Dean" />
             <div className="dean-details">
-              <h4>Dr. Indrajeet Gupta</h4>
-              <p>Dean, School of CS – AI</p>
+              <h4>Dr. Rupesh Mishra</h4>
+              <p>Associate Dean, School of CS – AI</p>
             </div>
           </div>
-          */}
           <div className="dean-message">
             <h1>Importance Of Societies & Clubs</h1>
             <p>
