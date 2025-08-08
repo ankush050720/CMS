@@ -149,7 +149,11 @@ const ClubApplication = () => {
       }
     } catch (err) {
       console.error("Error submitting application:", err);
-      alert("An error occurred. Please try again.");
+      if (err.message) {
+        alert(`Error: ${err.message}`);
+      } else {
+        alert("An error occurred. Please try again.");
+      }
     }
   };
 
