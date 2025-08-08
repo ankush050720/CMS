@@ -11,7 +11,7 @@ exports.submitApplication = async (req, res) => {
       email,
       phone,
       hallTicket,
-      clubName,
+      clubName, // Now array of club ids
       reason,
       comments,
       program,
@@ -29,50 +29,54 @@ exports.submitApplication = async (req, res) => {
       cv
     } = req.body;
 
-    // Check if an application already exists for this email
-    const existingApplication = await Application.findOne({ email });
-    if (existingApplication) {
+    // Safety: force clubName to array.
+    const clubIds = Array.isArray(clubName) ? clubName : [clubName];
+
+    // To aggregate error if any applications already exist
+    let duplicateClubs = [];
+    for (const clubId of clubIds) {
+      const existingApplication = await Application.findOne({ email, clubName: clubId });
+      if (existingApplication) {
+        duplicateClubs.push(clubId);
+      }
+    }
+    if (duplicateClubs.length > 0) {
       return res.status(400).json({
         success: false,
-        message: 'An application with this email has already been submitted.',
+        message: 'You have already applied to one or more selected clubs.',
+        clubIds: duplicateClubs,
       });
     }
 
-    // Retrieve club details (can be one or two clubs now)
-    const clubs = await Club.find({ _id: { $in: clubName } });
-    if (!clubs || clubs.length === 0) {
-      return res.status(404).json({ message: 'One or more selected clubs not found' });
-    }
-
-    const newApplication = new Application({
-      name,
-      email,
-      phone,
-      hallTicket,
-      clubName,
-      reason,
-      comments,
-      program,
-      year,
-      specialization,
-      recommender1,
-      recommender2,
-      linkedin,
-      facebook,
-      instagram,
-      other_media,
-      github,
-      youtube,
-      comment,
-      cv,
-    });
-
-    await newApplication.save();
-
-    // Send email to chairpersons and vice-chairpersons of selected clubs
-    for (const clubId of clubName) {
+    // For each club, process the application
+    for (const clubId of clubIds) {
       const club = await Club.findById(clubId);
       if (!club) continue;
+
+      const newApplication = new Application({
+        name,
+        email,
+        phone,
+        hallTicket,
+        clubName: clubId, // Only this club
+        reason,
+        comments,
+        program,
+        year,
+        specialization,
+        recommender1,
+        recommender2,
+        linkedin,
+        facebook,
+        instagram,
+        other_media,
+        github,
+        youtube,
+        comment,
+        cv,
+      });
+
+      await newApplication.save();
 
       const chairperson = await User.findOne({ role: 'chairperson', club: clubId });
       const viceChairperson = await User.findOne({ role: 'vicechairperson', club: clubId });
@@ -89,12 +93,28 @@ exports.submitApplication = async (req, res) => {
         });
       }
     }
-
-    // Send confirmation to applicant
+  
+    // Send confirmation to applicant (regardless of how many clubs)
     await sendEmail({
       email,
-      subject: `Your Application for Club Membership Has Been Submitted`,
+      subject: `Application for Club Membership`,
       message: `Dear ${name},\n\nThank you for your application to join our clubs. We have received your application and our team will review it shortly.\n\nWe appreciate your interest.\n\nBest Regards,\nThe SRU Club Team`,
+    });
+  
+    const clubsApplied = await Club.find({ _id: { $in: clubIds } });
+    const clubNamesList = clubsApplied.map(club => club.name).join(', ');
+  
+    // Send mail to Associate Dean
+    await sendEmail({
+      email: "ankuash.jha@sru.edu.in",
+      subject: "New Club Application Submission",
+      message:
+        `Dear Associate Dean,\n\n` +
+        `A new club application has been submitted with the following details:\n\n` +
+        `Applicant Name: ${name}\n` +
+        `Hall Ticket Number: ${hallTicket}\n` +
+        `Applied Clubs: ${clubNamesList}\n\n` +
+        `Regards,\nThe SRU Club Team`
     });
 
     res.status(201).json({
