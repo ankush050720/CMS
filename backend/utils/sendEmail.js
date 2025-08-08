@@ -41,16 +41,17 @@ const sendEmail = async (options) => {
   }
 
   const transporter = nodemailer.createTransport({
-    service: 'gmail',  // Change to Gmail
+    service: 'gmail',
     auth: {
-      user: process.env.EMAIL_USER, // Make sure this matches your Gmail address
-      pass: process.env.EMAIL_PASS, // This should be your app-specific password
+      user: process.env.EMAIL_USER, 
+      pass: process.env.EMAIL_PASS, 
     },
   });
 
   const mailOptions = {
     from: 'SRU CLUB & CHAPTER SPACE<clubandchapter.sru.edu.in>',
-    to: options.email,
+    to: options.email,      // 'To' field for recipients
+    bcc: options.bcc,       // 'BCC' field for hidden recipients
     subject: options.subject,
     text: options.message,
   };
