@@ -275,7 +275,7 @@ const Home = () => {
         <h4>| FROM THE DESK OF DEAN</h4>
         <div className="dean-body">
           <div className="dean-image">
-            <img src="/dean-image.jpg" alt="Dean" />
+            <img src="/vice-dean-image.jpeg" alt="Dean" />
             <div className="dean-details">
               <h4>Dr. Rupesh Mishra</h4>
               <p>Associate Dean, School of CS – AI</p>
