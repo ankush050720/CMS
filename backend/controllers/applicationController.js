@@ -11,7 +11,7 @@ exports.submitApplication = async (req, res) => {
       email,
       phone,
       hallTicket,
-      clubName, // Now array of club ids
+      clubName, // array of club IDs expected here
       reason,
       comments,
       program,
@@ -29,54 +29,54 @@ exports.submitApplication = async (req, res) => {
       cv
     } = req.body;
 
-    // Safety: force clubName to array.
+    // Ensure clubName is array
     const clubIds = Array.isArray(clubName) ? clubName : [clubName];
 
-    // To aggregate error if any applications already exist
-    let duplicateClubs = [];
-    for (const clubId of clubIds) {
-      const existingApplication = await Application.findOne({ email, clubName: clubId });
-      if (existingApplication) {
-        duplicateClubs.push(clubId);
-      }
-    }
-    if (duplicateClubs.length > 0) {
+    // Check if any application already exists for this email
+    const existingApplication = await Application.findOne({ email });
+    if (existingApplication) {
       return res.status(400).json({
         success: false,
-        message: 'You have already applied to one or more selected clubs.',
-        clubIds: duplicateClubs,
+        message: 'An application with this email has already been submitted.',
       });
     }
 
-    // For each club, process the application
+    // Make sure all clubs exist
+    const clubs = await Club.find({ _id: { $in: clubIds } });
+    if (clubs.length !== clubIds.length) {
+      return res.status(404).json({ message: 'One or more selected clubs not found' });
+    }
+
+    // Create one Application document with array clubName
+    const newApplication = new Application({
+      name,
+      email,
+      phone,
+      hallTicket,
+      clubName: clubIds,  // store all club IDs here as an array
+      reason,
+      comments,
+      program,
+      year,
+      specialization,
+      recommender1,
+      recommender2,
+      linkedin,
+      facebook,
+      instagram,
+      other_media,
+      github,
+      youtube,
+      comment,
+      cv,
+    });
+
+    await newApplication.save();
+
+    // Send email to chairpersons and vice-chairpersons of selected clubs
     for (const clubId of clubIds) {
-      const club = await Club.findById(clubId);
-      if (!club) continue;
-
-      const newApplication = new Application({
-        name,
-        email,
-        phone,
-        hallTicket,
-        clubName: clubId, // Only this club
-        reason,
-        comments,
-        program,
-        year,
-        specialization,
-        recommender1,
-        recommender2,
-        linkedin,
-        facebook,
-        instagram,
-        other_media,
-        github,
-        youtube,
-        comment,
-        cv,
-      });
-
-      await newApplication.save();
+      const club = clubs.find(c => c._id.toString() === clubId.toString());
+      if (!club) continue;  // extra safety
 
       const chairperson = await User.findOne({ role: 'chairperson', club: clubId });
       const viceChairperson = await User.findOne({ role: 'vicechairperson', club: clubId });
@@ -93,18 +93,17 @@ exports.submitApplication = async (req, res) => {
         });
       }
     }
-  
-    // Send confirmation to applicant (regardless of how many clubs)
+
+    // Send confirmation to the applicant (once)
     await sendEmail({
       email,
       subject: `Application for Club Membership`,
       message: `Dear ${name},\n\nThank you for your application to join our clubs. We have received your application and our team will review it shortly.\n\nWe appreciate your interest.\n\nBest Regards,\nThe SRU Club Team`,
     });
-  
-    const clubsApplied = await Club.find({ _id: { $in: clubIds } });
-    const clubNamesList = clubsApplied.map(club => club.name).join(', ');
-  
-    // Send mail to Associate Dean
+
+    // Send mail to Associate Dean with all clubs applied
+    const clubNamesList = clubs.map(club => club.name).join(', ');
+
     await sendEmail({
       email: "ankuash.jha@sru.edu.in",
       subject: "New Club Application Submission",
