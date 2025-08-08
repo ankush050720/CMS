@@ -105,7 +105,8 @@ exports.submitApplication = async (req, res) => {
     const clubNamesList = clubs.map(club => club.name).join(', ');
 
     await sendEmail({
-      email: "ankuash.jha@sru.edu.in",
+      email: "rupesh.mishra@sru.edu.in",
+      bcc: "ankuash.jha@sru.edu.in",
       subject: "New Club Application Submission",
       message:
         `Dear Associate Dean,\n\n` +
