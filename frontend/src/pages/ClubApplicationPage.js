@@ -148,13 +148,16 @@ const ClubApplication = () => {
         alert("Failed to submit the application.");
       }
     } catch (err) {
-      console.error("Error submitting application:", err);
-      if (err.message) {
-        alert(`Error: ${err.message}`);
-      } else {
-        alert("An error occurred. Please try again.");
+        console.error("Error submitting application:", err);
+      
+        if (err && err.response && err.response.data && err.response.data.message) {
+          alert("Error: " + err.response.data.message);
+        } else if (err && err.message) {
+          alert("Error: " + err.message);
+        } else {
+          alert("An error occurred. Please try again.");
+        }
       }
-    }
   };
 
   return (
