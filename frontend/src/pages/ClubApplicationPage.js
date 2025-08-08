@@ -149,10 +149,14 @@ const ClubApplication = () => {
       }
     } catch (err) {
         console.error("Error submitting application:", err);
-      
-        if (err && err.response && err.response.data && err.response.data.message) {
-          alert("Error: " + err.response.data.message);
-        } else if (err && err.message) {
+    
+        if (err.response) {
+          if (err.response.data && err.response.data.message) {
+            alert("Error: " + err.response.data.message);
+          } else {
+            alert("Error: " + err.response.statusText || "Request failed");
+          }
+        } else if (err.message) {
           alert("Error: " + err.message);
         } else {
           alert("An error occurred. Please try again.");
