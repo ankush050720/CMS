@@ -123,12 +123,19 @@ exports.submitApplication = async (req, res) => {
 // Fetch applications for the authenticated user's club
 exports.getApplications = async (req, res) => {
   try {
-    const club = req.user.club; // user's club ID
+    const clubId = req.user.club; // clubId from JWT or auth middleware
 
-    // Find all applications where the clubName array contains the user's club ID
-    const applications = await Application.find({ clubName: { $in: [club] } });
+    // Find the clubName by clubId
+    const club = await Club.findById(clubId);
+    if (!club) {
+      return res.status(404).json({ message: 'Club not found for your account' });
+    }
+    const clubName = club.name;
 
-    if (applications.length === 0) {
+    // Find all applications where clubName array contains this club name
+    const applications = await Application.find({ clubName: clubName });
+
+    if (!applications.length) {
       return res.status(404).json({ message: 'No applications found for your club' });
     }
 
