@@ -137,7 +137,7 @@ exports.getApplications = async (req, res) => {
     const clubName = club.name;
 
     // Find all applications where clubName array contains this club name
-    const applications = await Application.find({ clubName: clubName });
+    const applications = await Application.find({ clubName: { $in: [clubName] } })
 
     if (!applications.length) {
       return res.status(404).json({ message: 'No applications found for your club' });
