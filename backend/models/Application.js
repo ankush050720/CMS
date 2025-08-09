@@ -18,13 +18,10 @@ const applicationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  clubName: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Club',
-      required: true,
-    },
-  ],
+  clubName: {
+    type: [String],   // now storing an array of club names (strings)
+    required: true,
+  },
   reason: {
     type: String,
     required: true,
@@ -39,42 +36,18 @@ const applicationSchema = new mongoose.Schema({
   },
 
   // New fields
-  program: {
-    type: String,
-  },
-  year: {
-    type: String,
-  },
-  specialization: {
-    type: String,
-  },
-  recommender1: {
-    type: String,
-  },
-  recommender2: {
-    type: String,
-  },
-  linkedin: {
-    type: String,
-  },
-  facebook: {
-    type: String,
-  },
-  instagram: {
-    type: String,
-  },
-  other_media: {
-    type: String,
-  },
-  github: {
-    type: String,
-  },
-  youtube: {
-    type: String,
-  },
-  cv: {
-    type: String,
-  },
+  program: String,
+  year: String,
+  specialization: String,
+  recommender1: String,
+  recommender2: String,
+  linkedin: String,
+  facebook: String,
+  instagram: String,
+  other_media: String,
+  github: String,
+  youtube: String,
+  cv: String,
   comment: {
     type: String,
     default: '',
