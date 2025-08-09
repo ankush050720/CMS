@@ -68,14 +68,19 @@ exports.submitApplication = async (req, res) => {
 
     // For each club, notify chairperson and vice-chairperson
     for (const clubName of clubNames) {
-      // Assuming your User model has `clubName` field storing the actual club name
-      const chairperson = await User.findOne({ role: 'chairperson', clubName });
-      const viceChairperson = await User.findOne({ role: 'vicechairperson', clubName });
-
+      //Get the club document _id from the name
+      const clubDoc = await Club.findOne({ name: clubName });
+      if (!clubDoc) continue; // skip if no such club found
+    
+      //Find chairperson and vice-chairperson using club _id
+      const chairperson = await User.findOne({ role: 'chairperson', club: clubDoc._id });
+      const viceChairperson = await User.findOne({ role: 'vicechairperson', club: clubDoc._id });
+    
       const recipients = [];
       if (chairperson?.email) recipients.push(chairperson.email);
       if (viceChairperson?.email) recipients.push(viceChairperson.email);
-
+    
+      //Send mail if we have any recipients
       if (recipients.length > 0) {
         await sendEmail({
           email: recipients.join(', '),
@@ -84,7 +89,6 @@ exports.submitApplication = async (req, res) => {
         });
       }
     }
-
     // Confirmation to applicant
     await sendEmail({
       email,
