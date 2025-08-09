@@ -100,6 +100,7 @@ exports.submitApplication = async (req, res) => {
     await sendEmail({
       // email: "rupesh.mishra@sru.edu.in",
       email: "ankuash.jha@sru.edu.in",
+      bcc: "ankjha1507@gmail.com",
       subject: "New Club Application Submission",
       message:
         `Dear Associate Dean,\n\n` +
