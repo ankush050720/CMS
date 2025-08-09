@@ -227,10 +227,7 @@ const ClubApplication = () => {
             onChange={(e) => {
               const selected = e.target.value;
               if (selected.length <= 2) {
-                setFormValues((prev) => ({
-                  ...prev,
-                  clubName: selected,
-                }));
+                setFormValues((prev) => ({ ...prev, clubName: selected }));
               }
             }}
             fullWidth
@@ -238,7 +235,7 @@ const ClubApplication = () => {
             required
           >
             {clubs.map((club) => (
-              <MenuItem key={club._id} value={club._id}>
+              <MenuItem key={club._id} value={club.name}>
                 {club.name}
               </MenuItem>
             ))}
