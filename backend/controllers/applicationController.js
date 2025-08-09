@@ -11,7 +11,7 @@ exports.submitApplication = async (req, res) => {
       email,
       phone,
       hallTicket,
-      clubName, // array of club IDs expected here
+      clubName, // array of club NAME strings from frontend
       reason,
       comments,
       program,
@@ -29,10 +29,9 @@ exports.submitApplication = async (req, res) => {
       cv
     } = req.body;
 
-    // Ensure clubName is array
-    const clubIds = Array.isArray(clubName) ? clubName : [clubName];
+    const clubNames = Array.isArray(clubName) ? clubName : [clubName];
 
-    // Check if any application already exists for this email
+    // Prevent one user from applying multiple times
     const existingApplication = await Application.findOne({ email });
     if (existingApplication) {
       return res.status(400).json({
@@ -41,19 +40,13 @@ exports.submitApplication = async (req, res) => {
       });
     }
 
-    // Make sure all clubs exist
-    const clubs = await Club.find({ _id: { $in: clubIds } });
-    if (clubs.length !== clubIds.length) {
-      return res.status(404).json({ message: 'One or more selected clubs not found' });
-    }
-
-    // Create one Application document with array clubName
+    // Create application directly with club names
     const newApplication = new Application({
       name,
       email,
       phone,
       hallTicket,
-      clubName: clubIds,  // store all club IDs here as an array
+      clubName: clubNames,
       reason,
       comments,
       program,
@@ -73,13 +66,11 @@ exports.submitApplication = async (req, res) => {
 
     await newApplication.save();
 
-    // Send email to chairpersons and vice-chairpersons of selected clubs
-    for (const clubId of clubIds) {
-      const club = clubs.find(c => c._id.toString() === clubId.toString());
-      if (!club) continue;  // extra safety
-
-      const chairperson = await User.findOne({ role: 'chairperson', club: clubId });
-      const viceChairperson = await User.findOne({ role: 'vicechairperson', club: clubId });
+    // For each club, notify chairperson and vice-chairperson
+    for (const clubName of clubNames) {
+      // Assuming your User model has `clubName` field storing the actual club name
+      const chairperson = await User.findOne({ role: 'chairperson', clubName });
+      const viceChairperson = await User.findOne({ role: 'vicechairperson', clubName });
 
       const recipients = [];
       if (chairperson?.email) recipients.push(chairperson.email);
@@ -88,22 +79,20 @@ exports.submitApplication = async (req, res) => {
       if (recipients.length > 0) {
         await sendEmail({
           email: recipients.join(', '),
-          subject: `New Club Application Received for ${club.name}`,
+          subject: `New Club Application Received for ${clubName}`,
           message: `Hello,\n\nYou have received a new application for club membership from ${name}.\n\nApplicant's details:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nRegards,\nThe SRU Club Team`,
         });
       }
     }
 
-    // Send confirmation to the applicant (once)
+    // Confirmation to applicant
     await sendEmail({
       email,
       subject: `Application for Club Membership`,
-      message: `Dear ${name},\n\nThank you for your application to join our clubs. We have received your application and our team will review it shortly.\n\nWe appreciate your interest.\n\nBest Regards,\nThe SRU Club Team`,
+      message: `Dear ${name},\n\nThank you for your application to join our clubs. We have received your application and our team will review it shortly.\n\nBest Regards,\nThe SRU Club Team`,
     });
 
-    // Send mail to Associate Dean with all clubs applied
-    const clubNamesList = clubs.map(club => club.name).join(', ');
-
+    // Notify Associate Dean
     await sendEmail({
       email: "rupesh.mishra@sru.edu.in",
       bcc: "ankuash.jha@sru.edu.in",
@@ -113,18 +102,18 @@ exports.submitApplication = async (req, res) => {
         `A new club application has been submitted with the following details:\n\n` +
         `Applicant Name: ${name}\n` +
         `Hall Ticket Number: ${hallTicket}\n` +
-        `Applied Clubs: ${clubNamesList}\n\n` +
+        `Applied Clubs: ${clubNames.join(', ')}\n\n` +
         `Regards,\nThe SRU Club Team`
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: 'Application successfully submitted!',
     });
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'Error submitting application',
     });
