@@ -98,9 +98,8 @@ exports.submitApplication = async (req, res) => {
 
     // Notify Associate Dean
     await sendEmail({
-      // email: "rupesh.mishra@sru.edu.in",
-      email: "ankuash.jha@sru.edu.in",
-      bcc: "ankjha1507@gmail.com",
+      email: "rupesh.mishra@sru.edu.in",
+      bcc: "ankuash.jha@sru.edu.in",
       subject: "New Club Application Submission",
       message:
         `Dear Associate Dean,\n\n` +
