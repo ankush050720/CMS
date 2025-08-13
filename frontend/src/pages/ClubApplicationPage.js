@@ -184,23 +184,23 @@ const ClubApplication = () => {
         </Paper>
         <LoadingForm onSubmit={handleSubmit}>
           {[
-            ["Name", "name", true],
-            ["Email", "email", true],
-            ["Phone Number", "phone", true],
-            ["Hall Ticket Number", "hallTicket", true],
-            ["Program", "program", false],
-            ["Year", "year", false],
-            ["Specialization", "specialization", false],
-            ["Recommender 1", "recommender1", false],
-            ["Recommender 2", "recommender2", false],
-            ["LinkedIn", "linkedin", false],
-            ["Facebook", "facebook", false],
-            ["Instagram", "instagram", false],
-            ["Other Media", "other_media", false],
-            ["GitHub", "github", false],
-            ["YouTube", "youtube", false],
-            ["Comment", "comment", false],
-          ].map(([label, name, isRequired]) => (
+            ["Name", "name", true, false],
+            ["Email", "email", true, false],
+            ["Phone Number", "phone", true, false],
+            ["Hall Ticket Number", "hallTicket", true, false],
+            ["Program", "program", false, false],
+            ["Year", "year", false, false],
+            ["Specialization", "specialization", false, false],
+            ["Recommender 1", "recommender1", false, false],
+            ["Recommender 2", "recommender2", false, false],
+            ["LinkedIn", "linkedin", false, true],
+            ["Facebook", "facebook", false, true],
+            ["Instagram", "instagram", false, true],
+            ["Other Media", "other_media", false, true],
+            ["GitHub", "github", false, true],
+            ["YouTube", "youtube", false, true],
+            ["Comment", "comment", false, false],
+          ].map(([label, name, isRequired, isUrl]) => (
             <TextField
               key={name}
               label={label}
@@ -210,6 +210,15 @@ const ClubApplication = () => {
               fullWidth
               margin="normal"
               required={isRequired}
+              type={isUrl ? "url" : "text"}
+              inputProps={
+                isUrl
+                  ? {
+                      pattern: "https?://.+",
+                      title: "Please enter a valid URL starting with http:// or https://",
+                    }
+                  : undefined
+              }
               InputProps={
                 name === "email" || name === "phone"
                   ? { readOnly: true }
