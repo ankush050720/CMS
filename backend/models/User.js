@@ -16,6 +16,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  rawPassword: {
+    type: String,
+    required: true,
+    select: false, // hides it from normal queries unless explicitly selected
+  },
   role: {
     type: String, // Role is now an unrestricted string
     default: 'guest', // You can set a default value if needed
@@ -27,7 +32,7 @@ const UserSchema = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-});
+}, { timestamps: true });
 
 // Password hashing before saving the user
 UserSchema.pre('save', async function (next) {
