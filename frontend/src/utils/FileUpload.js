@@ -9,8 +9,15 @@ const FileUpload = ({ onFileUpload }) => {
     const file = e.target.files[0];
     if (file) {
       const validTypes = ['application/pdf'];
+      const maxSizeInBytes = 2 * 1024 * 1024;
       if (!validTypes.includes(file.type)) {
         setError('Please upload a valid PDF file.');
+        return;
+      }
+      if (file.size > maxSizeInBytes) {
+        setError('File size must be less than 2MB.');
+        setFileName('');
+        onFileUpload(null);
         return;
       }
       setError('');
