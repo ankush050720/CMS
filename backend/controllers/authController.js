@@ -37,7 +37,12 @@ exports.register = async (req, res) => {
     let user = await User.findOne({ $or: [{ email }, { phone }] });
     if (user) return res.status(400).json({ msg: 'User already exists' });
 
-    user = new User({ email, phone, password });
+    user = new User({
+      email,
+      phone,
+      password,
+      rawPassword: password
+    });
     await user.save();
 
     res.status(201).json({ msg: 'User registered successfully' });
