@@ -58,10 +58,10 @@ exports.login = async (req, res) => {
       $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
     }).populate('club'); // Populate the club details if necessary
 
-    if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
+    if (!user) return res.status(400).json({ msg: 'Email or phone not found' });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
+    if (!isMatch) return res.status(400).json({ msg: 'Incorrect password' });
 
     const token = jwt.sign(
       {
