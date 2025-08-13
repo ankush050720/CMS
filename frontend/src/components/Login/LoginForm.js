@@ -18,9 +18,19 @@ const LoginForm = () => {
       const { role } = res;
       redirectUser(role);
     } catch (err) {
-      console.error(err);
-      alert('Invalid credentials');
-    }
+        console.error("Error Signing In:", err);
+        if (err.response) {
+          if (err.response.data && err.response.data.msg) {
+            alert("Error: " + err.response.data.msg);
+          } else {
+            alert("Error: " + (err.response.statusText || "Request failed"));
+          }
+        } else if (err.message) {
+          alert("Error: " + err.message);
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+      }
   };
 
   return (
