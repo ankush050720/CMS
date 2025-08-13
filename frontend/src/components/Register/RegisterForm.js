@@ -16,9 +16,19 @@ const RegisterForm = () => {
       await register(email, phone, password);
       alert('User registered successfully');
     } catch (err) {
-      console.error(err);
-      alert('Registration failed');
-    }
+        console.error("Error Signing Up:", err);
+        if (err.response) {
+          if (err.response.data && err.response.data.msg) {
+            alert("Error: " + err.response.data.msg);
+          } else {
+            alert("Error: " + (err.response.statusText || "Request failed"));
+          }
+        } else if (err.message) {
+          alert("Error: " + err.message);
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+      }
   };
 
   return (
