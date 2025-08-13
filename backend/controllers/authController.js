@@ -16,6 +16,11 @@ exports.register = async (req, res) => {
     return res.status(400).json({ msg: 'Invalid email. Please use your SRU email.' });
   }
 
+  const phonePattern = /^[6-9]\d{9}$/;
+  if (!phonePattern.test(phone)) {
+    return res.status(400).json({ msg: 'Invalid phone number. Must be 10 digits.' });
+  }
+
   try {
     let user = await User.findOne({ $or: [{ email }, { phone }] });
     if (user) return res.status(400).json({ msg: 'User already exists' });
