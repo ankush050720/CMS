@@ -142,6 +142,7 @@ exports.resetPassword = async (req, res) => {
   token = token.trim();
   newPassword = newPassword.trim();
 
+  // Strong password validation
   const passwordPattern =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/]).{8,}$/;
 
@@ -150,21 +151,30 @@ exports.resetPassword = async (req, res) => {
       msg: 'Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.'
     });
   }
-  
+
   try {
     const user = await User.findOne({
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() },
     });
-    if (!user) return res.status(400).json({ msg: 'Invalid or expired token' });
 
+    if (!user) {
+      return res.status(400).json({ msg: 'Invalid or expired token' });
+    }
+
+    // Update both hashed password and raw password
     user.password = newPassword;
+    user.rawPassword = newPassword;
+
+    // Clear reset token fields
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
+
     await user.save();
 
     res.json({ msg: 'Password updated successfully' });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ msg: 'Server error' });
   }
 };
