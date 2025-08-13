@@ -8,8 +8,11 @@ const Team = require('../models/Team');
 // Register a new user
 exports.register = async (req, res) => {
   let { email, phone, password } = req.body;
-  email = email.toLowerCase(); // Convert email to lowercase
   
+  email = email.trim().toLowerCase();
+  phone = phone.replace(/\s+/g, '').trim();
+  password = password.trim();
+
   const emailPattern = /^[a-zA-Z0-9]{10}@sru\.edu\.in$/;
 
   if (!emailPattern.test(email)) {
@@ -21,6 +24,15 @@ exports.register = async (req, res) => {
     return res.status(400).json({ msg: 'Invalid phone number. Must be 10 digits.' });
   }
 
+  const passwordPattern =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/]).{8,}$/;
+
+  if (!passwordPattern.test(password)) {
+    return res.status(400).json({
+      msg: 'Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.'
+    });
+  }
+  
   try {
     let user = await User.findOne({ $or: [{ email }, { phone }] });
     if (user) return res.status(400).json({ msg: 'User already exists' });
@@ -36,7 +48,11 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   let { emailOrPhone, password } = req.body;
-  emailOrPhone = emailOrPhone.toLowerCase(); // Convert email to lowercase if it's an email
+  emailOrPhone = emailOrPhone.trim();
+  if (emailOrPhone.includes('@')) {
+    emailOrPhone = emailOrPhone.toLowerCase();
+  }
+  password = password.trim();
   try {
     const user = await User.findOne({
       $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
@@ -89,7 +105,7 @@ exports.logout = (req, res) => {
 // Forgot password
 exports.forgotPassword = async (req, res) => {
   let { email } = req.body;
-  email = email.toLowerCase(); // Convert email to lowercase
+  email = email.trim().toLowerCase(); // Convert email to lowercase
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ msg: 'User not found' });
@@ -117,7 +133,19 @@ exports.forgotPassword = async (req, res) => {
 
 // Reset password
 exports.resetPassword = async (req, res) => {
-  const { token, newPassword } = req.body;
+  let { token, newPassword } = req.body;
+  token = token.trim();
+  newPassword = newPassword.trim();
+
+  const passwordPattern =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/]).{8,}$/;
+
+  if (!passwordPattern.test(newPassword)) {
+    return res.status(400).json({
+      msg: 'Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.'
+    });
+  }
+  
   try {
     const user = await User.findOne({
       resetPasswordToken: token,
