@@ -24,6 +24,7 @@ import TermsAndConditions from './pages/Policy/TermsPage';
 import PrivacyPolicy from './pages/Policy/PolicyPage';
 import RefundsAndCancellations from './pages/Policy/RefundsPage';
 import ClubApplication from './pages/ClubApplicationPage';
+import UnivClubApplication from './pages/UnivClubApplicationPage';
 import ScrollToTop from './utils/ScrollToTop';
 import { LoadingProvider } from './components/LoadingContext';
 
@@ -74,6 +75,7 @@ const App = () => {
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/refunds-and-cancellations" element={<RefundsAndCancellations />} />
                 <Route path="/club-registration" element={<ClubApplication />} />
+                <Route path="/univ-club-registration" element={<UnivClubApplication />} />
               </Routes>
         </div>
       </Loader>
