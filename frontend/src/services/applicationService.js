@@ -33,3 +33,18 @@ export const fetchApplications = async () => {
   export const deleteApplication = (id) => {
     return axios.delete(`${API_URL}/api/applications/${id}`);
   };
+
+// Submit University application to the backend
+export const submitUnivApplication = async (formValues) => {
+  try {
+    // Make the POST request to submit the application
+    const response = await axios.post(`${API_URL}/api/univ/applications`, formValues);
+
+    // Return the response from the backend (assuming it has success flag or message)
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting application:", error);
+    // Return or throw an error if the request fails
+    throw error;
+  }
+};
