@@ -9,7 +9,7 @@ import {
 import { getAllClubs } from "../services/clubService";
 import Header from "../components/Header/Header";
 import { getUserInfo } from "../services/userService";
-import { submitApplication } from "../services/applicationService";
+import { submitUnivApplication } from "../services/applicationService";
 import LoadingButton from "../components/LoadingButton";
 import LoadingForm from "../components/LoadingForm";
 import FileUpload from "../utils/FileUpload";
@@ -113,7 +113,7 @@ const ClubApplication = () => {
         cvUrl = await uploadFileToCloudinary(cvFile);
       }
 
-      const response = await submitApplication({
+      const response = await submitUnivApplication({
         ...formValues,
         cv: cvUrl,
       });
@@ -243,9 +243,9 @@ const ClubApplication = () => {
             margin="normal"
             required
           >
-            {clubs.map((club) => (
-              <MenuItem key={club._id} value={club.name}>
-                {club.name}
+            {["Chess Club", "Drama Club", "Music Club", "Science Club"].map(club => (
+              <MenuItem key={club} value={club}>
+                {club}
               </MenuItem>
             ))}
           </TextField>
@@ -293,4 +293,4 @@ const ClubApplication = () => {
   );
 };
 
-export default ClubApplication;
+export default UnivClubApplication;
