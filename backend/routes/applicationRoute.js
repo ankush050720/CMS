@@ -5,6 +5,7 @@ const applicationController = require('../controllers/applicationController');
 
 // POST request to submit a new application (requires authentication)
 router.post("/", authMiddleware, applicationController.submitApplication);
+router.post("/univ", authMiddleware, applicationController.submitUnivApplication);
 
 // GET request to retrieve all applications (requires authentication)
 router.get("/", authMiddleware, applicationController.getApplications);
