@@ -38,7 +38,7 @@ export const fetchApplications = async () => {
 export const submitUnivApplication = async (formValues) => {
   try {
     // Make the POST request to submit the application
-    const response = await axios.post(`${API_URL}/api/univ/applications`, formValues);
+    const response = await axios.post(`${API_URL}/api/applications/univ`, formValues);
 
     // Return the response from the backend (assuming it has success flag or message)
     return response.data;
