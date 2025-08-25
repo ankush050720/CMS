@@ -1,4 +1,5 @@
 const Application = require('../models/Application');
+const UnivApplication = require('../models/UnivApplication');
 const Club = require('../models/Club'); // Assuming the Club model is imported here
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
@@ -99,6 +100,104 @@ exports.submitApplication = async (req, res) => {
     // Notify Associate Dean
     await sendEmail({
       email: "rupesh.mishra@sru.edu.in",
+      bcc: "ankuash.jha@sru.edu.in",
+      subject: "New Club Application Submission",
+      message:
+        `Dear Associate Dean,\n\n` +
+        `A new club application has been submitted with the following details:\n\n` +
+        `Applicant Name: ${name}\n` +
+        `Hall Ticket Number: ${hallTicket}\n` +
+        `Applied Clubs: ${clubNames.join(', ')}\n\n` +
+        `Regards,\nThe SRU Club Team`
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: 'Application successfully submitted!',
+    });
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      message: 'Error submitting application',
+    });
+  }
+};
+
+// Submit application to the backend
+exports.submitUnivApplication = async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      phone,
+      hallTicket,
+      clubName,
+      reason,
+      comments,
+      program,
+      year,
+      specialization,
+      recommender1,
+      recommender2,
+      linkedin,
+      facebook,
+      instagram,
+      other_media,
+      github,
+      youtube,
+      comment,
+      cv
+    } = req.body;
+
+    const clubNames = Array.isArray(clubName) ? clubName : [clubName];
+
+    // Prevent one user from applying multiple times
+    const existingApplication = await Application.findOne({ email });
+    if (existingApplication) {
+      return res.status(400).json({
+        success: false,
+        message: 'An application with this email has already been submitted.',
+      });
+    }
+
+    // Create application directly with club names
+    const newApplication = new Application({
+      name,
+      email,
+      phone,
+      hallTicket,
+      clubName: clubNames,
+      reason,
+      comments,
+      program,
+      year,
+      specialization,
+      recommender1,
+      recommender2,
+      linkedin,
+      facebook,
+      instagram,
+      other_media,
+      github,
+      youtube,
+      comment,
+      cv,
+    });
+
+    await newApplication.save();
+    
+    // Confirmation to applicant
+    await sendEmail({
+      email,
+      subject: `Application for University Club Membership`,
+      message: `Dear ${name},\n\nThank you for your application to join our clubs. We have received your application and our team will review it shortly.\n\nBest Regards,\nThe SRU Club Team`,
+    });
+
+    // Notify Associate Dean
+    await sendEmail({
+      email: "ankjha1507@gmail.com",
       bcc: "ankuash.jha@sru.edu.in",
       subject: "New Club Application Submission",
       message:
