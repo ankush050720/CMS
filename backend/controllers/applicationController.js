@@ -195,13 +195,13 @@ exports.submitUnivApplication = async (req, res) => {
       message: `Dear ${name},\n\nThank you for your application to join our clubs. We have received your application and our team will review it shortly.\n\nBest Regards,\nThe SRU Club Team`,
     });
 
-    // Notify Associate Dean
+    // Notify faculty
     await sendEmail({
       email: "ankjha1507@gmail.com",
       bcc: "ankuash.jha@sru.edu.in",
       subject: "New Club Application Submission",
       message:
-        `Dear Associate Dean,\n\n` +
+        `Dear Sir/Mam,\n\n` +
         `A new club application has been submitted with the following details:\n\n` +
         `Applicant Name: ${name}\n` +
         `Hall Ticket Number: ${hallTicket}\n` +
