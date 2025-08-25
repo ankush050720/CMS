@@ -179,7 +179,7 @@ const UnivClubApplication = () => {
       >
         <Paper elevation={3} sx={{ padding: 3, borderRadius: 2, marginBottom: 4 }}>
           <Typography variant="h4" align="center" gutterBottom>
-            Club Application
+            University Club Application
           </Typography>
         </Paper>
         <LoadingForm onSubmit={handleSubmit}>
