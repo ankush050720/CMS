@@ -35,7 +35,7 @@ const styles = (
   </style>
 );
 
-const ClubApplication = () => {
+const UnivClubApplication = () => {
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
