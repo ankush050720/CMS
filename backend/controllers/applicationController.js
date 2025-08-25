@@ -154,7 +154,7 @@ exports.submitUnivApplication = async (req, res) => {
     const clubNames = Array.isArray(clubName) ? clubName : [clubName];
 
     // Prevent one user from applying multiple times
-    const existingApplication = await Application.findOne({ email });
+    const existingApplication = await UnivApplication.findOne({ email });
     if (existingApplication) {
       return res.status(400).json({
         success: false,
@@ -163,7 +163,7 @@ exports.submitUnivApplication = async (req, res) => {
     }
 
     // Create application directly with club names
-    const newApplication = new Application({
+    const newApplication = new UnivApplication({
       name,
       email,
       phone,
