@@ -12,10 +12,10 @@
   100% { background-position: 100% 50%; }
 }
 
-.announcement {
+.announcement, .announcement2 {
   display: block;
   padding: 10px;
-  font-size: 1rem;
+  font-size: 1.25rem;
   margin-top: 80px;
   font-weight: bold;
   text-align: center;
@@ -28,6 +28,10 @@
   -o-background-clip: text;      /* Older versions of Opera */
   animation: colorFlow 5s linear infinite;
   overflow: hidden;
+}
+
+.announcement2{
+  margin-top:10px;
 }
 
 .highlight-link {
