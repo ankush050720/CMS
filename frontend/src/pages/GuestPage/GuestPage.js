@@ -43,6 +43,14 @@ const GuestPage = () => {
         to apply!
       </div>
 
+      <div className="announcement">
+        University Club Registration is active now. Click{" "}
+        <Link component={RouterLink} to="/university-club-registration" className="highlight-link">
+          Here
+        </Link>{" "}
+        to apply!
+      </div>
+
       <div
         style={{
           width: window.innerWidth < 768 ? "95%" : "80%",
