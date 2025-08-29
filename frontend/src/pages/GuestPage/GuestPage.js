@@ -45,7 +45,7 @@ const GuestPage = () => {
 
       <div className="announcement">
         University Club Registration is active now. Click{" "}
-        <Link component={RouterLink} to="/university-club-registration" className="highlight-link">
+        <Link component={RouterLink} to="/univ-club-registration" className="highlight-link">
           Here
         </Link>{" "}
         to apply!
