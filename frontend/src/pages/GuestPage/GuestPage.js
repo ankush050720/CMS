@@ -43,13 +43,13 @@ const GuestPage = () => {
         to apply!
       </div>
 
-      <div className="announcement2">
+{{--<div className="announcement2">
         University Club Registration is active now. Click{" "}
         <Link component={RouterLink} to="/univ-club-registration" className="highlight-link">
           Here
         </Link>{" "}
         to apply!
-      </div>
+      </div>--}}
 
       <div
         style={{
