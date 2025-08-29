@@ -36,7 +36,7 @@ const GuestPage = () => {
 
       {/* Announcement Section */}
       <div className="announcement">
-        Club Registration is active now. Click{" "}
+        CSAI Club Registration is active now. Click{" "}
         <Link component={RouterLink} to="/club-registration" className="highlight-link">
           Here
         </Link>{" "}
