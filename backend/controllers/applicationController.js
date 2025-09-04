@@ -197,7 +197,7 @@ exports.submitUnivApplication = async (req, res) => {
 
     // Notify faculty
     await sendEmail({
-      email: "ankjha1507@gmail.com",
+      email: "k.deepa@sru.edu.in",
       bcc: "ankuash.jha@sru.edu.in",
       subject: "New Club Application Submission",
       message:
