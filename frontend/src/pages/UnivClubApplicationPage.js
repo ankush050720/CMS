@@ -243,7 +243,7 @@ const UnivClubApplication = () => {
             margin="normal"
             required
           >
-            {["Chess Club", "Drama Club", "Music Club", "Science Club"].map(club => (
+            {["DRAMA THEATRE CLUB", "GARDEN CLUB", "HIKING CLUB", "CULTURAL CLUB-DANCE","MUSIC","FASHIONISTA","E-GAMING CLUB","PHOTOPEDIA CLUB","COMMUNITY SERVICE CLUB","ARTISTIC CLUB","ADVENTURE CLUB","LITERARY MASTER COMMUNICATORS CLUB","MARTIAL ARTS CLUB","YES+CLUB","YOGA CLUB","ASHWAVEEGA-RACING & AUTOMOBILE CLUB"].map(club => (
               <MenuItem key={club} value={club}>
                 {club}
               </MenuItem>
